@@ -1,0 +1,1 @@
+start  /B  sqlcmd -S .\FAO_CAS -U sa -P test123 -i attachPCB.dat

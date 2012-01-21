@@ -1,0 +1,1342 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Readme for Microsoft SQL Server 2005 Express Edition SP2</title>
+    
+ <Style TYPE="text/css">
+
+body
+{
+    background: #FFFFFF;
+    color: #000000;
+    font-family:    Verdana;
+    font-size: medium;
+    font-style: normal;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom:  0;
+    margin-left:    0;
+    margin-right:   0;
+    width:  100%;
+}
+
+div.#mainSection
+{
+    font-size: 70%;
+    width: 100%;
+    padding-left:    10;
+    margin-right: 10;
+}
+
+div.#mainBody
+{
+    font-size: 90%;
+    margin-top: 10;
+    padding-bottom: 20;
+}
+
+div.#header
+{
+    background-color: #D2D2D2;
+    padding-top:    0;
+    padding-bottom: 0;
+    padding-left:   10;
+    padding-right:  0;
+    width:          100%;
+}
+
+div.#header table
+{
+    border-bottom-color: #C8CDDE;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    width:  100%;
+}
+
+span.#runningHeaderText
+{
+    color: #003399;
+    font-size: 90%;
+}
+
+span.#nsrTitle
+{
+/*    color: #003399;*/
+    font-size: 120%;
+    font-weight: 600;
+}
+
+div.#header table td
+{
+    color: #000000;
+    font-size: 70%;
+    margin-top: 0;
+    margin-bottom:  0;
+    padding-right: 20;
+}
+
+div.#header table tr.#headerTableRow3 td
+{
+    padding-bottom: 2;
+    padding-top: 5;
+}
+
+div.#header table.#bottomTable
+{
+    border-top-color: #FFFFFF;
+    border-top-style: solid;
+    border-top-width: 1;
+    text-align: left;
+}
+
+div.#footer
+{
+    font-size: 90%;
+    margin-top: 0;
+    margin-bottom:  0;
+    margin-left:    -5;
+    margin-right:   0;
+    padding-top:    2;
+    padding-bottom: 2;
+    padding-left:   0;
+    padding-right:  0;
+    width:  100%;
+}
+
+hr.#footerHR
+{
+    border-bottom-color: #EEEEFF;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    border-top-color: C8CDDE;
+    border-top-style: solid;
+    border-top-width: 1;
+    height: 3;
+    color: #D2D2D2;
+}
+
+div.section
+{
+    padding-top:    2;
+    padding-bottom: 2;
+    padding-right:  15;
+    width:  100%;
+}
+
+.heading
+{
+    color:          #000000;
+    font-weight:    bold;
+    margin-top:     18;
+    margin-bottom:  8;
+}
+
+h1.heading
+{
+    color: #000000;
+    font-size:  150%;
+}
+
+.subHeading
+{
+    color:          #000000;
+    font-weight:    bold;
+    font-size:      150%;
+    margin-bottom:  4;
+}
+
+h2.subHeading
+{
+    color:          #000000;
+    font-weight:    bold;
+    font-size:      130%;
+}
+h3.subHeading
+{
+    color:  #000000;
+    font-size: 125%;
+    font-weight: bold;
+}
+
+h4.subHeading
+{
+    color: #000000;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+h4.procedureHeading
+{
+    color: #000080;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+h5.subHeading
+{
+    color: #000000;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+img
+{
+    padding-bottom: 10;
+}
+
+img.toggle
+{
+    border: 0;
+    margin-right: 5;
+    padding-bottom: 10;
+}
+
+img.copyCodeImage
+{
+    border: 0;
+    margin: 1;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.downloadCodeImage
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.viewCodeImage
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.note
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.#membersOptionsFilterImage
+{
+    border: 0;
+    margin-left: 10;
+    vertical-align: middle;
+    padding-bottom: 10;
+}
+
+img.#toggleAllImage
+{
+    margin-left: 4;
+    vertical-align: middle;
+    padding-bottom: 10;
+}
+
+div.#mainSection table
+{
+    border: 0;
+    font-size: 100%;
+    width:  100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+div.#mainSection table tr
+{
+    vertical-align: top;
+}
+
+div.#mainSection table th
+{
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-color: #D8D8D8;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    color: #000000;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.#mainSection table td
+{
+    background: #F2F2F2;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.#mainSection table td.imageCell
+{
+    white-space: nowrap;
+}
+
+div.code
+{
+	width: 98%;
+}
+
+div.code table
+{
+    border: 0;
+    font-size: 95%;
+    margin-bottom: 5;
+    width: 100%
+}
+
+div.code table th
+{   
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-color: #D8D8D8;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    color: #000000;
+    font-weight: bold;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.code table td
+{
+    background: #CCCCCC;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+    padding-top: 5;
+}
+
+div.alert
+{
+	margin-left: 10;
+	width: 98%;
+}
+
+div.alert table
+{
+    border: 1;
+    font-size: 100%;
+    width:  100%;
+    border: solid 1 #DEDFEF;
+}
+
+div.alert table th
+{
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-width: 0;
+    color: #000000;
+    padding-left: 5;
+    padding-right: 5;
+    border: solid 1 #DEDFEF;
+}
+
+div.alert table td
+{
+    background: #FFFFFF;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+    border: solid 1 #DEDFEF;
+}
+
+span.copyCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+    float: right;
+    display: inline;
+    text-align: right;
+}
+
+.downloadCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+}
+
+.viewCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+}
+
+div.code pre
+{
+    font-family:    Monospace, Courier New, Courier;
+    font-size: 105%;
+    color:  #000000;
+}
+
+code
+{
+    font-family:    Monospace, Courier New, Courier;
+    font-size: 105%;
+    color:  #000000;
+}
+
+dl
+{
+    margin-top: 0;
+    padding-left:   1;
+}
+
+dd
+{
+    margin-bottom:  0;
+    margin-left:    0;
+    padding-left:   20;
+}
+
+dd p
+{
+    margin-top: 5;
+}
+
+ul
+{
+    margin-left: 17;
+    list-style-type: disc;
+}
+
+ul ul
+{
+    margin-bottom: 4;
+    margin-left: 17;
+    margin-top: 3;
+    list-style-type: disc;
+}
+
+ol
+{
+    margin-left: 24;
+    list-style-type: decimal;
+}
+
+ol ol
+{
+    margin-left: 24;
+    margin-top: 3;
+    list-style-type: lower-alpha;
+}
+
+li
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-left: 5;
+}
+
+p
+{
+    margin-bottom: 15;
+}
+
+.tip
+{
+    color:  #0000FF;
+    font-style: italic;
+    cursor:hand;
+    text-decoration:underline;
+}
+
+.math
+{
+    font-family: Times New Roman;
+    font-size: 125%
+}
+.sourceCodeList
+{
+    font-family: Verdana;
+    font-size: 90%; 
+}
+
+pre.viewCode
+{
+    width: 100%;
+    overflow: auto;
+}
+
+li:hover table, li.over table
+{
+    background-color: #C0C0C0;
+}
+
+li:hover ul, li.over ul
+{ 
+    background-color: #d2d2d2;
+    border: 1px solid #000;
+    display: block;
+}
+
+</style>
+  </head>
+  <body>
+    <!--Topic built:2/9/2007-->
+
+    <div id="header">
+      <table width="100%" id="topTable">
+        <tr>
+          <td align="left">
+            <span id="nsrTitle">Readme for Microsoft SQL Server 2005 Express Edition SP2</span>
+          </td>
+          <td align="right">
+            <span id="headfb" class="feedbackhead">
+            </span>
+          </td>
+        </tr>
+        <tr id="headerTableRow3">
+          <td />
+          <td align="right">
+          </td>
+        </tr>
+      </table>
+      </div>
+    <div id="mainSection">
+      <div id="mainBody"><p>Updated: 2/9/2007</p>
+
+        <font color="DarkGray"> </font><p /> 
+        <span id="changeHistory">
+        </span>
+    <p>The most up-to-date version of this file is available on the World Wide Web at the <a href="http://go.microsoft.com/fwlink/?LinkId=68576" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Download Center</linkText></a>.</p>
+    <h3 class="subHeading"></h3><table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;"><tr>
+        <td>
+          <p>The SQL Server documentation team welcomes your documentation feedback. We view and investigate all documentation issues but do not answer technical support questions here. For help with technical issues not related to documentation, see <a href="http://go.microsoft.com/fwlink/?LinkId=74357" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Getting Assistance with SQL Server</linkText></a>. </p>
+          <p>If it is possible, <a href="mailto:sqldocfb@microsoft.com?subject=SQL%20Server%20Express%20SP2%20readme%20file(/1:SQL/2:09.00.3024.00/3:ExpressSP1/4:readme_express/5:ReadmeSQLEXP2005.htm/6:/7:h/8:en-us/9:2006)&amp;body=---Please%20type%20comments%20here,%20leaving%20the%20subject%20line%20in%20place.---" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">submit feedback</linkText></a> to us in English. </p>
+        </td>
+      </tr></table>
+  <a name="top_of_page"></a><h1 class="heading">Contents</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">
+        <a href="#_1460_introduction_d3jb">1.0 Introduction</a>
+      </p>
+      <p xmlns="">    <a href="#_1461_overview_of_database_components_sp3_gq59">1.1 Overview of SQL Server Express SP2 Installation</a></p>
+      <p xmlns="">    <a href="#_1462_installation_requirements_d3jb">1.2 Installation Requirements</a></p>
+      <p xmlns="">    <a href="#_1463_uninstalling_sql_server_2005_sp1_fzpy">1.3 Uninstalling SQL Server Express SP2</a></p>
+      <p xmlns="">    <a href="#_1465_additional_information_about_sql_se_2y0t">1.4 Additional Information About SQL Server Express SP2</a></p>
+      <p xmlns="">    <a href="#_1464_updates_to_sql_server_2005_books_on_d3jb">1.5 Updates to SQL Server 2005 Books Online Are Available</a></p>
+      <p xmlns="">
+        <a href="#_2460_obtaining_sql_server_2005_community_wluf">2.0 Obtaining SQL Server Express SP2</a>
+      </p>
+      <p xmlns="">
+        <a href="#_3460_installing_sql_server_2005_communit_fzpy">3.0 Installing SQL Server Express SP2</a>
+      </p>
+      <p xmlns="">    <a href="#_3461_prepare_for_a_sql_server_2005_sp1_i_d3jb">3.1 Prepare for a SQL Server Express SP2 Installation</a></p>
+      <p xmlns="">    <a href="#_3462_install_sql_server_2005_sp1_cuy1">3.2 Install SQL Server Express SP2</a></p>
+      <p xmlns="">    <a href="#_3463_restart_services_and_applications_gq59">3.3 Restart Services and Applications</a></p>
+      <p xmlns="">    <a href="#_3462_setup_issues_238p">3.4 Setup Issues</a></p>
+      <p xmlns="">
+        <a href="#_4460_documentation_notes_2y0t">4.0 Additional Information</a>
+      </p>
+      <p xmlns="">    <a href="#tools_sse">4.1 Using SQL Server Express</a></p>
+      <p xmlns="">    <a href="#service_account">4.2 Service Account and Network Protocol</a></p>
+      <p xmlns="">    <a href="#_3461_getting_sql_server_2005_assistance_d3jb">4.3 Getting SQL Server Express Assistance</a></p>
+      <p xmlns="">    <a href="#_3462_providing_feedback_on_sql_server_20_wluf">4.4 Providing Feedback on SQL Server Express</a></p>
+      <p xmlns="">
+        <a href="#_sse_dbengine">5.0 Documentation Notes</a>
+      </p>
+      <p xmlns="">    <a href="#_5461_database_engine_d3jb">5.1 Database Engine</a></p>
+      <p xmlns="">    <a href="#_5466_replication_d3jb">5.2 Replication</a></p>
+      <p xmlns="">    <a href="#windowsvista">5.3 Windows Vista Considerations</a></p>
+      <p xmlns="">
+        <a href="#top_of_page">[Top]</a>
+      </p>
+    </content></div><a name="_1460_introduction_d3jb"></a><h1 class="heading">1.0 Introduction</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">This file describes how to use Microsoft® SQL Server™ 2005 Express Edition (SQL Server Express) Service Pack 2 (SP2) to install new instances of SQL Server Express SP2 or to upgrade instances of SQL Server Express to SP2. SQL Server Express SP2 can also be used to upgrade instances of Microsoft SQL Server 2000 Desktop Engine (also known as MSDE 2000) to SQL Server Express SP2. SQL Server Express service packs are cumulative, and this service pack upgrades all service levels of SQL Server Express to SP2.</p>
+      <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Important: </th></tr><tr><td>
+        This service pack can be used to upgrade only SQL Server Express (or MSDE 2000) to SQL Server Express SP2. You must use SQL Server Express with Advanced Services SP2 to upgrade instances of SQL Server Express with Advanced Services to SP2. SQL Server Express with Advanced Services to SP2 can be obtained from the MSDN page, <a href="http://go.microsoft.com/fwlink/?LinkId=69905" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server 2005 Express Edition</linkText></a>. You must use Microsoft SQL Server 2005 Service Pack 2 (SP2) to upgrade all other editions of SQL Server 2005 to SP2. SQL Server 2005 SP2 can be obtained from the Microsoft Download Center page, <a href="http://go.microsoft.com/fwlink/?LinkId=68574" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server 2005 Service Pack 2</linkText></a>. This service pack cannot be applied to any pre-release versions of SQL Server Express.<p></p>
+      </td></tr></table><p></p></div>
+      <p xmlns="">
+        <a href="#top_of_page">[Top]</a>
+      </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <a name="_1461_overview_of_database_components_sp3_gq59" xmlns=""></a><h3 class="subHeading" xmlns="">1.1 Overview of SQL Server Express SP2 Installation</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">During installation, SQL Server Express SP2 Setup will enumerate and let you select from an instance of SQL Server Express to upgrade to SP2. SQL Server Express SP2 can be reapplied to SQL Server Express instances that have already been upgraded to SP2. The general process for installing SP2 is as follows:</p>
+          <ol xmlns=""><li>
+              Download and extract the service pack installation files. <a href="#_2460_obtaining_sql_server_2005_community_wluf">Section 2.0</a> describes how to obtain the SP2 installation files. <br></br>
+              <div class="alert"><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                SQL Server Express SP2 requires the .NET Framework 2.0.<p></p>
+              </td></tr></table><p></p></div>
+            </li><li>
+              Prepare for upgrade to SP2. <a href="#_3461_prepare_for_a_sql_server_2005_sp1_i_d3jb">Section 3.1</a> describes the preparatory steps to take before you install SQL Server Express SP2. <br></br>
+            </li><li>
+              Install SQL Server Express SP2. <a href="#_3462_install_sql_server_2005_sp1_cuy1">Section 3.2</a> details options for running SP2 Setup. <br></br>
+            </li></ol>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_1462_installation_requirements_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">1.2 Installation Requirements</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Before you install SQL Server Express SP2, review the SQL Server Express installation requirements at the Microsoft Web page, <a href="http://go.microsoft.com/fwlink/?LinkId=58571" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server 2005 Express Edition System Requirements</linkText></a>. Hardware and software requirements are also summarized in the <a href="RequirementsSQLEXP2005.htm" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Installation Requirements for SQL Server Express</linkText></a> document. </p>
+          <p xmlns="">
+            SQL Server Express requires the .NET Framework 2.0. If you do not have the .NET Framework 2.0 installed, you must download and install it before you install SQL Server Express SP2. You can download the .NET Framework 2.0 from the Microsoft Download Center page, <a href="http://go.microsoft.com/fwlink/?LinkId=45988" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft .NET Framework Version 2.0 Redistributable Package</linkText></a>.</p>
+          <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+             The .NET Framework 2.0 is installed automatically by both Microsoft Visual Studio 2005 and all other editions of SQL Server 2005. <p></p>
+          </td></tr></table><p></p></div>
+          <p xmlns="">If you are upgrading an instance of MSDE 2000 to SQL Server Express SP2, you must make sure that the .NET Framework 2.0 is installed. </p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_1463_uninstalling_sql_server_2005_sp1_fzpy" xmlns=""></a><h3 class="subHeading" xmlns="">1.3 Uninstalling SQL Server Express SP2</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">A new instance of SQL Server Express SP2 can be uninstalled from <b>Add or Remove Programs</b>. However, when you use SQL Server Express SP2 to upgrade a SQL Server Express instance to SP2, the upgrade cannot be uninstalled. </p>
+          <procedure>
+            To revert to the previous version of SQL Server Express
+            <ddue:steps><ol xmlns=""><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">In <b>Add or Remove Programs</b>, select <b>Microsoft SQL Server 2005</b> from <b>Currently installed programs</b>, and then click <b>Remove</b>. </p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">In the <b>Components Selection</b> dialog box, select the instance of SQL Server Express to remove.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Click <b>Next</b>, and then click <b>Finish</b> to complete the uninstallation wizard.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Reinstall an instance of the previous version of SQL Server Express.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Apply any hotfixes that were previously installed on the instance.</p>
+                  <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                    Additional steps are required to make sure that you can revert to the previous version of SQL Server Express. For more information, see <a href="#_3461461_back_up_your_sql_server_database_d3jb">3.1.1 Back Up Your SQL Server Express Databases</a>. <p></p>
+                  </td></tr></table><p></p></div>
+                </content>
+              </li></ol></ddue:steps>
+          </procedure>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_1465_additional_information_about_sql_se_2y0t" xmlns=""></a><h3 class="subHeading" xmlns="">1.4 Additional Information About SQL Server Express SP2</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">For additional information about how to run SQL Server Express SP2 on Microsoft Windows Vista, see <a href="#windowsvista">5.3 Windows Vista Considerations</a>. </p>
+          <p xmlns="">A list of the fixes that are contained in this service pack is provided in Microsoft Knowledge Base article <a href="http://support.microsoft.com/kb/921896" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">921896</linkText></a>. Each fix listed in <a href="http://support.microsoft.com/kb/921896" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">921896</linkText></a> has a link to a Knowledge Base article about the problem that the fix addresses. Follow the links to the individual Knowledge Base articles to see information about each fix.</p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">Hotfixes</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">All publicly issued SQL Server 2005 security bulletins that were released before January 15, 2007 have been addressed in SP2. If you received a SQL Server 2005 or SQL Server Express hotfix after January 15, 2007, that hotfix might not be included in this release of SP2. Contact your primary support provider about obtaining the same hotfix for SQL Server Express SP2.</p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">How to Determine the SQL Server Express Version Number</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Every SQL Server product (including Service Packs) has its own version number. The version number of an instance of SQL Server Express can be viewed two ways:</p>
+              <ul xmlns=""><li>
+                  In SQL Server Management Studio Express Object Explorer when connected to the instance.<br></br>
+                </li><li>
+                  By executing the query <code>SELECT SERVERPROPERTY('ProductVersion')</code> against the SQL Server Express instance. <br></br>
+                </li></ul>
+              <p xmlns="">The following table shows the version numbers that correspond to versions of SQL Server Express:</p>
+              <h3 class="subHeading" xmlns=""></h3><table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+                    <th>
+                      Version Number
+                    </th>
+                    <th>
+                      SQL Server Express Version 
+                    </th>
+                  </tr><tr>
+                  <td>
+                    <p>9.00.1399</p>
+                  </td>
+                  <td>
+                    <p>
+                      SQL Server Express (initial version)</p>
+                  </td>
+                </tr><tr>
+                  <td>
+                    <p>9.00.2047</p>
+                  </td>
+                  <td>
+                    <p>
+                      SQL Server Express SP1 or SQL Server Express with Advanced Services</p>
+                  </td>
+                </tr><tr>
+                  <td>
+                    <p>9.00.3040</p>
+                  </td>
+                  <td>
+                    <p>
+                      SQL Server Express SP2 or SQL Server Express with Advanced Services SP2</p>
+                  </td>
+                </tr></table>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                 Your product version may be different from these values if you applied a hotfix.<p></p>
+              </td></tr></table><p></p></div>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+      <a name="_1464_updates_to_sql_server_2005_books_on_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">1.5 Updates to SQL Server 2005 Books Online are Available</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Starting with the April 2006 update of SQL Server 2005 Books Online, a separate Books Online for SQL Server Express is unavailable. SQL Server 2005 Books Online is the primary documentation for SQL Server Express. The February 2007 update of Books Online reflects all product upgrades that are included in this service pack, and also includes other improvements to the documentation. We strongly recommend that you install this update to keep the information in the local copy of the documentation current with SQL Server Express SP2. The February 2007 update is available at this <a href="http://go.microsoft.com/fwlink/?LinkId=68575" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Web site</linkText></a>. After installing Books Online, you can use the <b>SQL Server Express</b> filter in the <b>Contents</b> pane to hide the content that does not apply to your edition of SQL Server Express. For more information about SQL Server Express documentation, see "Using SQL Server Express Books Online" in SQL Server 2005 Books Online.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">SQL Server 2005 Samples and Sample Databases</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">The sample databases are not installed with SQL Server Express. The <b>AdventureWorks</b> sample database can be installed from the <a href="http://go.microsoft.com/fwlink/?LinkId=31046" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Download Center Web site</linkText></a>. The <b>Northwind</b> and <b>pubs</b> sample databases can be downloaded from the <a href="http://go.microsoft.com/fwlink/?LinkId=31995" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Download Center Web site</linkText></a>. </p>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                Although the <b>Northwind</b> and <b>pubs</b> sample databases will work with SQL Server Express, the <b>AdventureWorks</b> sample database is recommended for use with SQL Server Express.<p></p>
+              </td></tr></table><p></p></div>
+            </content></div>
+          <h4 class="subHeading" xmlns="">Updated SQL Server 2005 Samples Are Available</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">New and updated samples for SQL Server 2005 are available. You can download these updated samples from this <a href="http://go.microsoft.com/fwlink/?LinkId=58560" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Web site</linkText></a>. For more information about installing the updated samples, see "Installing Samples" in the updated SQL Server 2005 Books Online. </p>
+              <p xmlns="">
+                <a href="#top_of_page"> [Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+    </sections></div><a name="_2460_obtaining_sql_server_2005_community_wluf"></a><h1 class="heading">2.0 Obtaining SQL Server Express SP2</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">
+        SQL Server Express SP2 is available at the MSDN page, <a href="http://go.microsoft.com/fwlink/?LinkId=58557" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server 2005 Express Edition SP2</linkText></a>. Follow the instructions provided at the download site for downloading and extracting SQL Server Express SP2.</p>
+      <p xmlns="">
+        <a href="#top_of_page">[Top]</a>
+      </p>
+    </content></div><a name="_3460_installing_sql_server_2005_communit_fzpy"></a><h1 class="heading">3.0 Installing SQL Server Express SP2</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">This section details how to install SQL Server Express SP2 and any late-breaking information or setup issues that can affect successful installation of the service pack. The steps to install SQL Server Express SP2 are as follows: </p>
+      <ol xmlns=""><li>
+          
+            <a href="#_3461_prepare_for_a_sql_server_2005_sp1_i_d3jb">Prepare for a SQL Server Express SP2 installation</a>
+          <br></br>
+        </li><li>
+          
+            <a href="#_3462_install_sql_server_2005_sp1_cuy1">Install SQL Server Express SP2</a>
+          <br></br>
+        </li><li>
+          
+            <a href="#_3463_restart_services_and_applications_gq59">Restart services and applications</a> <br></br>
+        </li></ol>
+      <p xmlns="">
+        <a href="#top_of_page">[Top]</a>
+      </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <a name="_3461_prepare_for_a_sql_server_2005_sp1_i_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">3.1 Prepare for a SQL Server Express SP2 Installation</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">This section only applies when you upgrade an instance of SQL Server Express or MSDE 2000 to SP2. When you install a new instance of SQL Server Express SP2, you must also install the .NET Framework 2.0. This is the only preparation required. For more information, see <a href="#_1462_installation_requirements_d3jb">1.2 Installation Requirements</a>. When you upgrade an instance of MSDE 2000, you must follow the steps in this section and install the .NET Framework 2.0. </p>
+          <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+            We recommend that you run Microsoft SQL Server 2005 Upgrade Advisor against instances of MSDE 2000 before you upgrade them to SQL Server Express SP2. Upgrade Advisor identifies features and configuration changes that might affect an upgrade, and it provides links to documentation that describes each identified issue and how to resolve it. You can download Upgrade Advisor from the <a href="http://go.microsoft.com/fwlink/?LinkId=58860" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Download Center Web site</linkText></a>.<p></p>
+          </td></tr></table><p></p></div>
+          <p xmlns="">You must do the following before you upgrade an instance of SQL Server Express to SP2: </p>
+          <ol xmlns=""><li>
+              
+                <a href="#_3461461_back_up_your_sql_server_database_d3jb">Back up your SQL Server Express databases</a> <br></br>
+            </li><li>
+              
+                <a href="#_3461463_verify_that_the_system_databases_cuy1">Verify that the system databases have enough free space</a>
+              <br></br>
+            </li><li>
+              
+                <a href="#_3461464_verify_that_sql_server_2005_serv_238p">Verify that SQL Server Express service accounts are not disabled</a>
+              <br></br>
+            </li><li>
+              
+                <a href="#_3461465_stop_services_and_applications__ar5q">Stop services and applications</a>
+              <br></br>
+            </li></ol>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <a name="_3461461_back_up_your_sql_server_database_d3jb" xmlns=""></a><h4 class="subHeading" xmlns="">3.1.1 Back Up Your SQL Server Express Databases</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Before installing SQL Server Express SP2, back up the <b>master</b>, <b>msdb</b>, and <b>model</b> databases. Installing SQL Server Express SP2 modifies the <b>master</b>, <b>msdb</b>, and <b>model</b> databases. This makes them incompatible with pre-SP2 versions of SQL Server Express and MSDE. Backups of these databases are required if you decide to reinstall SQL Server Express or MSDE without SP2.</p>
+              <p xmlns="">It is also prudent to back up your user databases. </p>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Important: </th></tr><tr><td>
+                When you apply SQL Server Express SP2 to instances that participate in a replication topology, you must back up your replicated databases together with the system databases before you apply SQL Server Express SP2.<p></p>
+              </td></tr></table><p></p></div>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <a name="_3461463_verify_that_the_system_databases_cuy1" xmlns=""></a><h4 class="subHeading" xmlns="">3.1.2 Verify That the System Databases Have Enough Free Space</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">If the <b>autogrow</b> option is not selected for the <b>master</b> and <b>msdb</b> system databases, these databases must have at least 500 KB of free space each. To verify that the databases have sufficient space, run the <b>sp_spaceused</b> system stored procedure on the <b>master</b> and <b>msdb</b> databases. If the unallocated space in either database is less than 500 KB, increase the size of the database. For more information, see "Expanding a Database" in SQL Server 2005 Books Online.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <a name="_3461464_verify_that_sql_server_2005_serv_238p" xmlns=""></a><h4 class="subHeading" xmlns="">3.1.3 Verify That SQL Server Express Service Accounts Are Not Disabled</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Setup might fail if the service startup type for the <b>SQLExpress</b> service is set to <b>Disabled</b>.</p>
+              <procedure>
+                To verify and enable the service account
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In Control Panel, select <b>Administrative Tools</b>, and then select <b>Services</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Locate the <b>SQLExpress</b> service in the list and note the value for <b>Startup Type</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">If the value for <b>Startup Type</b> is <b>Disabled</b>, double-click the service name and change <b>Startup Type</b> to either <b>Manual</b> or <b>Automatic</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">
+                        Click <b>OK</b>.
+                      </p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <a name="_3461465_stop_services_and_applications__ar5q" xmlns=""></a><h4 class="subHeading" xmlns="">3.1.4 Stop Services and Applications</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Before you install SP2, you should stop all applications and services that make connections to all instances of SQL Server Express being upgraded. This includes Control Panel and <b>Add or Remove Programs</b> </p>
+              <p xmlns="">If you begin to apply SP2 without first shutting down applications and services, Setup will try to stop the SQL Server Express service. If Setup determines that other applications and services must be stopped, a warning displays the applications and services that must be stopped. After you stop these applications and services, click <b>Try Again</b> to resume Setup. If you cannot stop an application or service, click <b>Continue</b>. Setup will continue, but you might have to restart your computer after Setup finishes. If you click <b>Cancel</b>, the current component is not upgraded to SP2, but Setup continues.</p>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                Setup cannot always determine which applications and services must be stopped. Before you install SP2, stop all applications and services that make connections to SQL Server Express. This includes Control Panel.<p></p>
+              </td></tr></table><p></p></div>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+      <a name="_3462_install_sql_server_2005_sp1_cuy1" xmlns=""></a><h3 class="subHeading" xmlns="">3.2 Install SQL Server Express SP2</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">To install SQL Server Express SP2, run the self-extracting download package. Complete installation instructions for running Setup in both attended and unattended mode are described in the "Installing SQL Server Express" section in SQL Server 2005 Books Online. You should review the Setup documentation before you install SQL Server Express SP2. You can access the Setup documentation during Setup by pressing the F1 key or by clicking the <b>Help</b> button in a dialog box that contains online Help. This documentation is also available on the World Wide Web at the <a href="http://go.microsoft.com/fwlink/?LinkId=59075" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">MSDN Library</linkText></a>.</p>
+          <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Important: </th></tr><tr><td>
+            SQL Server Express SP2 Setup must be run under an account that has administrative credentials on the computer where SQL Server Express SP2 will be installed.<p></p>
+          </td></tr></table><p></p></div>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_3463_restart_services_and_applications_gq59" xmlns=""></a><h3 class="subHeading" xmlns="">3.3 Restart Services and Applications</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">This section only applies when you upgrade an existing instance of SQL Server Express to SP2.</p>
+          <p xmlns="">When the Setup program is finished, it may prompt you to restart the computer. <a href="#_3461465_stop_services_and_applications__ar5q">3.1.4 Stop Services and Applications</a> provides guidelines on when a restart is required. After the system restarts, or after the Setup program is finished without requesting a restart, use the Services application in Control Panel to make sure that any services you stopped before applying the service pack are now running. This includes services such as Microsoft Distributed Transaction Coordinator (MS DTC) and the Microsoft Search services, or instance-specific equivalents. Restart the applications that you closed before you run the service pack Setup program. You should also back up the upgraded <b>master</b>, <b>msdb</b>, and <b>model</b> databases now.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_3462_setup_issues_238p" xmlns=""></a><h3 class="subHeading" xmlns="">3.4 Setup Issues</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">This section details setup issues for SP2. </p>
+          <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+            Unless otherwise noted, these issues apply only when you install a new instance of SQL Server Express.<p></p>
+          </td></tr></table><p></p></div>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">3.4.1 Existing SQL Server Native Client Installation May Cause Setup to Fail</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Setup might fail and roll back, and you receive the following error message: "An installation package for the product Microsoft SQL Server Native Client cannot be found. Try the installation again using a valid copy of the installation package 'sqlncli.msi'." To work around this problem, uninstall SQL Server Native Client by using <b>Add or Remove Programs</b>.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.2 System Configuration Checker Fails with "Performance Monitor Counter Check Failed" Message</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">System Configuration Checker (SCC) verifies the value of the Performance Monitor Counter registry key before SQL Server installation starts. If SCC cannot verify the existing registry key, or if SCC cannot run the Lodctr.exe system program, the SCC check fails, and Setup is blocked. To complete setup, you must manually increment the registry key.</p>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Caution: </th></tr><tr><td>
+                Incorrectly editing the registry can severely damage your system. Before making changes to the registry, we recommend that you back up any valued data on the computer. For information about how to back up, restore, and modify the registry, see Microsoft Knowledge Base article <a href="http://support.microsoft.com/kb/256986" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">256986</linkText></a>.<p></p>
+              </td></tr></table><p></p></div>
+              <procedure>
+                To manually increment the counter registry key
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Click <b>Start</b>, click <b>Run</b>, type <b>regedit.exe</b> in the <b>Run</b> text box, and then click <b>OK</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Move to the following registry key: [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib]. Look up the following keys:</p>
+                      <ul xmlns=""><li>
+                          "Last Counter"=dword:00000ed4 (5276)<br></br>
+                        </li><li>
+                          "Last Help"=dword:00000ed5 (5277)<br></br>
+                        </li></ul>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Verify the values of the Counter and Help keys in the following registry key: [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib\009]. </p>
+                      <p xmlns="">The maximum value of Counter must be equal to the Last Counter value from the previous step. The maximum value of Help must be equal to the Last Help value from the previous step. </p>
+                      <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                        "009" is the key that is used for the English (United States) language.<p></p>
+                      </td></tr></table><p></p></div>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">If necessary, modify the value for the Last Counter and Last Help values in the \Perflib key. Right-click <b>Last Counter</b> or <b>Last Help</b> in the right pane, select <b>Modify</b>, click <b>Base = Decimal</b>, set the value in the <b>Value</b> data field, and then click <b>OK</b>. Repeat for the other key, if it is required, and then close the registry editor.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Run SQL Server Express Setup again.</p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.3 If Cryptographic Services Are Disabled on Windows Server 2003, Setup Fails with Windows Logo Requirement Message</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Windows Cryptographic Service Provider (CSP) is code that performs authentication, encoding, and encryption services that Windows-based applications access through CryptoAPI on Windows Server 2003. If the CSP service is stopped or disabled, SQL Server Setup fails and displays a Windows logo requirement message.</p>
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                Before you run SQL Server Setup on a Windows Server 2003 failover cluster, the CSP service must be started on all cluster nodes.<p></p>
+              </td></tr></table><p></p></div>
+              <procedure>
+                To enable the Windows CSP service on Windows Server 2003
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In Control Panel, open <b>Administrative Tools</b>, and then double-click <b>Services</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In the <b>Name</b> column, right-click <b>Cryptographic Services</b>, and then click <b>Start</b>. </p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Close <b>Services</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Run Setup.</p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.4 MS DTC Is Not Fully Enabled on Windows</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Because the Microsoft Distributed Transaction Coordinator (MS DTC) is not completely configured in Windows, applications might not enlist SQL Server Express resources in a distributed transaction. This problem can affect linked servers, distributed queries, and remote stored procedures that use distributed transactions. To prevent such problems, you must fully enable MS DTC services on the server where SQL Server Express is installed.</p>
+              <procedure>
+                To enable MS DTC fully
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In Control Panel, open <b>Administrative Tools</b>, and then double-click <b>Component Services</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In the left pane of <b>Console Root</b>, click <b>Component Services</b>, and then expand <b>Computers</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Right-click <b>My Computer</b>, and then click <b>Properties</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">On the <b>MSDTC</b> tab, click <b>Security Configuration</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Under <b>Security Settings</b>, select all the check boxes. </p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Verify that the <b>DTC Logon Account</b> name is set to <b>NT AUTHORITY\NetworkService</b>. </p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.5 "Force Encryption" Configuration Might Cause SQL Server Express Setup to Fail</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Setup might fail if an existing SQL Server client installation is configured to have the "force encryption" option enabled. To work around this issue, disable the option on any SQL Server clients. For Microsoft Data Access Components (MDAC) clients in SQL Server 2000, use the SQL Server 2000 Client Network Utility. For SQL Server Native Client, uninstall SQL Server Native Client by using <b>Add or Remove Programs</b>. </p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.6 Installing a Default Instance of SQL Server 2000 May Disable SQL Server Express</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">If your computer has SQL Server 2000 Management Tools and a default instance of SQL Server Express is installed, SQL Server Setup enables you to install a SQL Server 2000 default instance. However, doing this disables the installed instance of SQL Server Express. Therefore, do not install a default instance of SQL Server 2000 when SQL Server 2000 Management Tools and a default instance of SQL Server Express already exist on the computer.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.7 Installing SQL Server Express on a Windows Domain Controller</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Security Note: </th></tr><tr><td>
+                We do not recommend running SQL Server Express on a domain controller. <p></p>
+              </td></tr></table><p></p></div>
+              <p xmlns="">You can install SQL Server Express on a Windows domain controller. However, it cannot run on a Windows Server 2003 domain controller as Local Service or Network Service. SQL Server service accounts should run as Windows domain user accounts. You can also install SQL Server service accounts to run as Local System. This option is not recommended.</p>
+              <p xmlns="">Do not change the role of the server after you install SQL Server Express. For example, if you install SQL Server Express on a member server, do not use the Active Directory Installation Wizard (Dcpromo.exe) tool to promote the server to a domain controller. Or, if you install SQL Server Express on a domain controller, do not use the Active Directory Installation Wizard to demote the server to a member server. Changing the role of a server after you install SQL Server Express can cause loss of functionality and is not supported. </p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.8 Maintenance Mode Prompts for Path to Setup.exe</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">If you install a new SQL Server Express component in maintenance mode, you are prompted for the location of Setup.exe on the SQL Server Express installation media. When you specify the location, make sure that the path includes "Setup.exe." For example, the path "D:\" fails, but "D:\Setup.exe" succeeds.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.9 Troubleshooting Failure of Setup Command Shell Scripts</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Setup command shell scripts can generate Windows script errors when path variables contain parentheses. This occurs because command shell scripts do not support parentheses in path variables. This can occur when you install 32-bit components to the Windows on Windows (WOW64) 32-bit subsystem on a 64-bit computer. For example, the following script, with a path value of "C:\Program Files (x86)\", generates an error because the shell script interpreter misinterprets the parentheses in the expanded PATH variable as part of the IF/ELSE statement:</p>
+              <div class="code" xmlns=""><span codeLanguage="other"><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left"></th></tr><tr><td colspan="2"><pre>IF "%SOME_PATH%" == "" ( 
+        SET PATH=%PATH%;%PATH_A% 
+) ELSE ( 
+        SET PATH=%PATH%;%PATH_B% 
+) </pre></td></tr></table></span></div>
+              <p xmlns="">To work around this issue, change the script to remove the parentheses. For example:</p>
+              <div class="code" xmlns=""><span codeLanguage="other"><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left"></th></tr><tr><td colspan="2"><pre>IF "%SOME_PATH%" == "" set PATH=%PATH%;%PATH_A% 
+IF NOT "%SOME_PATH%" == "" set PATH=%PATH%;%PATH_B% </pre></td></tr></table></span></div>
+              <p xmlns="">Or remove the SQL entry that contains parentheses from the path.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.10 Database Compatibility Level Setting when You Upgrade from MSDE 2000</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>This issue applies only when you upgrade an instance of MSDE 2000 to </i>
+                SQL Server Express
+                <i> SP2.</i>
+              </p>
+              <p xmlns="">When an instance of MSDE 2000 is upgraded to SQL Server Express SP2, the database compatibility level remains at 80 to enable backward compatibility with existing MSDE 2000 applications. This backward compatibility level disables certain new functionalities of SQL Server Express. For more information, see the "sp_dbcmptlevel" reference topic in SQL Server 2005 Books Online.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.11 Setup Might Fail If There Is a Single Quotation Mark in the System Database Directory</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>This issue applies only when you upgrade an instance of </i>
+                SQL Server Express
+                <i> to SP2.</i>
+              </p>
+              <p xmlns="">When you upgrade an instance of SQL Server Express to SP2, Setup might fail if the system databases are installed in a directory that has a single quotation mark in the directory name. If failure occurs, you must move the system databases to a directory without a single quotation mark in the directory name. For more information about how to move system databases, see "Moving System Databases" in SQL Server 2005 Books Online.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.12 Restrictions on ALTER DATABASE Might Cause Upgrade to Fail</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>This issue applies only when you upgrade an instance of </i>
+                SQL Server Express
+                <i> to SP2.</i>
+              </p>
+              <p xmlns="">When you apply SP2, Setup upgrades system databases. If you have implemented restrictions on the ALTER DATABASE syntax, upgrade might fail. Restrictions to ALTER DATABASE can include the following:</p>
+              <ul xmlns=""><li>
+                  Explicitly denying the ALTER DATABASE statement.<br></br>
+                </li><li>
+                  A data definition language (DDL) trigger on ALTER DATABASE that rolls back the transaction that contains the ALTER DATABASE statement.  <br></br>
+                </li></ul>
+              <p xmlns="">If you have restrictions on ALTER DATABASE, and Setup does not upgrade system databases to SP2, you must disable these restrictions and then re-run Setup.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.13 Upgrade Might Fail When Using SQL Server Authentication with User Instances</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>This issue applies only when you upgrade an instance of </i>
+                SQL Server Express
+                <i> to SP2.</i>
+              </p>
+              <p xmlns="">When you apply SP2, Setup upgrades system databases. When you apply SP2 to upgrade an instance of SQL Server Express that has user instances enabled, you must use Windows Authentication. If you specify SQL Server authentication, the upgrade might fail.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">3.4.15 Upgrading an Instance of SQL Server to Another Edition</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">After you apply SP2 to an instance of SQL Server 2005, you will not be able to upgrade to another edition of SQL Server 2005. To upgrade an instance of SQL Server to another edition, you must perform the edition upgrade before you apply SP2. However, you can upgrade SQL Server 2005 Express Edition SP2 to SQL Server 2005 Express Edition with Advanced Services SP2.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+    </sections></div><a name="_4460_documentation_notes_2y0t"></a><h1 class="heading">4.0 Additional Information</h1><div id="sectionSection4" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">This section describes additional considerations for using SQL Server Express SP2. This section is intended primarily for users who are new to SQL Server Express. </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <a name="tools_sse" xmlns=""></a><h3 class="subHeading" xmlns="">4.1 Using SQL Server Express</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">After you install SQL Server Express, use the following command to connect to an instance of SQL Server Express by using the command prompt:</p>
+          <p xmlns="">
+            <code>sqlcmd -S Server\Instance</code>
+          </p>
+          <p xmlns="">Where <i>Server</i> is the name of the computer and <i>Instance</i> is the name of the instance you want to connect to. If you have used the default named instance during setup, specify the instance as "SQLExpress". </p>
+          <p xmlns="">For information about how to connect to and manage a SQL Server Express database, see Microsoft Knowledge Base article <a href="http://support.microsoft.com/kb/907716" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">907716</linkText></a> or the updated SQL Server 2005 Books Online documentation. For more information about this update to Books Online, see <a href="#_1464_updates_to_sql_server_2005_books_on_d3jb">1.5 Updates to SQL Server 2005 Books Online Are Available</a>.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="service_account" xmlns=""></a><h3 class="subHeading" xmlns="">4.2 Service Account and Network Protocols</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">For SQL Server Express, the Local System Account is Network Service Account.</p>
+          <p xmlns="">
+            SQL Server Express listens on local named pipes and shared memory. By using a default installation, you cannot remotely connect to SQL Server Express. You will have to enable TCP/IP and check if the Windows firewall exception is enabled.</p>
+          <procedure>
+            To enable TCP/IP
+            <ddue:steps><ol xmlns=""><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Click <b>Start</b>, select <b>All Programs</b>, point to <b>Microsoft SQL Server 2005</b>, point to <b>Configuration Tools</b>, and then click <b>SQL Server Configuration Manager</b>.</p>
+                  <p xmlns="">Optionally, you can open Computer Manager by right-clicking <b>My Computer</b> and selecting <b>Manage</b>. In Computer Management, expand <b>Services and Applications</b>, expand <b>SQL Server Configuration Manager</b>.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Expand <b>SQL</b> <b>Server 2005 Network Configuration</b>, and then click <b>Protocols</b> <b>for</b> <i>InstanceName</i>.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">In the list of protocols, right-click the protocol you want to enable, and then click <b>Enable</b>.</p>
+                  <p xmlns="">The icon for the protocol will change to show that the protocol is enabled.</p>
+                </content>
+              </li></ol></ddue:steps>
+          </procedure>
+          <procedure>
+            To enable an exception in the Windows firewall
+            <ddue:steps><ol xmlns=""><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">Click <b>Start</b>, click <b>Control Panel</b>, and then click <b>Network Connections</b>.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">From the navigation bar on the left, click <b>Change Windows Firewall settings</b>.</p>
+                </content>
+              </li><li>
+                <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">On the <b>Exceptions</b> tab, in the <b>Programs and Services</b> box, you will probably see that SQL Server is listed, but not selected as an exception. If you select the check box, Windows will open the 1433 port to let in TCP requests. Alternatively, if you do not see SQL Server listed, do the following:</p>
+                  <ol xmlns=""><li>
+                      Click <b>Add Program</b>.<br></br>
+                    </li><li>
+                      Click <b>Browse</b>.<br></br>
+                    </li><li>
+                      Locate <i>drive:</i>\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\BINN<br></br>
+                    </li><li>
+                      Add the file sqlservr.exe to the list of exceptions.<br></br>
+                    </li></ol>
+                </content>
+              </li></ol></ddue:steps>
+          </procedure>
+          <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+            You might also have to configure any third-party hardware or software firewalls to enable connections to SQL Server Express.<p></p>
+          </td></tr></table><p></p></div>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_3461_getting_sql_server_2005_assistance_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">4.3 Getting SQL Server Express Assistance</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">There are three principal sources of information about SQL Server Express:</p>
+          <ul xmlns=""><li>
+              The <a href="#_1464_updates_to_sql_server_2005_books_on_d3jb">updated SQL Server 2005 Books Online documentation</a>. <br></br>
+            </li><li>
+              The SQL Server sites on the <a href="http://go.microsoft.com/fwlink/?LinkId=42457" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Developer Network (MSDN)</linkText></a> and <a href="http://go.microsoft.com/fwlink/?linkid=28107" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">TechNet</linkText></a>.<br></br>
+            </li><li>
+              The <a href="http://go.microsoft.com/fwlink/?LinkId=62430" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server community</linkText></a> on MSDN.<br></br>
+            </li></ul>
+          <p xmlns="">Do not use other Microsoft newsgroups for posting questions regarding SQL Server Express. For more information, see "Getting SQL Server Express Assistance" in SQL Server Books Online. The latest information from the SQL Server Express team can be found at the <a href="http://go.microsoft.com/fwlink/?LinkId=38092" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server Express WebLog</linkText></a>.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+      <a name="_3462_providing_feedback_on_sql_server_20_wluf" xmlns=""></a><h3 class="subHeading" xmlns="">4.4 Providing Feedback on SQL Server Express SP2</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">To provide suggestions and bug reports on SQL Server Express SP2:</p>
+          <ul xmlns=""><li>
+              Send suggestions and bug reports about the features and user interface of SQL Server Express SP2 at the page <a href="http://go.microsoft.com/fwlink/?LinkId=51684" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Connect for SQL Server 2005</linkText></a>.<br></br>
+            </li><li>
+              Choose to send error reports and feature usage data automatically to Microsoft for analysis. For more information, see "Error and Usage Report Settings (SQL Server Express)" in SQL Server Books Online.<br></br>
+            </li><li>
+              Send suggestions and report inaccuracies about the documentation by using the feedback functionality in SQL Server 2005 Books Online.<br></br>
+            </li></ul>
+          <p xmlns="">For more information, see "Providing Feedback on SQL Server 2005" in SQL Server Books Online.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content></div>
+    </sections></div><a name="_sse_dbengine"></a><h1 class="heading">5.0 Documentation Notes</h1><div id="sectionSection5" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">This section covers significant issues that can occur after you apply SQL Server Express SP2 and any late-breaking items that are not reflected in the updated SQL Server 2005 Books Online documentation. For more information, see <a href="#_1464_updates_to_sql_server_2005_books_on_d3jb">1.5 Updates to SQL Server 2005 Books Online Are Available</a>. </p>
+      <p xmlns="">This section does not describe all the fixes that are provided in SP2. For a complete list of these fixes, see Microsoft Knowledge Base article <a href="http://support.microsoft.com/kb/921896" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">921896</linkText></a>.</p>
+      <p xmlns="">
+        <a href="#top_of_page">[Top]</a>
+      </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <a name="_5461_database_engine_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">5.1 Database Engine</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">The notes in this section are issues for the Database Engine and Database Engine-specific command prompt utilities that also apply to SQL Server Express. </p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">5.1.1 User Instance Functionality</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                SQL Server Express lets non-administrator users to copy or move databases without requiring DBCreator permissions. For more information, see "User Instances for Non-Administrators" in SQL Server 2005 Books Online.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">5.1.2 Considerations for the Autorecovered Shadow Copy Feature of the Volume Shadow Copy Service</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">The autorecovered shadow copy feature of the Volume Shadow Copy Service (VSS) has the following limitations.</p>
+            </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <h5 class="subHeading" xmlns="">Multiple Persisted Autorecovered Shadow Copies</h5><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">On Windows Server 2003 SP1 and later versions, you can create only a single persisted autorecovered shadow copy. To create an additional shadow copy, you must first apply the update described in Knowledge Base article <a href="http://support.microsoft.com/kb/891957" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">891957</linkText></a>.</p>
+                  <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                    If you have not applied this update, you can create a new persisted autorecovered shadow copy by deleting the existing one first, and then creating the new one.<p></p>
+                  </td></tr></table><p></p></div>
+                </content></div>
+              <h5 class="subHeading" xmlns="">Autorecovered Shadow Copies and Full-Text Catalogs</h5><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                  <p xmlns="">The autorecovered shadow copy feature does not support full-text catalogs. When an autorecovered shadow copy is created, any full-text catalogs in the database on the shadow copy are taken offline. When the database is attached from the shadow copy, the full-text catalog remains offline permanently. All other data remains available in the attached database. </p>
+                  <p xmlns="">When a database that contains a full-text catalog is attached directly from an autorecovered shadow copy, the attach operation returns the following error message:</p>
+                  <div class="code" xmlns=""><span codeLanguage="other"><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left"></th></tr><tr><td colspan="2"><pre>Server: Msg 7608, Level 17, State 1, Line 1
+An unknown full-text failure (0xc000000d) occurred during "Mounting a full-text catalog".</pre></td></tr></table></span></div>
+                  <p xmlns="">If you do not have to attach a database directly from the shadow copy, you can avoid this situation by copying the database files and full-text catalogs from the shadow copy to a regular drive letter-based volume. Then, attach the database from that location. If the attach command specifies the correct location of the copied full-text files, the full-text catalogs will work.</p>
+                  <p xmlns="">
+                    <a href="#top_of_page">[Top]</a>
+                  </p>
+                </content></div>
+            </sections></div>
+          <h4 class="subHeading" xmlns="">5.1.3 RC4 Encryption Should Not Be Used</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Do not use RC4 encryption to protect your data in SQL Server Express. Use a block cipher such as AES 256 or Triple DES instead.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">5.1.4 DBCC Error Reporting</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>Introduced in </i>
+                SQL Server Express
+                <i> SP1.</i>
+              </p>
+              <p xmlns="">A mini-dump file (SQLDUMPnnnn.txt) is created in the SQL Server LOG directory whenever a DBCC CHECKDB, DBCC CHECKALLOC, DBCC CHECKFILEGROUP, or DBCC CHECKTABLE command detects a corruption error. When the Feature Usage data collection and Error Reporting features are enabled for the instance of SQL Server, the file is automatically forwarded to Microsoft. The collected data is used to improve SQL Server functionality. For more information, see "Error and Usage Report Settings" in SQL Server 2005 Books Online.  </p>
+              <p xmlns="">The dump file contains the results of the DBCC command and additional diagnostic output. The file has restricted discretionary access- control lists (DACLs). Access is limited to the SQL Server service account and members of the sysadmin role. By default, the sysadmin role contains all members of the Windows BUILTIN\Administrators group and the local administrator's group. The DBCC command does not fail if the data collection process fails.</p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">5.1.5 Change to the Behavior of Uncommittable Transactions in a Batch</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                <i>Introduced in </i>
+                SQL Server Express
+                <i> SP1.</i>
+              </p>
+              <p xmlns="">When a batch is completed, the Database Engine automatically rolls back any active uncommittable transactions. Before the release of SQL Server Express SP1, uncommittable transactions had to be rolled back manually. </p>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+      <a name="_5466_replication_d3jb" xmlns=""></a><h3 class="subHeading" xmlns="">5.2 Replication</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">The notes in this section are late-breaking items for replication.</p>
+          <p xmlns="">
+            <a href="#top_of_page">[Top]</a>
+          </p>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">5.2.1 Replication is Disabled by Default</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">
+                SQL Server Express can serve as a Subscriber for all kinds of replication, but replication is not installed by default for this edition. </p>
+              <procedure>
+                To install replication components
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">On the <b>Feature Selection</b> page, expand <b>Database Services</b>.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Click <b>Replication</b>, and then click <b>Entire feature will be installed on local hard drive</b>.</p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <procedure>
+                To install connectivity components and Replication Management Objects (RMO)
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">On the <b>Feature Selection</b> page, click <b>Client Components</b>, and then click <b>Entire feature will be installed on local hard drive</b>.</p>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+        </sections></div>
+      <a name="windowsvista" xmlns=""></a><h3 class="subHeading" xmlns="">5.3 Windows Vista Considerations</h3><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Windows Vista includes a new feature, User Account Control (UAC) that helps administrators manage their use of elevated privileges. When running on Windows Vista, administrators do not use their administrative privileges by default. Instead they perform most actions as standard (non-administrative) users, temporarily assuming their administrative privileges only when necessary. </p>
+          <p xmlns="">UAC causes some known issues. For more information, see the following Web pages on TechNet:</p>
+          <ul xmlns=""><li>
+              
+                <a href="http://go.microsoft.com/fwlink/?LinkId=73909" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Windows Vista: User Account Control</linkText></a>
+              <br></br>
+            </li><li>
+              
+                <a href="http://go.microsoft.com/fwlink/?LinkId=73910" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Windows Vista User Account Control Step by Step Guide</linkText></a>
+              <br></br>
+            </li></ul>
+        </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <h4 class="subHeading" xmlns="">5.3.1 Administrator Rights Not Inherited from Windows</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">Windows Vista users that are members of BUILTIN\Administrators are not automatically added to the <b>sysadmin</b> fixed server role when they connect to SQL Server Express. Only Windows Vista users that have been explicitly added to a server-level administrator role can administer SQL Server Express. Any member of the Built-In\Users group can connect to the SQL Server Express instance, but they will have limited permissions to perform database tasks. For this reason, users whose SQL Server Express privileges are inherited from BUILTIN\Administrators and Built-In\Users in previous releases of Windows must be explicitly granted administrative privileges in instances of SQL Server Express running on Windows Vista. </p>
+              <procedure>
+                To add a new Login to the sysadmin fixed server role while logged in as machinename\Administrator
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Click <b>Start</b>, point to <b>All Programs</b>, point to <b>SQL Server 2005</b>, and then click <b>SQL Server Management Studio</b>. </p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Connect to SQL Server.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">To add the Windows user to the <b>sysadmin</b> fixed server role, follow these steps:</p>
+                      <ol xmlns=""><li>
+                          Click <b>Security</b>. <br></br>
+                        </li><li>
+                          Right-click <b>Logins</b>, and then Click <b>New Login</b>.<br></br>
+                        </li><li>
+                          Type the user name in the <b>Login name</b> text box. <br></br>
+                        </li><li>
+                          Click <b>Server Roles</b>. <br></br>
+                        </li><li>
+                          Select the <b>sysadmin</b> check box and then click <b>OK</b>.<br></br>
+                        </li></ol>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <procedure>
+                To add a new Login to the sysadmin fixed server role while logged in as any user other than the administrator
+                <ddue:steps><ol xmlns=""><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">Click <b>Start</b>, Point to <b>All Programs</b>, Point to <b>SQL Server 2005</b>, right-click <b>SQL Server Management Studio</b>, and then click <b>Run As Administrator</b>.</p>
+                      <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+                        <b>Run as Administrator</b> option elevates the user permissions. <p></p>
+                      </td></tr></table><p></p></div>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">You will see a <b>User Account Control</b> dialog box. You might have to provide the administrator credentials. Click<b> Continue. </b></p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">In <b>SQL Server Management Studio</b>, connect to SQL Server.</p>
+                    </content>
+                  </li><li>
+                    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                      <p xmlns="">To add the Windows user to the <b>sysadmin</b> fixed server role, follow these steps:</p>
+                      <ol xmlns=""><li>
+                          Click <b>Security</b>. <br></br>
+                        </li><li>
+                          Right-click <b>Logins</b>, and then Click <b>New Login</b>.<br></br>
+                        </li><li>
+                          Type the user name in the <b>Login name</b> textbox. <br></br>
+                        </li><li>
+                          Click <b>Server Roles</b>. <br></br>
+                        </li><li>
+                          Select the <b>sysadmin</b> check box and then click <b>OK</b>.<br></br>
+                        </li></ol>
+                    </content>
+                  </li></ol></ddue:steps>
+              </procedure>
+              <p xmlns="">
+                <a href="#top_of_page">[Top]</a>
+              </p>
+            </content></div>
+          <h4 class="subHeading" xmlns="">5.3.2 Setup fails if the machine name contains lowercase letters or case sensitive collation</h4><div class="subSection" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+              <p xmlns="">SQL Server 2005 installation fails if the collation is case sensitive and the computer name contains lowercase letters or special characters.  To fix, rename the computer name to use only uppercase letters.</p>
+            </content></div>
+        </sections></div>
+    </sections></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]--></div>
+      <div id="footer">
+        
+			
+			© 2007 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+      </div>
+    </div>
+  </body>
+</html>

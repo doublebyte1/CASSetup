@@ -1,0 +1,652 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Installation Requirements for SQL Server Express SP2</title>
+    
+ <Style TYPE="text/css">
+
+body
+{
+    background: #FFFFFF;
+    color: #000000;
+    font-family:    Verdana;
+    font-size: medium;
+    font-style: normal;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom:  0;
+    margin-left:    0;
+    margin-right:   0;
+    width:  100%;
+}
+
+div.#mainSection
+{
+    font-size: 70%;
+    width: 100%;
+    padding-left:    10;
+    margin-right: 10;
+}
+
+div.#mainBody
+{
+    font-size: 90%;
+    margin-top: 10;
+    padding-bottom: 20;
+}
+
+div.#header
+{
+    background-color: #D2D2D2;
+    padding-top:    0;
+    padding-bottom: 0;
+    padding-left:   10;
+    padding-right:  0;
+    width:          100%;
+}
+
+div.#header table
+{
+    border-bottom-color: #C8CDDE;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    width:  100%;
+}
+
+span.#runningHeaderText
+{
+    color: #003399;
+    font-size: 90%;
+}
+
+span.#nsrTitle
+{
+/*    color: #003399;*/
+    font-size: 120%;
+    font-weight: 600;
+}
+
+div.#header table td
+{
+    color: #000000;
+    font-size: 70%;
+    margin-top: 0;
+    margin-bottom:  0;
+    padding-right: 20;
+}
+
+div.#header table tr.#headerTableRow3 td
+{
+    padding-bottom: 2;
+    padding-top: 5;
+}
+
+div.#header table.#bottomTable
+{
+    border-top-color: #FFFFFF;
+    border-top-style: solid;
+    border-top-width: 1;
+    text-align: left;
+}
+
+div.#footer
+{
+    font-size: 90%;
+    margin-top: 0;
+    margin-bottom:  0;
+    margin-left:    -5;
+    margin-right:   0;
+    padding-top:    2;
+    padding-bottom: 2;
+    padding-left:   0;
+    padding-right:  0;
+    width:  100%;
+}
+
+hr.#footerHR
+{
+    border-bottom-color: #EEEEFF;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    border-top-color: C8CDDE;
+    border-top-style: solid;
+    border-top-width: 1;
+    height: 3;
+    color: #D2D2D2;
+}
+
+div.section
+{
+    padding-top:    2;
+    padding-bottom: 2;
+    padding-right:  15;
+    width:  100%;
+}
+
+.heading
+{
+    color:          #000000;
+    font-weight:    bold;
+    margin-top:     18;
+    margin-bottom:  8;
+}
+
+h1.heading
+{
+    color: #000000;
+    font-size:  150%;
+}
+
+.subHeading
+{
+    color:          #000000;
+    font-weight:    bold;
+    font-size:      150%;
+    margin-bottom:  4;
+}
+
+h2.subHeading
+{
+    color:          #000000;
+    font-weight:    bold;
+    font-size:      130%;
+}
+h3.subHeading
+{
+    color:  #000000;
+    font-size: 125%;
+    font-weight: bold;
+}
+
+h4.subHeading
+{
+    color: #000000;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+h4.procedureHeading
+{
+    color: #000080;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+h5.subHeading
+{
+    color: #000000;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+img
+{
+    padding-bottom: 10;
+}
+
+img.toggle
+{
+    border: 0;
+    margin-right: 5;
+    padding-bottom: 10;
+}
+
+img.copyCodeImage
+{
+    border: 0;
+    margin: 1;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.downloadCodeImage
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.viewCodeImage
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.note
+{
+    border: 0;
+    margin-right: 3;
+    padding-bottom: 10;
+}
+
+img.#membersOptionsFilterImage
+{
+    border: 0;
+    margin-left: 10;
+    vertical-align: middle;
+    padding-bottom: 10;
+}
+
+img.#toggleAllImage
+{
+    margin-left: 4;
+    vertical-align: middle;
+    padding-bottom: 10;
+}
+
+div.#mainSection table
+{
+    border: 0;
+    font-size: 100%;
+    width:  100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+div.#mainSection table tr
+{
+    vertical-align: top;
+}
+
+div.#mainSection table th
+{
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-color: #D8D8D8;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    color: #000000;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.#mainSection table td
+{
+    background: #F2F2F2;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.#mainSection table td.imageCell
+{
+    white-space: nowrap;
+}
+
+div.code
+{
+	width: 98%;
+}
+
+div.code table
+{
+    border: 0;
+    font-size: 95%;
+    margin-bottom: 5;
+    width: 100%
+}
+
+div.code table th
+{   
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-color: #D8D8D8;
+    border-bottom-style: solid;
+    border-bottom-width: 1;
+    color: #000000;
+    font-weight: bold;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+div.code table td
+{
+    background: #CCCCCC;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+    padding-top: 5;
+}
+
+div.alert
+{
+	margin-left: 10;
+	width: 98%;
+}
+
+div.alert table
+{
+    border: 1;
+    font-size: 100%;
+    width:  100%;
+    border: solid 1 #DEDFEF;
+}
+
+div.alert table th
+{
+    text-align: left;
+    background: #D8D8D8;
+    border-bottom-width: 0;
+    color: #000000;
+    padding-left: 5;
+    padding-right: 5;
+    border: solid 1 #DEDFEF;
+}
+
+div.alert table td
+{
+    background: #FFFFFF;
+    border-top-color: #D8D8D8;
+    border-top-style: solid;
+    border-top-width: 1;
+    padding-left: 5;
+    padding-right: 5;
+    border: solid 1 #DEDFEF;
+}
+
+span.copyCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+    float: right;
+    display: inline;
+    text-align: right;
+}
+
+.downloadCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+}
+
+.viewCode
+{
+    color: #0000ff;
+    font-size: 90%;
+    font-weight: normal;
+    cursor: hand;
+}
+
+div.code pre
+{
+    font-family:    Monospace, Courier New, Courier;
+    font-size: 105%;
+    color:  #000000;
+}
+
+code
+{
+    font-family:    Monospace, Courier New, Courier;
+    font-size: 105%;
+    color:  #000000;
+}
+
+dl
+{
+    margin-top: 0;
+    padding-left:   1;
+}
+
+dd
+{
+    margin-bottom:  0;
+    margin-left:    0;
+    padding-left:   20;
+}
+
+dd p
+{
+    margin-top: 5;
+}
+
+ul
+{
+    margin-left: 17;
+    list-style-type: disc;
+}
+
+ul ul
+{
+    margin-bottom: 4;
+    margin-left: 17;
+    margin-top: 3;
+    list-style-type: disc;
+}
+
+ol
+{
+    margin-left: 24;
+    list-style-type: decimal;
+}
+
+ol ol
+{
+    margin-left: 24;
+    margin-top: 3;
+    list-style-type: lower-alpha;
+}
+
+li
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-left: 5;
+}
+
+p
+{
+    margin-bottom: 15;
+}
+
+.tip
+{
+    color:  #0000FF;
+    font-style: italic;
+    cursor:hand;
+    text-decoration:underline;
+}
+
+.math
+{
+    font-family: Times New Roman;
+    font-size: 125%
+}
+.sourceCodeList
+{
+    font-family: Verdana;
+    font-size: 90%; 
+}
+
+pre.viewCode
+{
+    width: 100%;
+    overflow: auto;
+}
+
+li:hover table, li.over table
+{
+    background-color: #C0C0C0;
+}
+
+li:hover ul, li.over ul
+{ 
+    background-color: #d2d2d2;
+    border: 1px solid #000;
+    display: block;
+}
+
+</style>
+  </head>
+  <body>
+    <!--Topic built:12/19/2006-->
+
+    <div id="header">
+      <table width="100%" id="topTable">
+        <tr>
+          <td align="left">
+            <span id="nsrTitle">Installation Requirements for SQL Server Express SP2</span>
+          </td>
+          <td align="right">
+            <span id="headfb" class="feedbackhead">
+            </span>
+          </td>
+        </tr>
+        <tr id="headerTableRow3">
+          <td />
+          <td align="right">
+          </td>
+        </tr>
+      </table>
+      </div>
+    <div id="mainSection">
+      <div id="mainBody"><p>Updated: 12/19/2006</p>
+
+        <font color="DarkGray"> </font><p /> 
+        <span id="changeHistory">
+        </span>
+    <h3 class="subHeading"></h3><table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;"><tr>
+        <td>
+          <p>The SQL Server documentation team welcomes your documentation feedback. We view and investigate all documentation issues but do not answer technical support questions here. For help with technical issues not related to documentation, see <a href="http://go.microsoft.com/fwlink/?LinkId=74357" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Getting Assistance with SQL Server</linkText></a>. </p>
+          <p>If it is possible, <a href="mailto:sqldocfb@microsoft.com?subject=SQL%20Server%20Express%20SP1%20installation%20requirements(/1:SQL/2:09.00.2024.00/3:SQLExpSP1Req/4:readme_express/5:RequirementsSQLEXP2005.htm/6:/7:h/8:en-us/9:2006)&amp;body=---Please%20type%20comments%20here" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">submit feedback</linkText></a> to us in English.</p>
+        </td>
+      </tr></table>
+  <a name="top_of_page"></a><h1 class="heading">Contents</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns=""><a href="#system_requirements">System requirements</a></p>
+      <p xmlns=""><a href="#Before_you_install">Before You Install SQL Server Express</a></p>
+      <p xmlns=""><a href="#using_command_prompt">Using Command Prompt Options to Install SQL Server Express</a></p>
+      <p xmlns=""><a href="#modifying_installed_components">Modifying SQL Server Express Installed Components</a></p>
+      <p xmlns=""><a href="#upgrading_MSDE">Upgrading MSDE to SQL Server Express</a></p>
+      <p xmlns=""><a href="#top_of_page">[Top]</a></p>
+    </content></div><a name="system_requirements"></a><h1 class="heading">System requirements</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The following table lists the prerequisite software and minimum hardware and software requirements for running Microsoft SQL Server 2005 Express Edition (SQL Server Express). To determine if the computer meets the system requirements, from the <b>Start</b> menu, right-click <b>My Computer</b>, and then click <b>Properties</b>. The <b>General</b> tab displays the CPU type and speed, and the amount of installed memory (RAM).</p>
+      <h3 class="subHeading" xmlns=""></h3><table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+          <td>
+            <p>Prerequisite software </p>
+          </td>
+          <td>
+            <p>Microsoft .NET Framework</p>
+            <p>Microsoft Internet Explorer 6.0 Service Pack 1 (SP1) or later (prerequisite for .NET Framework) </p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>RAM</p>
+          </td>
+          <td>
+            <p>Minimum: 192 MB</p>
+            <p>Recommended: 512 MB or higher</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>Hard Disk space</p>
+          </td>
+          <td>
+            <p>600 MB free space</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>Processor</p>
+          </td>
+          <td>
+            <p>Pentium III Compatible or higher </p>
+            <p>Minimum: 500 MHz </p>
+            <p>Recommended: 1 GHz or higher</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>Operating System</p>
+          </td>
+          <td>
+            <p>Windows Server 2003 SP1</p>
+            <p>Windows Server 2003 Enterprise Edition SP1</p>
+            <p>Windows Server 2003 Datacenter Edition SP1</p>
+            <p>Windows Server 2003 Web Edition SP1</p>
+            <p>Windows Small Business Server 2003 Standard Edition SP1</p>
+            <p>Windows Small Business Server 2003 Premium Edition SP1</p>
+            <p>Windows XP Professional SP2</p>
+            <p>Windows XP Home Edition SP2</p>
+            <p>Windows XP Tablet Edition SP2</p>
+            <p>Windows XP Media Edition SP2</p>
+            <p>Windows 2000 Professional Edition SP4</p>
+            <p>Windows 2000 Server Edition SP4</p>
+            <p>Windows 2000 Advanced Edition SP4</p>
+            <p>Windows 2000 Datacenter Server Edition SP4</p>
+            <p>Virtual PC </p>
+            <p>Virtual Server</p>
+            <p>Windows Vista Home Basic¹</p>
+            <p>Windows Vista Home Premium¹</p>
+            <p>Windows Vista Business¹</p>
+            <p>Windows Vista Enterprise¹</p>
+            <p>Windows Vista Ultimate¹</p>
+            <div class="alert"><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+              There is no support in this release for Windows XP Embedded Edition.<p></p>
+            </td></tr></table><p></p></div>
+          </td>
+        </tr></table>
+      <p xmlns="">¹Windows Vista is also supported on SQL Server Express SP1. </p>
+      <p xmlns=""><a href="#top_of_page">Top</a></p>
+    </content></div><a name="Before_you_install"></a><h1 class="heading">Before You Install SQL Server Express</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">Before you install Microsoft SQL Server 2005 Express Edition (SQL Server Express), make sure that you install the correct version of .NET Framework associated with SQL Server Express.</p>
+      <h3 class="subHeading" xmlns=""></h3><table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              SQL Server Express version
+            </th>
+            <th>
+              .NET Framework version
+            </th>
+          </tr><tr>
+          <td>
+            <p>SQL Server 2005 Express Edition</p>
+          </td>
+          <td>
+            <p>If you are installing SQL Server 2005 Express Edition, perform the following steps in order:</p>
+            <ol><li>
+                Uninstall .NET Framework 1.2 and later versions from your computer (versions 1.0 and 1.1 do not have to be uninstalled). Then, install .NET Framework 2.0. from the <a href="http://go.microsoft.com/fwlink/?LinkId=47248" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">.NET Framework 2.0 Download Center</linkText></a>. <br></br>
+              </li><li>
+                Install SQL Server 2005 Express Edition from the <a href="http://go.microsoft.com/fwlink/?LinkID=31401" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft Web site</linkText></a>. <br></br>
+              </li></ol>
+          </td>
+        </tr></table>
+    </content></div><a name="using_command_prompt"></a><h1 class="heading">Using Command Prompt Options to Install SQL Server Express</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">SQL Server 2005 Express Edition (SQL Server Express) Setup provides a command prompt interface in addition to the graphical user interface. See "Running Setup from the Command Prompt" in SQL Server 2005 Books Online to customize how Setup installs SQL Server Express. </p>
+      <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+        SQL Server Express is a limited edition of SQL Server 2005. The setup experience using the command prompt for SQL Server Express is similar to that of SQL Server 2005.<p></p>
+      </td></tr></table><p></p></div>
+      <p xmlns=""><a href="#top_of_page">Top</a></p>
+    </content></div><a name="modifying_installed_components"></a><h1 class="heading">Modifying SQL Server Express Installed Components</h1><div id="sectionSection4" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you install SQL Server Express from the download center on the <a href="http://go.microsoft.com/fwlink/?LinkId=58557" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">SQL Server Express Web site</linkText></a>, you will use sqlexpr.exe to run Setup. If sqlexpr.exe is run directly without saving to a folder, the temporary directory where the binary files are extracted is deleted after the installation is complete. If you try to modify the SQL Server Express components by using <b>Add or Remove Programs </b>in Control Panel, the <b>Change</b> button looks for a setup directory but cannot find it.</p>
+      <p xmlns="">To modify the installed SQL Server Express components, you must download sqlexpr.exe again from the Web site, and save the .exe to a folder. At the command prompt, change the path to the folder where the .exe is stored, and run Setup by using the <i>sqlexpr.exe  –x</i> parameter. You are prompted to select an extraction/installation directory.</p>
+      <p xmlns="">When you have extracted the Setup files, you can use the <b>Change</b> button to make modifications to your SQL Server Express installation by specifying the extraction directory when prompted.</p>
+      <div class="alert" xmlns=""><table width="100%" cellspacing="0" cellpadding="0"><tr><th align="left">Note: </th></tr><tr><td>
+        This scenario is not true when SQL Server Express is installed as part of Visual Studio 2005 Express. For more information about Visual Studio Express, see <a href="http://go.microsoft.com/fwlink/?LinkId=40100" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Visual Studio 2005 Express Products</linkText></a>.<p></p>
+      </td></tr></table><p></p></div>
+      <p xmlns=""><a href="#top_of_page">Top</a></p>
+    </content></div><a name="upgrading_MSDE"></a><h1 class="heading">Upgrading MSDE to SQL Server Express</h1><div id="sectionSection5" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If MDSE was installed with an MSI setup, the existing MSDE instance is upgraded when you install Microsoft SQL Server 2005 Express Edition (SQL Server Express) with the same instance name. Use the <b>Default instance </b>option when you run SQL Server Express Setup. The exception to this is if the version of SQL Server Express you are installing is not the English-language version. Then, the MSDE installation you are upgrading must either be the same language as the SQL Server Express version, or it must be English.   </p>
+      <p xmlns="">If MSDE was installed as part of another application that used its own install program, the SQL Server Express installation program does not know about it. In this scenario, the only way to upgrade SQL Server Express is to install SQL Server Express under another instance name. Use the <b>Named Instance </b>option to specify a new instance name when you run SQL Server Express Setup, and then detach the databases from MSDE and attach them to SQL Server Express.  </p>
+      <p xmlns="">To know if MSDE was installed as part of another application, in <b>Control Panel</b>, go to <b>Add or Remove Programs</b>. If MSDE does not appear in <b>Add or Remove Programs</b>, it was installed as part of another application. In this scenario, the only way to remove MSDE is to uninstall the application that installed MSDE. In most situations, the application vendor, rather than the application users, handles the upgrade.</p>
+      <p xmlns=""><a href="#top_of_page">Top</a></p>
+    </content></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]--></div>
+      <div id="footer">
+        
+			
+			© 2006 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+      </div>
+    </div>
+  </body>
+</html>

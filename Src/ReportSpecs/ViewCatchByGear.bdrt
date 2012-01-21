@@ -1,0 +1,973 @@
+<!DOCTYPE report>
+<StdReport>
+    <properties>
+        <objectName type="QString">CatchByGear</objectName>
+        <name type="QString">Catch by Gear</name>
+        <author type="QString">Joana Simoes</author>
+        <script type="QString">ViewCatchByGear.exec();&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+</script>
+        <queries type="QVariantMap">
+            <ViewCatchByGear type="QString">SELECT     dbo.Ref_Gears.Name AS Gear, SUM(dbo.Sampled_Fishing_Operations.catch_weight_estimated) AS Catch&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+FROM         dbo.Sampled_Fishing_Operations INNER JOIN&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+                      dbo.Ref_Gears ON dbo.Sampled_Fishing_Operations.id_gear = dbo.Ref_Gears.ID&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+GROUP BY dbo.Sampled_Fishing_Operations.id_gear, dbo.Ref_Gears.Name ORDER BY Catch DESC</ViewCatchByGear>
+            <getdate type="QString">SELECT GETDATE() as curdate</getdate>
+        </queries>
+        <uis type="QVariantMap"/>
+        <printerName type="QString"></printerName>
+        <showPrintDialog type="bool">true</showPrintDialog>
+        <showPrintPreview type="bool">true</showPrintPreview>
+        <showSplashScreen type="bool">true</showSplashScreen>
+        <splashScreenPixmap type="QPixmap"></splashScreenPixmap>
+        <showExitConfirm type="bool">true</showExitConfirm>
+        <menuGroup type="int">90</menuGroup>
+        <order type="int">90</order>
+        <menus type="QStringList">
+            <string type="QString">/Program/Reports</string>
+        </menus>
+        <icon type="QPixmap">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</icon>
+        <description type="QString">This report shows the catch in the sampled fishing operations, grouped by gear used. It is shown in Kg.</description>
+        <recommends type="QString"></recommends>
+    </properties>
+    <children>
+        <Page>
+            <properties>
+                <objectName type="QString">page_1</objectName>
+                <backgroundBrush type="QBrush">
+                    <color type="QColor">0,0,0,255</color>
+                    <style type="int">0</style>
+                    <texture type="QPixmap"></texture>
+                </backgroundBrush>
+                <foregroundBrush type="QBrush">
+                    <color type="QColor">0,0,0,255</color>
+                    <style type="int">0</style>
+                    <texture type="QPixmap"></texture>
+                </foregroundBrush>
+                <itemIndexMethod type=""/>
+                <sceneRect type="QRectF">0,0,2098.15,2971.27</sceneRect>
+                <bspTreeDepth type="int">5</bspTreeDepth>
+                <palette type="QPalette"/>
+                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                <sortCacheEnabled type="bool">false</sortCacheEnabled>
+                <stickyFocus type="bool">false</stickyFocus>
+                <pageSize type="int">0</pageSize>
+                <orientation type="int">0</orientation>
+                <geometry type="QRectF">150,100,1798,2771</geometry>
+                <paperRect type="QRectF">0,0,2098.15,2971.27</paperRect>
+                <magnetArea type="int">1</magnetArea>
+                <showGrid type="bool">false</showGrid>
+            </properties>
+            <children>
+                <PageHeader>
+                    <properties>
+                        <objectName type="QString">pageheader</objectName>
+                        <geometry type="QRectF">150,100,1798,182</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">0</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                    </properties>
+                    <children>
+                        <Rectangle>
+                            <properties>
+                                <objectName type="QString">rectangle</objectName>
+                                <geometry type="QRectF">17.7708,18.6042,1768,75.6458</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">85,255,127,255</color>
+                                    <style type="int">3</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">255,170,255,255</color>
+                                    <style type="int">3</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <xRadius type="double">0</xRadius>
+                                <yRadius type="double">0</yRadius>
+                            </properties>
+                            <children>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString">text_3</objectName>
+                                        <geometry type="QRectF">109.021,95.0208,488,50</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">0</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <text type="QString">Rome, 22nd June 2011</text>
+                                    </properties>
+                                </Text>
+                            </children>
+                        </Rectangle>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">text_1</objectName>
+                                <geometry type="QRectF">53.021,29.0208,488,50</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">0</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">Rome, 22 nd June 2011</text>
+                            </properties>
+                        </Text>
+                    </children>
+                </PageHeader>
+                <Title>
+                    <properties>
+                        <objectName type="QString">titile_page_1</objectName>
+                        <geometry type="QRectF">150,282,1798,343</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">1</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                    </properties>
+                    <children>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">title_caption</objectName>
+                                <geometry type="QRectF">50,50,1458,50</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">255,170,255,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">255,170,255,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">1</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,4.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">132</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">Catch by Gear: Summary</text>
+                            </properties>
+                        </Text>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">text</objectName>
+                                <geometry type="QRectF">353.271,124.417,933,110</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">4096</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">This report shows the catch in the sampled fishing operations, grouped by gear used. It is shown in Kg.</text>
+                            </properties>
+                        </Text>
+                        <Picture>
+                            <properties>
+                                <objectName type="QString">picture</objectName>
+                                <geometry type="QRectF">1547.98,22.1667,200,200</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">24</style>
+                                    <texture type="QPixmap">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAACpJREFUKJFjTEtLY8AGjI2NsYozYRXFA0Y1EANYcIX32bNnqWPDqAZiAAD7wQTtuNj6mwAAAABJRU5ErkJggg==</texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <howToPaintPicture type="int">3</howToPaintPicture>
+                                <drawTextType type="int">0</drawTextType>
+                                <pixmap type="QPixmap">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</pixmap>
+                                <text type="QString">picture</text>
+                                <textColor type="QColor">0,0,0,255</textColor>
+                                <borderWidth type="int">0</borderWidth>
+                                <borderColor type="QColor">0,0,0,255</borderColor>
+                            </properties>
+                        </Picture>
+                    </children>
+                </Title>
+                <DetailContainer>
+                    <properties>
+                        <objectName type="QString">DetailContainer_ViewCatchByGear</objectName>
+                        <geometry type="QRectF">150,625,1798,276</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">2</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                        <query type="QString">ViewCatchByGear</query>
+                    </properties>
+                    <children>
+                        <DetailHeader>
+                            <properties>
+                                <objectName type="QString">DetailHeader</objectName>
+                                <geometry type="QRectF">0,0,1798,92</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">255,255,255,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">255,255,255,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,170,0,255</color>
+                                    <style type="int">1</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int">3</bandType>
+                                <order type="int">0</order>
+                                <indentation type="int">0</indentation>
+                                <frame type="int">-1</frame>
+                                <groupField type="QString"></groupField>
+                                <reprintOnNewPage type="bool">true</reprintOnNewPage>
+                                <resetDetailNumber type="bool">false</resetDetailNumber>
+                                <forceNewPage type="bool">false</forceNewPage>
+                            </properties>
+                            <children>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString">Gear_ViewCatchByGear_text</objectName>
+                                        <geometry type="QRectF">40,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">129</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <text type="QString">Gear</text>
+                                    </properties>
+                                </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString">line_0</objectName>
+                                        <geometry type="QRectF">889,0,20,92</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int">0</lineStyle>
+                                    </properties>
+                                </LineItem>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString">Catch_ViewCatchByGear_text</objectName>
+                                        <geometry type="QRectF">929,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">130</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <text type="QString">Catch</text>
+                                    </properties>
+                                </Text>
+                            </children>
+                        </DetailHeader>
+                        <Detail>
+                            <properties>
+                                <objectName type="QString">Detail</objectName>
+                                <geometry type="QRectF">0,92,1798,92</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int">4</bandType>
+                                <order type="int">0</order>
+                                <indentation type="int">0</indentation>
+                                <frame type="int">-1</frame>
+                            </properties>
+                            <children>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString">Gear_ViewCatchByGear_field</objectName>
+                                        <geometry type="QRectF">40,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">129</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <queryName type="QString">ViewCatchByGear</queryName>
+                                        <fieldName type="QString">Gear</fieldName>
+                                    </properties>
+                                </Field>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString">line_1</objectName>
+                                        <geometry type="QRectF">889,0,20,92</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int">0</lineStyle>
+                                    </properties>
+                                </LineItem>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString">Catch_ViewCatchByGear_field</objectName>
+                                        <geometry type="QRectF">929,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">130</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <queryName type="QString">ViewCatchByGear</queryName>
+                                        <fieldName type="QString">Catch</fieldName>
+                                    </properties>
+                                </Field>
+                            </children>
+                        </Detail>
+                    </children>
+                </DetailContainer>
+                <Summary>
+                    <properties>
+                        <objectName type="QString">summary</objectName>
+                        <geometry type="QRectF">150,901,1798,697</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">6</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                    </properties>
+                    <children>
+                        <ChartContainer>
+                            <properties>
+                                <objectName type="QString">chartcontainer</objectName>
+                                <geometry type="QRectF">67.81,159.375,1645,559</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <chartColorOpacity type="int">100</chartColorOpacity>
+                                <chartDataSource type="int">1</chartDataSource>
+                                <staticData type="QStringList">
+                                    <string type="QString">1</string>
+                                    <string type="QString">2</string>
+                                    <string type="QString">3</string>
+                                </staticData>
+                                <query type="QString">ViewCatchByGear</query>
+                                <keyScript type="QString"></keyScript>
+                                <valueScript type="QString"></valueScript>
+                                <colorScript type="QString"></colorScript>
+                                <keyField type="QString">Gear</keyField>
+                                <valueField type="QString">Catch</valueField>
+                                <colorField type="QString"></colorField>
+                                <showOnlyFirstValues type="int">-1</showOnlyFirstValues>
+                                <showOtherValue type="bool">true</showOtherValue>
+                                <otherKey type="QString">Altro</otherKey>
+                                <sortDirection type="int">0</sortDirection>
+                            </properties>
+                            <children>
+                                <PieChart>
+                                    <properties>
+                                        <objectName type="QString">piechart</objectName>
+                                        <geometry type="QRectF">268.396,23.5625,513,468</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <showLabels type="bool">false</showLabels>
+                                        <showGrid type="bool">true</showGrid>
+                                        <drawBorder type="bool">false</drawBorder>
+                                        <toColorFactor type="double">1</toColorFactor>
+                                    </properties>
+                                </PieChart>
+                                <Legend>
+                                    <properties>
+                                        <objectName type="QString">legend</objectName>
+                                        <geometry type="QRectF">866.021,30.4375,767,460</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <legendColorRectWidth type="int">50</legendColorRectWidth>
+                                    </properties>
+                                </Legend>
+                            </children>
+                        </ChartContainer>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">text_2</objectName>
+                                <geometry type="QRectF">178.083,76.2917,605,50</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">0</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">Pie chart for the total catch by gear:</text>
+                            </properties>
+                        </Text>
+                    </children>
+                </Summary>
+                <PageFooter>
+                    <properties>
+                        <objectName type="QString">pagefooter</objectName>
+                        <geometry type="QRectF">150,2371,1798,500</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">7</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                    </properties>
+                    <children>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">text_4</objectName>
+                                <geometry type="QRectF">106.646,174.292,723,50</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">0</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">Note: This report was produced using Exaro 3</text>
+                            </properties>
+                        </Text>
+                    </children>
+                </PageFooter>
+            </children>
+        </Page>
+    </children>
+</StdReport>

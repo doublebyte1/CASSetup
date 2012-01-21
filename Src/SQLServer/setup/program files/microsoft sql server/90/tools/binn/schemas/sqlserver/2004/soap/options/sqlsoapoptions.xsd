@@ -1,0 +1,181 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/sqlserver/2004/SOAP/Options">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">&#xd;&#xa;(c) Copyright 2004, Microsoft Corporation&#xd;&#xa;&#xd;&#xa;The following schema for Microsoft SQL Server is presented in XML format and is for informational purposes only. Microsoft Corporation ("Microsoft") may have trademarks, copyrights, or other intellectual property rights covering subject matter in the schema.&#xd;&#xa;&#xd;&#xa;Microsoft does not make any representation or warranty regarding the schema or any product or item developed based on the schema. The schema is provided to you on an AS IS basis.  Microsoft disclaims all express, implied and statutory warranties, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, and freedom from infringement. Without limiting the generality of the foregoing, Microsoft does not make any warranty of any kind that any item developed based on the schema, or any portion of the schema, will not infringe any copyright, patent, trade secret, or other intellectual property right of any person or entity in any country. It is your responsibility to seek licenses for such intellectual property rights where appropriate.&#xd;&#xa;&#xd;&#xa;MICROSOFT SHALL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SCHEMA, INCLUDING WITHOUT LIMITATION, ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL (INCLUDING ANY LOST PROFITS), PUNITIVE OR SPECIAL DAMAGES, WHETHER OR NOT MICROSOFT HAS BEEN ADVISED OF SUCH DAMAGES.&#xd;&#xa;</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="initialDatabase">
+    <xsd:annotation>
+      <xsd:documentation>Set initial database on login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the initial database to attach to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="optional" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Whether the initial database is optional or not.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="filename" type="xsd:string" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>The filename of the database to attach to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="initialLanguage">
+    <xsd:annotation>
+      <xsd:documentation>Set initial language to set.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the initial language to set.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="optional" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Whether the initial language is optional or not.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="environmentChangeNotifications">
+    <xsd:annotation>
+      <xsd:documentation>Receive environment change notifications.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="databaseChange" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Receive notifications of database changes.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="languageChange" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Receive notifications of language changes.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="transactionBoundary" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Receive notifications of transaction boundaries.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="applicationName">
+    <xsd:annotation>
+      <xsd:documentation>Set the application name for the login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The application name to set for the login.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="hostName">
+    <xsd:annotation>
+      <xsd:documentation>Set the host name for the login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The host name to set for the login.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clientPID">
+    <xsd:annotation>
+      <xsd:documentation>Set the client process ID for the login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:long" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The client process ID to set for the login.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clientNetworkID">
+    <xsd:annotation>
+      <xsd:documentation>Set the client network ID for the login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:base64Binary" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The client network ID to set for the login.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clientInterface">
+    <xsd:annotation>
+      <xsd:documentation>Set the client interface for the login.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The client interface to set for the login.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="notificationRequest">
+    <xsd:annotation>
+      <xsd:documentation>Requests query notifications for the request.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="notificationId" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The notification identifier.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="deliveryService" type="xsd:string" form="unqualified" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The delivery service.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="timeout" type="xsd:integer" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>The timeout value.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="sqlSession">
+    <xsd:annotation>
+      <xsd:documentation>SQL Server SOAP Session</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="initiate" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Set to 'true' to request to start a new session.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="terminate" default="false" type="xsd:boolean" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>Set to 'true' to request to terminate an existing session.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="sessionId" type="xsd:base64Binary" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>The ID of a session.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="timeout" type="xsd:int" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>The timeout in seconds before the session expires.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="transactionDescriptor" type="xsd:base64Binary" form="unqualified">
+        <xsd:annotation>
+          <xsd:documentation>The descriptor of a transaction to enlist to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
+

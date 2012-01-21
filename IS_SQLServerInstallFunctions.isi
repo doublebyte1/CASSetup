@@ -1,0 +1,942 @@
+[Code]
+//File with code to support the installation of SQL Server Express Edition
+//Take the SQLServer_InstanceName.ini file, and modify it to fit this installation
+//Also, the ODBC connection is built as a file DSN. This means the file with the
+//definition of the connection is first copied to the target system, then edited
+//to customize to each specific installation, and finally the relevant Registry
+//keys are created
+
+//TASKS TO PERFORM
+//1-Install my Instance of SQL Server IF it is not already installed
+//1.1-Check if SQL Server is installed - DONE
+//1.2-Check if MyInstance of SQL Server is installed - DONE
+//1.3- Install SQL Server as MyInstance, configured to this application
+//1.3.1-Write the appropriate options to the SQL Server configuration file
+//1.3.2-Run the SQL Server Installer with the config file written before
+//1.3.3-Check that MyInstance of SQL Server is properly installed
+//1.4-Attach the DataBase to the Server Instance IF it is not yet attached
+//1.4.1-Check if DB files exist already at the given location - DONE
+//1.4.1.2- If they exist, rename the files with extension .{DateTime}.bak - DONE
+
+//1.4.2-Check if it is already attached - NOT DONE!
+//1.4.2.1-IF it is attached: - NOT DONE!
+//1.4.2.1.1-Detach (Ask user first) - NOT DONE!
+//1.4.3-Copy the files to the Data Directory
+//1.4.4-Attach the DB again
+
+
+
+const
+//Values for working with the Registry
+RegKey_SQLServer = 'Software\Microsoft\Microsoft SQL Server';
+RegKeySQLServerInstance = 'MSSQL.';
+RegKeySubKeySetup = 'Setup';
+RegValEdition = 'Edition';
+RegValSQLExpressEdition = 'Express Edition';
+RegRootKey_SQLServer = HKEY_LOCAL_MACHINE;
+
+//Strings for the installation and uninstallation routines
+SQLDBExt = '.mdf'; //Extension of SQL Server Database files
+SQLLogExt = '.ldf'; //Extension of SQL Server log files
+SQLAttachBat = 'SQLDBAttach.bat'; //Batch file to attach the databases required to the server
+SQLDetachBat = 'SQLDBDetach.bat'; //Batch file to detach the databases from the server
+SQLTmpFile = 'SQLTmp.bat'; //Batch file to run temporary tasks related to SQL Server
+
+//Values for the configuration of the installation of SQL Server
+SQLInstanceKey = 'INSTANCENAME';
+SQLConfFileSection = 'Options';
+SQLSAPasswdKey = 'SAPWD';
+SQLSecurModeKey = 'SECURITYMODE';
+SQLSecurMode = 'SQL';
+SQLDBExists = 'DBExists';
+
+var //Global variables
+  InstallSQLServer: boolean; //Boolean: Is it necessary to install SQL Server?
+  AttachDBFile: boolean; //Boolean: Is it necessary to attach the database?
+  
+  SQLDBName: String; //Name of the database to install
+  SQLDBFileName: String; //Name of the file to attach to the DB Engine
+  SQLInstanceName: String; //Name of the SQL Server Instance to use in this program
+  SQL_SAPWD: String; //Password for the SA account of an SQL Server Instance
+  SQLInstallerDir: String; //Full path for the Directory where the SQL Server Installer is (when running it)
+  SQLInstaller: String; //Full path for the SQL Server Installer
+  SQLInstallBat: String; //Full path for the batch file that will run the SQL Server Installer
+  SQLInstallDat: String; //Full path for the file with the SQL Server Installation configurations
+
+//CODE DEFINITION
+procedure SetSQLInstance(strInstance: string);
+(*Purpose
+Sets the value of the global variable defining the name of the SQL Instance to use in this application
+*)
+begin
+  SQLInstanceName:= strInstance;
+end;
+
+function GetSQLInstance(Param: string): String;
+(*Purpose
+Gets the value of the global variable defining the name of the SQL Instance to use in this application
+*)
+begin
+  result:= SQLInstanceName;
+end;
+
+procedure SetSQLDBName(strDBName: string);
+(*Purpose
+Sets the value of the global variable defining the name of the Database to install for this application
+*)
+begin
+  SQLDBName:= strDBName;
+end;
+
+
+procedure SetSQLDBFile(strDBFile: string);
+(*Purpose
+Sets the value of the global variable defining the name of the files of the Database to use in this application
+*)
+begin
+  SQLDBFileName:= strDBFile;
+end;
+
+procedure SetSQLInstallDat(strFileName: String);
+(*Purpose
+Sets the full path to the file used to configure the installation of SQL Server
+*)
+  
+begin
+  SQLInstallDat:=  AddBackslash(PathTmp) + strFileName;
+end;
+
+
+function GetSQLInstallDat(Param: String): String;
+(*Purpose
+Returns the full path to the file used to configure the installation of SQL Server
+*)
+begin
+  result:=  SQLInstallDat;
+end;
+
+
+function GetSQLTmpFileBat(Param: String): String;
+(*Purpose
+Returns the full path to the batch file used to run temporary tasks related to SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLTmpFile, FExtBat);
+end;
+
+function GetSQLTmpFileDat(Param: String): String;
+(*Purpose
+Returns the full path to the commands file used to run temporary tasks related to SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLTmpFile, FExtDat);
+end;
+
+function GetSQLTmpFileOut(Param: String): String;
+(*Purpose
+Returns the full path to the file used to store the results of running temporary tasks related to SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLTmpFile, FExtOut);
+end;
+
+function GetSQLAttachFileBat(Param: String): String;
+(*Purpose
+Returns the full path to the batch file used to attach the database to the SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLAttachBat, FExtBat);
+  Log(result);
+end;
+
+function GetSQLAttachFileDat(Param: String): String;
+(*Purpose
+Returns the full path to the .dat file used to pass the sqlcmd commands to attach the database files to SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLAttachBat, FExtDat);
+end;
+
+function GetSQLDetachFileBat(Param: String): String;
+(*Purpose
+Returns the full path to the batch file used to detach the database from the SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLDetachBat, FExtBat);
+end;
+
+function GetSQLDetachFileDat(Param: String): String;
+(*Purpose
+Returns the full path to the .dat file used to pass the sqlcmd commands to detach the database files from SQL Server
+*)
+begin
+  result:=  AddBackslash(PathTmp) + ChangeFileExt(SQLDetachBat, FExtDat);
+end;
+
+
+function SetSQLInstallBat(strFileName: String): String;
+(*Purpose
+Sets the full path to the batch file used to install the specific instance of SQL Server
+*)
+begin
+  SQLInstallBat:=  AddBackslash(PathTmp) + strFileName;
+end;
+
+
+function GetSQLInstallBat(Param: String): String;
+(*Purpose
+Returns the full path to the batch file used to install the specific instance of SQL Server
+*)
+begin
+  result:=  SQLInstallBat;
+end;
+
+function GetSQLDBName(Param: String): String;
+(*Purpose
+Returns the name to give to the DataBase inside SQL Server
+*)
+begin
+  result:=  SQLDBName;
+end;
+
+function GetSQLDBFileName(Param: String): String;
+(*Purpose
+Returns the name of the file to attach to the SQL Server Instance given
+*)
+begin
+  result:=  SQLDBFileName;
+end;
+
+function SetSQLDBFileName(strFileName: String): String;
+(*Purpose
+Sets the global variable with the name of the file to attach to the SQL Server Instance given
+*)
+begin
+  SQLDBFileName:= strFileName;
+end;
+
+function GetSQLInstaller(Param: String): String;
+(*Purpose
+Returns the full path to the SQL Server installer program
+*)
+begin
+  result:=  SQLInstaller;
+end;
+
+function SetSQLInstaller(strFileName: String): String;
+(*Purpose
+Sets the full path to the SQL Server installer program into the global variable
+*)
+  
+begin
+  SQLInstallerDir:= AddBackslash(GetPathTmp(''));
+  Log('SQLInstallerDir is ' + SQLInstallerDir);
+  
+  SQLInstallerDir:= AddBackslash(SQLInstallerDir) + 
+                    ExpandConstant('{#MyAppSQLServerInstallDir}');
+    Log('SQLInstallerDir is ' + SQLInstallerDir);
+  SQLInstaller:=  AddBackslash(SQLInstallerDir) +  strFileName;
+    Log('SQLInstaller is ' + SQLInstaller);
+  MsgBox('The SQL Installer is ' + SQLInstaller, mbInformation, MB_OK);
+end;
+
+function IsSQLServerFullInstanceName(strInstance: String): boolean;
+(*Purpose
+Checks if a string provided corresponds to a full instance name, or to a local instance only
+*)
+begin
+  result:= (Pos('\', strInstance)<> 0);
+end;
+
+
+function SQLInstanceNameLocal(strInstance: String): String;
+(*Purpose
+Returns the local name of an SQL Server 2005 instance name, needed for many commands
+Note: This (and not the fully-qualified name)  is needed for e.g. 
+specifying the instance name for local installation. 
+This requires only the Instance name, without the server name
+*)
+var
+  strLocalName: String;
+  lngInd, lngStart, lngCount: LongInt;
+    
+begin
+  if IsSQLServerFullInstanceName(strInstance) then
+    begin
+      lngInd:=Pos('\', ReverseString(strInstance));
+      lngCount:= lngInd -1;
+      lngStart:= Length(strInstance)-(lngCount - 2);
+      strLocalName:= Copy(strInstance, lngStart, lngCount);
+    end
+  else
+    begin
+     strLocalName:= strInstance; 
+    end;
+  result:= strLocalName;    
+end;
+
+
+function SQLFullInstanceName(strInstance: String): String;
+//Purpose
+//Returns the fully-qualified SQL Server 2005 instance name, needed for many commands
+//Note: Do not use for specifying the instance name for local installation. This requires only the Instance name, without the server name
+  
+var
+  strFullName: String;
+    
+begin
+  if IsSQLServerFullInstanceName(strInstance) then
+    begin
+      strFullName:= strInstance;
+    end
+  else
+    begin
+     strFullName:= ExpandConstant('{computername}\')+ strInstance; 
+    end;
+  result:= strFullName;    
+end;
+
+function GetMyAppSQLFullInstanceName(Param: String): String;
+//Purpose
+//Returns the fully-qualified SQL Server 2005 instance name, needed for many commands
+//Note: Do not use for specifying the instance name for local installation. This requires only the Instance name, without the server name
+  
+begin
+  result:= SQLFullInstanceName(GetSQLInstance(''));
+end;
+
+function GetSQLSAPWD(Param: String): String;
+(*Purpose
+Returns the SQL Server SA (System Administrator Password
+*)
+begin
+  result:=  SQL_SAPWD;
+end;
+
+procedure SetSQLSAPWD(strSQL_SAPwd: String);
+(*Purpose
+Sets the SQL Server SA (System Administrator) Password
+*)
+begin
+  SQL_SAPWD:= strSQL_SAPwd;
+end;
+
+function GetInstallSQLServer(Param: String): boolean;
+(*Purpose
+Returns the boolean indicating whether to install SQL Server
+*)
+begin
+  result:=  InstallSQLServer;
+end;
+
+procedure SetInstallSQLServer(bolInstall: boolean);
+(*Purpose
+Sets the boolean indicating whether to install SQL Server
+*)
+begin
+  InstallSQLServer:= bolInstall;
+end;
+
+function GetAttachDB(Param: String): boolean;
+(*Purpose
+Returns the boolean indicating whether to install SQL Server
+*)
+begin
+  result:=  AttachDBFile;
+end;
+
+procedure SetAttachDB(bolAttach: boolean);
+(*Purpose
+Sets the boolean indicating whether to attach a database to SQL Server
+*)
+begin
+  AttachDBFile:= bolAttach;
+end;
+
+function IsSQLExpressInstalled(Param: String): boolean;
+(*Purpose
+Checks if SQL Express is already installed in the local machine
+*)
+var
+  RegKeyList: TArrayOfString;
+  NSubKeys, j1: integer;
+  bolInstalled: boolean;
+  strKeyVal: String;
+  RegKey, RegKeyVal: String;
+  
+begin
+  bolInstalled:= False;
+  if RegKeyExists(RegRootKey_SQLServer, RegKey_SQLServer) then
+    begin
+      if RegGetSubkeyNames(RegRootKey_SQLServer, RegKey_SQLServer, RegKeyList) then
+        begin
+          NSubKeys:= GetArrayLength(RegKeyList)
+          if NSubKeys > 0 then
+            begin
+              for j1:=0 to NSubKeys-1 do
+                begin
+                  if pos(RegKeySQLServerInstance, RegKeyList[j1])=1 then
+                    begin
+                      RegKey := RegKey_SQLServer + '\' + RegKeyList[j1] + '\' + RegKeySubKeySetup;
+                      if RegQueryStringValue(RegRootKey_SQLServer, RegKey, RegValEdition, strKeyVal) then
+                        begin
+                          if strKeyVal = RegValSQLExpressEdition then
+                            begin //At least one instance of Express Edition was found
+                              bolInstalled := True;
+                              break;
+                            end;
+                        end;
+                    end;
+                end;
+            end;
+        end;
+    end;
+  result:= bolInstalled;    
+end;
+
+
+
+function IsSQLServerInstanceInstalled(strInstance: String): Boolean;
+//Purpose:
+//Returns TRUE if an SQL Server Instance with the name we want is already installed
+var
+  RegKey: String;
+    
+begin
+  RegKey:= AddBackslash(RegKey_SQLServer) + strInstance;
+  result:= RegKeyExists(RegRootKey_SQLServer, RegKey);
+end;
+
+function SQLCmdFile(strInstance, strSAPWD, strFileCmd, strFileDat, strFileOut: String): boolean;
+(*Purpose
+Creates a batch file to run a set of sqlcmd commands that are provided by an input file
+and optionally writes the output to an output file
+*)
+var
+  strCmds: TArrayOfString;
+  bolSuccess: boolean;
+  strSQLInstance: String;
+  
+begin
+Log('Starting SQLCmdFile function. The values for the parameters is:');
+Log('The value of the strFileCmd parameter is ' + strFileCmd);
+Log('The value of the strFileDat parameter is ' + strFileDat);
+Log('The value of the strFileOut parameter is ' + strFileOut);
+
+  strSQLInstance:= SQLFullInstanceName(strInstance);
+  SetArrayLength(strCmds, 2);
+  strCmds[0]:= '@echo off';
+  strCmds[1]:= 'start  /B  sqlcmd /S ' + strSQLInstance + ' -U sa -P ' + strSAPWD + ' -i ' 
+            + strFileDat;
+  if strFileOut <> '' then
+    begin
+      strCmds[1]:= strCmds[1] + ' -o ' + strFileOut;
+    end;
+  bolSuccess:= SaveStringsToFile(strFileCmd, strCmds, False);
+  if bolSuccess then //The batch file was successfully written
+    begin
+      Log('sqlcmd written to batch file ' + strFileCmd + '. Command written is ' + strCmds[1]);    
+    end;
+result:= bolSuccess;
+end;
+
+
+function SQLServerInstallUpdateINI(strSQLINIFile, strInstance, strSAPasswd: String): boolean;
+(*Purpose
+Updates the .ini file used to configure the installation of SQL Server Express,
+to make it install the appropriate instance and credentials
+*)
+var
+  bolSuccess: boolean;
+  strFNameFull: String;
+  strSQLInstance: String;
+
+begin
+  //Set Instance Name
+  strSQLInstance:= SQLInstanceNameLocal(strInstance);
+  bolSuccess:= SetIniString(SQLConfFileSection, SQLInstanceKey, strSQLInstance, strSQLINIFile);
+  //Set access credentials
+  bolSuccess:= bolSuccess And SetIniString(SQLConfFileSection, SQLSecurModeKey, SQLSecurMode, strSQLINIFile);
+  bolSuccess:= bolSuccess And SetIniString(SQLConfFileSection, SQLSAPasswdKey, strSAPasswd, strSQLINIFile);
+  result:= bolSuccess;
+end;
+
+function SQLServerAttachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strPathData, strFileDB, strFileCmd: string): boolean;
+(*Purpose
+Creates the two command files necessary to use the commands for attaching a set of
+database files to SQL Server. These are one .bat file with the basic sqlcmd command line,
+and a .dat file with the input commands to sqlcmd
+*)
+
+var
+  strFileBat, strFileDat, strFileDBFull, strFileLogFull: String;
+  strCmds: TArrayOfString;
+  strSQLInstance: String;
+  bolExit: boolean;
+  
+begin
+  //Define the names of the files to use
+  strFileBat:= FileBat(strFileCmd);
+  strFileDat:= FileDat(strFileCmd);  
+  strFileDBFull:= AddBackslash(strPathData) + ChangeFileExt(strFileDB, SQLDBExt);
+  strFileLogFull:= AddBackslash(strPathData) + ChangeFileExt(strFileDB, SQLLogExt);
+  strSQLInstance:= strInstance; //This must already be the full instance name
+
+//Create the Batch file
+  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, '');
+  if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
+  Log('The batch file ' + strFileBat + ' was successfully written.');
+    begin
+      SetArrayLength(strCmds, 7);
+      strCmds[0]:= 'USE [master]';
+      strCmds[1]:= 'GO';
+      strCmds[2]:= 'CREATE DATABASE [' + strSQLDBName + '] ON '; 
+      strCmds[3]:= '( FILENAME = N''' + strFileDBFull + ''' ), ';
+      strCmds[4]:= '( FILENAME = N''' + strFileLogFull + ''' )';
+      strCmds[5]:= 'FOR ATTACH';
+      strCmds[6]:= 'GO';
+      bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
+    end;
+result:= bolExit;          
+end;
+
+function SQLServerDetachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileCmd: string): boolean;
+(*Purpose
+Creates the two command files necessary to use the commands for Detaching a 
+database from SQL Server. These are one .bat file with the basic sqlcmd command line,
+and a .dat file with the input commands to sqlcmd
+*)
+
+var
+  strFileDat: String;
+  strCmds: TArrayOfString;
+  strSQLInstance: String;
+  bolExit: boolean;
+  
+begin
+  //Define the names of the files to use
+  strFileDat:= FileDat(strFileCmd);
+  strSQLInstance:= strInstance; //This must already be the full instance name
+
+  //Create the Batch file
+  Log('The name of the Dat file is ' + strFileDat);
+  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileCmd, strFileDat, '');
+  if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
+    begin
+      SetArrayLength(strCmds, 5);
+      strCmds[0]:= 'USE [master]';
+      strCmds[1]:= 'GO';
+      strCmds[2]:= 'EXEC master.dbo.sp_detach_db @dbname = N''' + strSQLDBName + ''',';
+      strCmds[3]:= '@keepfulltextindexfile = N''true''';
+      strCmds[4]:= 'GO';
+      bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
+    end;
+result:= bolExit;          
+end;
+
+
+function SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, 
+strFileDat, strFileOut: string): boolean;
+(*Purpose
+Creates the two command files necessary to use the commands for querying an SQL Instance for the 
+existance of a database from SQL Server. These are one .bat file with the basic sqlcmd command line,
+and a .dat file with the input commands to sqlcmd
+*)
+var
+  //strFileBat, strFileDat, strFileOut: String;
+  strCmds: TArrayOfString;
+  strSQLInstance: String;
+  bolExit: boolean;
+  
+begin
+  //Define the names of the files to use
+//  strFileBat:= strFileCmd;
+//  strFileDat:= FileDat(strFileCmd);
+//  strFileOut:= FileOut(strFileCmd);
+  strSQLInstance:= SQLFullInstanceName(strInstance);//This should already be the full instance name
+
+//Create the Batch file
+  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, strFileOut);
+  MsgBox('The command file ' + strFileBat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
+  if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
+    begin
+      SetArrayLength(strCmds, 2);
+      strCmds[0]:= 'IF EXISTS (SELECT 1 FROM master.sys.databases WHERE name = N''' + strSQLDBName + ''')';
+      strCmds[1]:= 'PRINT ''' + SQLDBExists + '''';
+      bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
+      MsgBox('The commands file ' + strFileDat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
+    end;
+  result:= bolExit;
+end;
+
+function ISSQLServerDBAttached(strInstance, strSAPWD, strSQLDBName: string): boolean;
+(*Purpose
+Queries an SQL Server Instance for the existence (or not) of the database
+with the name given attached
+*)
+var
+  strFileBat, strFileDat, strFileOut, strPathTmp: String;
+  strCheckResult: AnsiString;
+  bolSuccess, bolDBExists: boolean;
+  ErrorCode: Integer;
+  strSQLInstance: String;
+  
+begin
+  bolDBExists:= False;
+  //Define the names of the files to use
+  strFileBat:= GetSQLTmpFileBat('');
+  strFileDat:= FileDat(strFileBat);
+  strFileOut:= FileOut(strFileBat);
+  strPathTmp:= GetPathTmp('');
+  strSQLInstance:= SQLFullInstanceName(strInstance);
+  
+//Create the Batch file and the accompanying input file
+  bolSuccess:= SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, strFileDat, strFileOut);
+  if bolSuccess then
+    begin
+      //Run the batch file
+      bolSuccess:= ShellExec('', strFileBat, '', strPathTmp, SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+      Log('Batch file ' + strFileBat + ' was executed. Result code was' + BoolToStr(bolSuccess));
+      if bolSuccess then
+        begin
+          bolSuccess:= LoadStringFromFile(strFileOut, strCheckResult);
+          if bolSuccess then
+            begin
+              bolDBExists:= (strCheckResult = SQLDBExists);
+            end;
+        end;
+    end;
+result:= bolSuccess;
+end;
+
+
+function SQLServerDataFilesBackup(strDataFile, strPathSrc: String): boolean;
+(*Purpose
+Checks if the data files to attach to the DB already exist in the destination directory
+If they do, changes the name to a backup file
+NOTES: SQL Server uses files in pairs, a .mdf file (the database itself) and a .ldf file (the log file)
+*)
+
+var
+  bolSuccess: boolean;
+  strFileDB, strFileLog: String;
+  strDateTime: String;
+  
+begin
+  bolSuccess:= False;
+  strDateTime:= GetDateTimeString('yyyymmddhhmmss',':',':');
+  strFileDB:= AddBackslash(strPathSrc) + ChangeFileExt(strDataFile, SQLDBExt);
+  strFileLog:= AddBackslash(strPathSrc) + ChangeFileExt(strDataFile, SQLLogExt);
+  bolSuccess:= FileBackup(strFileDB, strDateTime, '');
+  if bolSuccess then
+    begin
+      bolSuccess:= FileBackup(strFileLog, strDateTime, '');
+    end;
+result:= bolSuccess;
+end;
+
+function GetMsgDataDirNotCreated(strPathData: String): String;
+(*Purpose
+Creates the message to show if the Data Directory selected by the user does not exist
+and cannot be created
+*)
+begin
+  result:= 'The Data Directory ' + strPathData + 
+            ' does not exist, and could not be created.' + 
+            GetMsgBoxCRLF + 
+            'The installation will now be interrupted.';
+end;
+
+function SQLServerDataFilesCopy(strFileDB, strPathSrc, strPathDest: String): boolean;
+(*Purpose
+Copies a set of SQL Server data files from the Temporary Directory to the Application Data Directory
+NOTES: SQL Server uses files in pairs, a .mdf file (the database itself) and a .ldf file (the log file)
+*)
+
+var
+  bolSuccess: boolean;
+  strFileDBSrc, strFileLogSrc: String;
+  strFileDBDest, strFileLogDest: String;
+  
+begin
+  bolSuccess:= False;
+  
+  strFileDBSrc:= AddBackslash(strPathSrc) + ChangeFileExt(strFileDB, SQLDBExt);
+  strFileLogSrc:= AddBackslash(strPathSrc) + ChangeFileExt(strFileDB, SQLLogExt);
+  strFileDBDest:= AddBackslash(strPathDest) + ChangeFileExt(strFileDB, SQLDBExt);
+  strFileLogDest:= AddBackslash(strPathDest) + ChangeFileExt(strFileDB, SQLLogExt);
+  Log('Copying files ' + strFileDB + ' to ' + strPathDest);
+  
+  //Check if the Destination Directory already exists, and if not, create it
+  bolSuccess:= DataPathCreate(strPathDest);
+  if not bolSuccess then
+    begin
+      MsgBox(GetMsgDataDirNotCreated(strPathDest), mbInformation, MB_OK);
+      exit;
+    end;
+  
+  //Check if these files already exist, and if so, make a backup copy
+  bolSuccess:= SQLServerDataFilesBackup(strFileDB, strPathDest);
+  
+  //Do the actual copying
+  bolSuccess:= FileCopy(strFileDBSrc, strFileDBDest, False);
+  if bolSuccess then
+    begin
+      Log('Copying File ' + strFileDBSrc + ' to ' +  strFileDBDest + ' was successfull.')
+      bolSuccess:= FileCopy(strFileLogSrc, strFileLogDest, False);
+        if bolSuccess then
+          begin
+            Log('Copying File ' + strFileLogSrc + ' to ' +  strFileLogDest + ' was successfull.')
+          end
+        else
+          begin
+            Log('Copying File ' + strFileLogSrc + ' to ' +  strFileLogDest + ' failed.')
+          end;
+    end
+  else
+    begin
+      Log('Copying File ' + strFileDBSrc + ' to ' +  strFileDBDest + ' failed.')  
+    end;
+    
+result:= bolSuccess;
+MsgBox('Check now if files have been copied.', mbInformation, MB_OK);
+end;
+
+
+function SQLServerAttachDB(strInstance, strSAPWD, strSQLDBName, strFileDB: String): Boolean;
+(*Purpose
+Attach a database to the SQL Server Instance indicated, copying the database files
+to the Application Data Directory.
+These files (a xx.mdf file and a xx.ldf file) must exist in the installation temporary
+directory given by PathTmp
+*)
+var
+  strFileBat: String;
+  FileDB, FileLog: String;
+  bolSuccess: boolean;
+  ErrorCode: integer;
+  strInstanceFull, strPathData, strPathTmp: String;
+
+begin
+  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strPathData:= GetPathData('');
+  strPathTmp:= GetPathTmp('');
+  strFileBat:= GetSQLAttachFileBat('');
+//Create the files with the commands for attaching
+  bolSuccess:= SQLServerAttachDB_CmdFiles(strInstance, 
+                strPathData, strPathTmp, strFileDB, strSAPWD, strFileBat);
+  if bolSuccess then
+    begin
+      //Run the batch file
+      bolSuccess:= ShellExec('', strFileBat, '', strPathTmp, SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+    end;
+  result:= bolSuccess;
+end;
+
+
+function SQLServerDetachDB(strInstance, strSAPWD, strSQLDBName: String): Boolean;
+(*Purpose
+Detach a database from the SQL Server Instance indicated, if they exist
+*)
+var
+  strFileBat: String;
+  bolSuccess, bolAttached: boolean;
+  ErrorCode: integer;
+  strInstanceFull, strPathTmp: String;
+
+begin
+  bolSuccess:= False;
+  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strPathTmp:= GetPathTmp('');
+  strSAPWD:= GetSQLSAPWD('');
+  strFileBat:= GetSQLDetachFileBat('');
+  
+  //Check if the database is attached, to start with
+  bolAttached:=ISSQLServerDBAttached(strInstanceFull, strSAPWD, strSQLDBName);
+  if not bolAttached then
+    begin //No need to continue
+      result:= True;
+      exit;
+    end;
+//Create the files with the commands for detaching
+  bolSuccess:= SQLServerDetachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat);
+  if bolSuccess then
+    begin
+      //Run the batch file
+      bolSuccess:= ShellExec('', strFileBat, '', strPathTmp, SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+    end;
+  result:= bolSuccess;
+end;
+
+
+function SQLServerAttachDBComplete(strFileDB, strSQLDBName: String): Boolean;
+(*Purpose
+Attach a set of database files to the SQL Server Instance indicated, checking if it already exists
+*)
+var
+  strFileBat: String;
+  FileDB, FileLog: String;
+  bolSuccess: boolean;
+  ErrorCode: integer;
+  strInstance, strPathSrc, strPathDest, strSAPWD: String;
+  strPathTmp: String;
+
+begin 
+  strInstance:= GetMyAppSQLFullInstanceName('');
+  strPathDest:= GetPathData('');
+  strPathSrc:= GetPathTmp('');
+  strPathTmp:= GetPathTmp('');
+  strSAPWD:= GetSQLSAPWD('');
+  strFileBat:= GetSQLAttachFileBat('');
+  Log('Working in function SQLServerAttachDBComplete.')
+  Log('The InstanceName used is ' + strInstance);
+  Log('The Destination path used is ' + strPathDest);
+  Log('The Source path used is ' + strPathSrc);
+  Log('The Tmp path used is ' + strPathTmp);
+  Log('The SAPWD used is ' + strSAPWD);
+  Log('The batch file used is ' + strFileBat);
+  //Copy the files from the Temporary Dir to the Data Dir, making a backup copy if they already exist
+  SQLServerDataFilesCopy(strFileDB, strPathSrc, strPathDest);
+  
+  //Check if the database is already attached to the Instance given, and detach if it is
+  bolSuccess:= SQLServerDetachDB(strInstance, strSAPWD, strSQLDBName);
+  
+//Create the files with the commands for attaching
+  bolSuccess:= SQLServerAttachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strPathDest, strFileDB, strFileBat);
+  if bolSuccess then
+    begin
+      //Run the batch file (attach the database)
+      bolSuccess:= ShellExec('', strFileBat, '', strPathTmp, SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+    end;
+  result:= bolSuccess;
+end;
+
+
+
+function SQLServerInstallMakeBat(Param: String): boolean;
+(*Purpose
+Creates the batch file to run the installation of the adequate instance of SQL Server 2005 Express
+Using a configuration file to pass the parameters for the installation
+*)
+
+var
+  strCommand: TArrayOfString;
+  bolExit: boolean;
+  ErrorCode: Integer;
+  SQLSetup: String;
+  strConf, strBatFile, strDirTmp: String;
+  
+begin
+  setArrayLength(strCommand, 1);
+  SQLSetup:= GetSQLInstaller('');
+  strConf:= GetSQLInstallDat('');
+  strDirTmp:= GetPathTmp('');
+  strCommand[0]:= 'Start /wait ' + SQLSetup + ' /qb /settings ' + strConf;
+MsgBox('The command to run is ' + strCommand[0], mbInformation, MB_OK);
+  strBatFile:= GetSQLInstallBat('');
+  bolExit:= SaveStringsToFile(strBatFile, strCommand, False);
+  result:= bolExit;
+end;
+
+function SQLServerInstall(Param: String): boolean;
+(*Purpose
+Configures and Runs the installation of the adequate instance of SQL Server 2005 Express
+*)
+
+var
+  bolExit: boolean;
+  ErrorCode: Integer;
+  strBatFile, strINIFile, strDirTmp: String;
+  strInstance, strSAPWD: String;
+  
+begin
+Log('SQLServerInstall function is starting.');
+  strBatFile:= GetSQLInstallBat('');
+  strINIFile:= GetSQLInstallDat('');
+  strDirTmp:= GetPathTmp('');
+  strInstance:= GetSQLInstance(''); //This is not the full name, only the local one
+  strSAPWD:= GetSQLSAPWD('');
+  
+  //Create the batch file for running the installer
+  bolExit:= SQLServerInstallMakeBat('');
+  Log('Just made the batch file for instalation. The output of the creation is ' + BoolToStr(bolExit));
+  if bolExit then
+    begin
+      //Update the configuration file for the installation
+      bolExit:=SQLServerInstallUpdateINI(strINIFile, strInstance, strSAPWD);
+      MsgBox('Updated the INI file', mbInformation, MB_OK);
+      if bolExit then
+        begin
+        MsgBox('Running the actual installation', mbInformation, MB_OK);
+          //Run the actual installation
+          bolExit:= ShellExec('', strBatFile, '', strDirTmp ,SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+        end;
+    end;
+ result:= bolExit;
+end;
+
+
+function SQLServerInstallComplete(Param: String): boolean;
+(*Purpose
+Manages the installation of the adequate instance of SQL Server 2005 Express
+It will check if it is already installed, and install it if it is not
+*)
+
+var
+  bolSQLServer, bolSQLInstance, bolExit: boolean;
+  strInstance, strInstanceFull: String;
+  
+begin
+ MsgBox('SQLServerInstallCOmplete starting.', mbInformation, MB_OK);
+  strInstanceFull:= GetMyAppSQLFullInstanceName('');
+  strInstance:= GetSQLInstance('');
+  bolSQLServer:= False;
+  bolSQLInstance:= False;
+  bolExit:= False;
+  
+  //Check if the SQL Server is installed
+  bolSQLServer:= IsSQLExpressInstalled('');
+  if bolSQLServer then
+    MsgBox('SQL Server IS Installed', mbInformation, MB_OK);  
+    begin
+      //Check if the right instance is already installed
+      bolSQLInstance:= IsSQLServerInstanceInstalled(strInstance);
+      if bolSQLInstance then
+        begin
+          MsgBox('SQL Server Instance ' + strInstanceFull + ' is already installed',
+          mbInformation, MB_OK);    
+        end
+      else
+        begin
+         MsgBox('SQL Server Instance ' + strInstanceFull + ' is not installed',
+          mbInformation, MB_OK); 
+        end;
+      
+    end;
+  if (not bolSQLServer) or (not bolSQLInstance) then
+    begin
+      //Install the Instance we want
+      Log('SQL Server Installation starting');
+MsgBox('SQL Server Installation Will Start', mbInformation, MB_OK);     
+      bolExit:= SQLServerInstall('');
+    end;      
+end;
+
+
+procedure SetGlobalsSQLServer();
+(*Purpose
+Sets the values of the global variables that are used when installing the SQL Server
+and the associated databases
+*)
+
+begin
+  SetSQLInstaller(ExpandConstant('{#MyAppSQLInstaller}'));
+  SetSQLInstance(ExpandConstant('{#MyAppSQLInstance}')); 
+  SetSQLDBName(ExpandConstant('{#MyAppDBName}'));
+  SetSQLDBFile(ExpandConstant('{#MyAppDBFileName}'));
+  SetSQLInstallBat(ExpandConstant('{#MyAppSQLInstallBat}'));
+  SetSQLInstallDat(ExpandConstant('{#MyAppSQLInstallConfigFile}'));
+  SetSQLSAPWD(ExpandConstant('{#MyAppSAPWD}'));
+  SetInstallSQLServer(True);
+  SetAttachDB(True);
+  end;

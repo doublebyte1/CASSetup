@@ -1,0 +1,337 @@
+
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="en-us">
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		
+		
+		<!-- Localizable content section begins -->
+		<title>Microsoft SQL Server 2005</title>
+		
+		<HTA:APPLICATION ID="oHTA"
+		     BORDER="none"
+		     CAPTION="no"
+		     CONTEXTMENU="no"
+		     Icon="autorun.ico"
+		     INNERBORDER="no"
+		     SCROLL="no"/>
+
+		<script language="javascript">
+		
+		var L_HEADER_START_VAR_TEXT				= "Start";
+		var L_HEADER_PREPARE_VAR_TEXT			= "Prepare";
+		var L_HEADER_INSTALL_VAR_TEXT			= "Install";
+		var L_HEADER_OTHERINFO_VAR_TEXT			= "Other Information";
+		
+		var L_LINK_REVIEWREQ_VAR_TEXT			= "Revie<u>w</u> hardware and software requirements";
+		var L_LINK_READRELNOTE_VAR_TEXT			= "<u>R</u>ead the release notes";
+		var L_LINK_RUNINSTALL_VAR_TEXT			= "Ru<u>n</u> the SQL Server Installation Wizard";
+		var L_LINK_BROWSECD_VAR_TEXT			= "<u>B</u>rowse this CD";
+		var L_LINK_VISITSITE_VAR_TEXT			= "<u>V</u>isit the SQL Server website";
+		var L_LINK_READLICENCE_VAR_TEXT			= "R<u>e</u>ad the SQL Server license agreement";
+		var L_LINK_VISITNEWSGRP_VAR_TEXT		= "Vi<u>s</u>it SQL Server newsgroups";
+		var L_LINK_EXIT_VAR_TEXT				= "E<u>x</u>it";
+		var L_LINK_RUNSNAC_VAR_TEXT				= "R<u>u</u>n the SQL Native Client Installation Wizard";
+		
+		var L_LINKREVIEWREQ_KEYNAME			= "w";
+		var L_LINKREADRELNOTE_KEYNAME			= "r";
+		var L_LINKRUNINSTALL_KEYNAME			= "n";
+		var L_LINKBROWSECD_KEYNAME			= "b";
+		var L_LINKVISITSITE_KEYNAME			= "v";
+		var L_LINKREADLICENCE_KEYNAME			= "e";
+		var L_LINKVISITNEWSGROUP_KEYNAME		= "s";
+		var L_LINKEXIT_KEYNAME			= "x";
+		var L_LINKRUNSNAC_KEYNAME			= "u";
+		
+		var L_INFO_REVIEWREQ_VAR_TEXT			= "Review requirements for hardware, operating systems, internet browsers, network software, and supported clients.";
+		var L_INFO_READRELNOTE_VAR_TEXT			= "Review late-breaking information about this SQL Server release.";
+		var L_INFO_RUNINSTALL_VAR_TEXT			= "Launch the Installation Wizard to install SQL Server 2005.";
+		var L_INFO_BROWSECD_VAR_TEXT				= "Browse the files on this SQL Server compact disc.";
+		var L_INFO_VISITSITE_VAR_TEXT			= "View more product information about SQL Server 2005 and other products in the Windows Server System.";
+		var L_INFO_READLICENCE_VAR_TEXT			= "Review the license agreement of this SQL Server release.";
+		var L_INFO_VISITNEWSGRP_VAR_TEXT			= "Read the latest postings inside the SQL Server 2005 public newsgroups.";
+		var L_INFO_RUNSNAC_VAR_TEXT			= "Launch the Installation Wizard to install the SQL Native Client component.";
+		var L_LCID_NUMBER					= "1033";
+		
+		</script>
+		
+		<!-- Localizable content section ends -->
+		
+		
+	<script language="javascript">
+
+	// Set the fixed window size.
+	var startWindowWidth  = 640;
+	var startWindowHeight = 480;
+	
+	// Set the default start window location.
+	var startWindowLeft   = 200;
+	var startWindowTop    = 100;
+	
+	// Set the fade in delay.
+	var fadeDelay1		  = 200;
+	var fadeDelay2		  = 250;
+	
+	// Set the image file path.
+	var imageFilePath	  = "setup/Images/";
+	
+	// Set the link info image array.
+	var linkInfoImageReviewReq			= "server.gif";
+	var linkInfoImageReadRelNote		= "release_notes.gif";
+	var linkInfoImageRunInstall			= "setup.gif";
+	var linkInfoImageBrowseCD			= "browse_cd.gif";
+	var linkInfoImageVisitSite			= "sql_website.gif";
+	var linkInfoImageReadLicence		= "license_agreement.gif";
+	var linkInfoImageVisitNewsgrp		= "newsgroup.gif";
+	
+	// Set miscellaneous variables
+	var isMouseOut = true;
+	var dragApproved = false;
+	var offsetX = 0;
+	var offsetY = 0;
+	var moveByRef = window.moveBy;
+	
+	// Check if the screen size info is available.
+	if (window.screen)
+	{
+		// Calculate the real default window location.
+		startWindowLeft = (window.screen.availWidth - startWindowWidth) / 2;
+		startWindowTop  = (window.screen.availHeight - startWindowHeight) / 2;
+	}
+
+	// Center the start window on the screen.
+	window.moveTo(startWindowLeft, startWindowTop);
+	window.resizeTo(startWindowWidth, startWindowHeight);
+	
+	function windowOnLoad()
+	{
+		// Set access key for the links.
+		document.all["linkReviewReq"].accessKey		= L_LINKREVIEWREQ_KEYNAME;
+		document.all["linkReadRelNote"].accessKey	= L_LINKREADRELNOTE_KEYNAME;
+		document.all["linkRunInstall"].accessKey	= L_LINKRUNINSTALL_KEYNAME;
+		document.all["linkBrowseCd"].accessKey		= L_LINKBROWSECD_KEYNAME;
+		document.all["linkVisitSite"].accessKey		= L_LINKVISITSITE_KEYNAME;
+		document.all["linkReadLicence"].accessKey	= L_LINKREADLICENCE_KEYNAME;
+		//document.all["linkVisitNewsGroup"].accessKey= L_LINKVISITNEWSGROUP_KEYNAME;
+		document.all["linkExit"].accessKey			= L_LINKEXIT_KEYNAME;
+		document.all["linkRunSnac"].accessKey		= L_LINKRUNSNAC_KEYNAME;
+	}
+	
+	function onExitKeyDown()
+	{
+		if (event.keyCode == 13)
+			self.close();
+	}
+	
+	function onExitFocus()
+	{
+		if (event.altKey)
+			self.close();
+	}
+	
+	function onLinkFocus(oLink)
+	{
+		if (event.altKey)
+			oLink.click();
+	}
+
+	function onLinkClick(oLink)
+	{
+		window.focus();
+		return true;
+	}
+
+	function onMouseOver(imageFile, infoText)
+	{
+		isMouseOut = false;
+		
+		linkInfoImage.src = imageFilePath + imageFile;
+		linkInfoText.innerHTML = infoText;
+		
+		if(linkInfoText.filters[0] != null && linkInfoImageDiv.filters[0] != null)
+		{
+			window.setTimeout('linkInfoFadeIn()', fadeDelay1);
+		}
+		else
+		{
+			linkInfoShow();
+		}
+	}
+
+	function linkInfoShow()
+	{
+		if (isMouseOut) return;
+		
+		if (linkInfoImage.style.display != "block")
+		{
+			linkInfoImage.style.display = "block";
+			linkInfoText.style.display = "block";
+		}
+	}
+	
+	function linkInfoFadeIn()
+	{
+		if (isMouseOut) return;
+		
+		if (linkInfoImage.style.display != "block")
+		{
+			linkInfoImageDiv.filters[0].Stop();
+			linkInfoImageDiv.filters[0].Apply();
+				
+			linkInfoImage.style.display = "block";
+				
+			linkInfoImageDiv.filters[0].Play();
+
+			window.setTimeout('linkInfo2ndFadeIn()', fadeDelay2);
+		}
+	}
+
+	function linkInfo2ndFadeIn()
+	{
+		if (isMouseOut) return;
+		
+		if (linkInfoText.style.display != "block")
+		{
+			linkInfoText.filters[0].Stop();
+			linkInfoText.filters[0].Apply();
+			
+			linkInfoText.style.display = "block";
+			
+			linkInfoText.filters[0].Play();
+		}
+	}
+
+	function linkInfoFadeOut()
+	{
+		isMouseOut = true;
+		
+		if(linkInfoText.filters[0] != null)
+		{
+			linkInfoText.filters[0].Stop();
+		}
+		
+		linkInfoText.style.display = "none";
+
+		if(linkInfoImageDiv.filters[0] != null)
+		{
+			linkInfoImageDiv.filters[0].Stop();
+		}
+
+		linkInfoImage.style.display = "none";
+	}
+
+	// Due to IE security patch KB824145, we can no longer simulate the dragging of the browser window.  
+	// This is the next best thing we can do at this moment.
+	function startDrag()
+	{
+		offsetX = event.clientX
+		offsetY = event.clientY
+
+		dragApproved = true
+	}
+
+	function stopDrag()
+	{
+		if (dragApproved)
+			top.moveBy(event.clientX - offsetX, event.clientY - offsetY);
+			
+		dragApproved = false;
+	}
+
+	function onClickLinkApp(sApp) 
+	{ 
+		var oShell = new ActiveXObject("WScript.Shell"); 
+		oShell.Run(sApp); 
+	}
+	</script>
+
+<style>
+<!--
+a:link		 { text-decoration: none; color: black }
+a:visited	 { text-decoration: none; color: black }
+a:active	 { text-decoration: none; color: black }
+a:hover		 { text-decoration: underline; color: darkblue;}
+.roottable	 { border-left: none; border-right: none; border-bottom: none; border-top: none }
+.header1	 { font-family: Arial; font-size: 36pt; color: #ffffff; vertical-align: text-bottom; height: 104px }
+.header2	 { font-family: Tahoma; font-size: 14pt; color: #FF6633; vertical-align: text-bottom; height: 32px; padding-left: 28px }
+.header3	 { font-family: Tahoma; font-size: 14pt; color: #FF6633; vertical-align: text-bottom; height: 38px; padding-left: 28px }
+.normalLink  { font-family: Arial; font-size: 10pt; color: black; vertical-align: text-bottom; height: 24px; padding-left: 28px }
+.exitLink	 { font-family: Arial; font-size: 10pt; color: #FF3300; cursor: default; vertical-align: text-bottom; text-align: right; padding-right: 20px }
+.exitLinkMouseOver { font-family: Arial; font-size: 10pt; color: darkblue; text-decoration: underline; cursor: hand; vertical-align: text-bottom; text-align: right; padding-right: 20px }
+.logo		 { vertical-align: text-bottom; text-align: left; padding-left: 20px; padding-bottom: 20px; }
+.linkInfoImageDiv{ filter:progid:DXImageTransform.Microsoft.Fade(duration=.5); width: 250px; height: 185px;}
+.linkInfoText { font-family: Tahoma; font-size: 8pt; color: #808080; display: none; filter:progid:DXImageTransform.Microsoft.Fade(duration=.3); width: 200px; height: 60px; }
+--></style>
+	</head>
+	<body background="Setup/Images/autorun_silver_bground.png" leftmargin="0" topmargin="0" rightmargin="0"
+		bottommargin="0" onload="windowOnLoad()">
+		<table border="1" bordercolor="#A0A0A0" cellpadding="0" cellspacing="0" width="100%" height="100%" id="rootTable" class="roottable"
+		xonmousedown="startDrag()" xonmouseup="stopDrag()">
+			<tr>
+				<td>
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+				<tr>
+					<!-- Left Zone: mouseover graphics and text, product logo -->
+					<td width="300">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+					<tr>
+						<td align="center" valign="top" style="padding-top: 100px">
+						<div id="linkInfoImageDiv" class="linkInfoImageDiv"><img id="linkInfoImage" style="display:none"/></div><div id="linkInfoText" class="linkInfoText"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="logo"><ximg src="Setup\Images\logo.gif"></td>
+					</tr>
+					</table>
+					</td>
+					
+					<!-- Right Zone: links -->
+					<td>
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+						<tr>
+							<td class="header1"><script language="javascript">document.write(L_HEADER_START_VAR_TEXT)</script></td>
+						</tr>
+						<tr>
+							<td class="header2"><script language="javascript">document.write(L_HEADER_PREPARE_VAR_TEXT)</script></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a target="_blank" href="RequirementsSQLEXP2005.htm" tabIndex="1" name="linkReviewReq" onclick="onLinkClick(this)" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageReviewReq, L_INFO_REVIEWREQ_VAR_TEXT)" onmouseout="linkInfoFadeOut()" onmouseleave="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_REVIEWREQ_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a target="_blank" href="ReadmeSQLEXP2005.htm" tabIndex="2" name="linkReadRelNote" onclick="onLinkClick(this)" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageReadRelNote, L_INFO_READRELNOTE_VAR_TEXT)" onmouseout="linkInfoFadeOut()" onmouseleave="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_READRELNOTE_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="header3"><script language="javascript">document.write(L_HEADER_INSTALL_VAR_TEXT)</script></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a href="#" onclick="onClickLinkApp('.\\setup.exe'); self.close()" tabIndex="3" name="linkRunInstall" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageRunInstall, L_INFO_RUNINSTALL_VAR_TEXT)" onmouseout="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_RUNINSTALL_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a href="#" onclick="onClickLinkApp('.\\setup\\sqlncli.msi'); self.close()" tabIndex="3" name="linkRunSnac" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageRunInstall, L_INFO_RUNSNAC_VAR_TEXT)" onmouseout="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_RUNSNAC_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="header3"><script language="javascript">document.write(L_HEADER_OTHERINFO_VAR_TEXT)</script></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a target="_blank" href="." tabIndex="4" name="linkBrowseCd" onclick="onLinkClick(this)" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageBrowseCD, L_INFO_BROWSECD_VAR_TEXT)" onmouseout="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_BROWSECD_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a target="_blank" href="http://go.microsoft.com/fwlink/?linkid=31518" tabIndex="5" name="linkVisitSite" onclick="onLinkClick(this)" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageVisitSite, L_INFO_VISITSITE_VAR_TEXT)" onmouseout="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_VISITSITE_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td class="normalLink"><a href="#" onclick="onClickLinkApp('notepad license.txt'); window.focus()" tabIndex="6" name="linkReadLicence" onclick="onLinkClick(this)" onFocus="onLinkFocus(this)" onmouseover="onMouseOver(linkInfoImageReadLicence, L_INFO_READLICENCE_VAR_TEXT)" onmouseout="linkInfoFadeOut()"><script language="javascript">document.write(L_LINK_READLICENCE_VAR_TEXT)</script></a></td>
+						</tr>
+						<tr>
+							<td align="right" valign="bottom" style="padding-bottom: 16px">
+								<span onClick="self.close()" class="exitLink" onMouseOver="this.className='exitLinkMouseOver'" onMouseOut="this.className='exitLink'" tabIndex="8" onkeydown="onExitKeyDown()" onFocus="onExitFocus()" id="linkExit" name="linkExit"><script language="javascript">document.write(L_LINK_EXIT_VAR_TEXT)</script></span>
+							</td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

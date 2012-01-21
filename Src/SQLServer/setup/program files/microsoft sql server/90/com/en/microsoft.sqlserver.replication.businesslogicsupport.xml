@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+	<assembly>
+		<name>Microsoft.SqlServer.Replication.BusinessLogicSupport</name>
+	</assembly>
+	<members>
+		<member name="N:Microsoft.SqlServer.Replication.BusinessLogicSupport">
+			<summary>This assembly provides business logic that can be used in your application to respond to a number of conditions that occur during synchronization: data changes, conflicts, and errors. To create your own business logic handler, you must implement the specific methods of the <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule"></see> class that are required by your application. For more information on business logic handlers, see Executing Business Logic During Merge Synchronization. </summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange">
+			<summary>Enumerates all actions that can be taken when handling data changes that do not result in a conflict.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange.AcceptCustomData">
+			<summary>The data change is overridden by custom user data provided by the business logic handler. The custom user data is then propagated by the replication process.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange.AcceptData">
+			<summary>The data change is accepted and propagated by the replication process as usual.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange.RejectData">
+			<summary>The data change is rejected and not propagated by the replication process.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataDelete">
+			<summary>Enumerates all actions that can be taken when replicating DELETE statements that do not result in a conflict.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataDelete.AcceptDelete">
+			<summary>The delete is accepted and propagated by the replication process as usual.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataDelete.ConvertDeleteToUpdate">
+			<summary>The delete is rejected, and the change row should be updated on the destination so that it becomes an insert on the source of the original delete.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataDelete.RejectDelete">
+			<summary>The delete is rejected and not propagated by the replication process.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError">
+			<summary>Enumerates all actions that can be taken when handling data errors.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior">
+			<summary>The error is handled using custom user functionality provided by the business logic handler. The custom functionality is then propagated by the replication process.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptDefaultErrorBehavior">
+			<summary>The error is handled by replication using default error behaviors.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict">
+			<summary>Enumerates all actions that can be taken when handling conflicting UPDATE statements.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict.AcceptCustomConflictData">
+			<summary>The conflict is resolved using custom user data provided by the business logic handler. The custom data is then propagated by the replication process.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict.AcceptDefaultResolution">
+			<summary>The conflict is resolved using the default resolution rules.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict.AcceptPublisherData">
+			<summary>The conflict is resolved by accepting the update from the Publisher as the winning update.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict.AcceptSubscriberData">
+			<summary>The conflict is resolved by accepting the update from the Subscriber as the winning update.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict">
+			<summary>Enumerates all actions that can be taken when handling an UPDATE statement that conflicts with a DELETE statement.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict.AcceptCustomData">
+			<summary>The conflict is resolved using custom user data provided by the business logic handler. The custom user data is then propagated by the replication process.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict.AcceptDefaultResolution">
+			<summary>The conflict is resolved using the default resolution rules</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict.AcceptDelete">
+			<summary>The conflict is resolved by accepting the delete as the winner.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict.AcceptUpdate">
+			<summary>The conflict is resolved by accepting the update as the winner.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule">
+			<summary>Implements the custom business logic that is invoked during the merge replication synchronization process. </summary>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.#ctor">
+			<summary>Constructor.</summary>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.CommitHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Guid)">
+			<summary>Optional method implements the custom business logic that is invoked when a data change is committed during synchronization. </summary>
+			<param name="rowGuid">GUID of the row that was committed.</param>
+			<param name="source"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that indicates whether the source of the change is the Publisher or the Subscriber.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.DeleteErrorHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType@,System.String@,System.Int32,System.String,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when an error occurs at the time a DELETE statement is being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError"></see> action that will be taken by the process after the custom business logic handler has executed.</returns>
+			<param name="errorLogType"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType"></see> output parameter that controls how replication logs the error. This parameter is used only if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>. </param>
+			<param name="errorCode">Error code that corresponds to the underlying replication error that occurred. </param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic handler.</param>
+			<param name="deletedDataSet">Dataset that contains the GUID of the row that was deleted. </param>
+			<param name="historyLogMessage">Log message provided by the custom business logic handler. The log message gets written to the distribution database.</param>
+			<param name="errorMessage">Error message text that corresponds to the underlying replication error that occurred.</param>
+			<param name="customErrorMessage">Output parameter used to return a custom error message. This parameter is used only if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>. </param>
+			<param name="deleteSource"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that indicates whether the source of the delete that generated the error is the Publisher or the Subscriber.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.DeleteHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when DELETE statements are being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataDelete"></see> action that will be taken by the process after the custom business logic has executed.</returns>
+			<param name="historyLogMessage">Log message provided by the custom business logic. The log message gets written to the distribution database.</param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic.</param>
+			<param name="deletedDataSet">Dataset containing the GUID of the row that was deleted. </param>
+			<param name="deleteSource">Specifies whether the delete is initiated at the Publisher or at the Subscriber.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.Dispose">
+			<summary>Disposes of all used resources. This method is invoked after all the custom business logic has been executed.</summary>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.Initialize(System.String,System.String,System.String,System.String,System.String,System.String)">
+			<summary>Sends information about the article being synchronized to the business logic resolver when the Merge Agent is started.</summary>
+			<param name="subscriberDB">Name of the subscription database.</param>
+			<param name="publisherDB">Name of the publication database.</param>
+			<param name="articleName">Name of the published article.</param>
+			<param name="distributor">Name of the Distributor.</param>
+			<param name="publisher">Name of the Publisher.</param>
+			<param name="subscriber">Name of the Subscriber.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.InsertErrorHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType@,System.String@,System.Int32,System.String,System.Int32@,System.String@)">
+			<summary>Optional method implements the custom business logic invoked when an error occurs at the time an INSERT statement is being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError"></see> action that will be taken by the process after the custom business logic handler has executed.</returns>
+			<param name="errorLogType"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType"></see> output parameter that controls how replication logs the error. This parameter is used only if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>. </param>
+			<param name="errorCode">Error code that corresponds to the underlying replication error that occurred. </param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic handler.</param>
+			<param name="insertedDataSet">Dataset that contains the GUID of the row that was inserted. </param>
+			<param name="historyLogMessage">Log message provided by the custom business logic handler. The log message gets written to the distribution database.</param>
+			<param name="insertSource"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that indicates whether the source of the insert that generated the error is the Publisher or the Subscriber.</param>
+			<param name="errorMessage">Error message text that corresponds to the underlying replication error that occurred.</param>
+			<param name="customErrorMessage">Output parameter used to return a custom error message. This parameter is only used if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.InsertHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,System.Data.DataSet@,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when INSERT statements are being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange"></see> action that will be taken by the process after the custom business logic has executed.</returns>
+			<param name="historyLogMessage">Log message provided by the custom business logic. The log message gets written to the distribution database.</param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic.</param>
+			<param name="insertedDataSet">Dataset that contains the GUID of the row that was inserted. </param>
+			<param name="insertSource"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that defines whether the insert was initiated at the Publisher or the Subscriber.</param>
+			<param name="customDataSet">Dataset that contains the modified row returned by the custom business logic.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.PhaseBegin(System.Boolean)">
+			<summary>Optional method that indicates the beginning of an upload or download phase of the synchronization. </summary>
+			<param name="download">Specifies whether the phase about to begin is an upload or download.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.UpdateConflictsHandler(System.Data.DataSet,System.Data.DataSet,System.Data.DataSet@,Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType@,System.String@,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when conflicting UPDATE statements occur at the Publisher and at the Subscriber. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateConflict"></see> action that will be taken by the process after the custom business logic handler has executed.</returns>
+			<param name="customConflictMessage">Conflict message returned by the custom business logic handler.</param>
+			<param name="historyLogMessage">Log message provided by custom business logic handler. The log message gets written to the distribution database.</param>
+			<param name="publisherDataSet">Dataset representing the Publisher data.</param>
+			<param name="subscriberDataSet">Dataset representing the Subscriber data.</param>
+			<param name="conflictLogType"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType"></see> requested by the custom business logic handler.</param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic handler.</param>
+			<param name="customDataSet">Dataset implemented by the custom business logic.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.UpdateDeleteConflictHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,System.Data.DataSet@,Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType@,System.String@,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when UPDATE statements conflict with DELETE statements at the Publisher and at the Subscriber. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnUpdateDeleteConflict"></see> action that will be taken by the process after the custom business logic handler has executed.</returns>
+			<param name="customConflictMessage">Conflict message returned by the custom business logic handler.</param>
+			<param name="historyLogMessage">Log message provided by custom business logic handler. The log message gets written to the distribution database.</param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic handler.</param>
+			<param name="conflictLogType"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType"></see> requested by the custom business logic handler.</param>
+			<param name="sourceDataSet">Dataset that contains the GUID representing the row in conflict.</param>
+			<param name="customDataSet">Dataset implemented by the custom business logic.</param>
+			<param name="updateSource">Is the <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that indicates whether the source of the update is the Publisher or the Subscriber. </param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.UpdateErrorHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType@,System.String@,System.Int32,System.String,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when an error occurs at the time an UPDATE statement is being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError"></see> action that will be taken by the process after the custom business logic handler has executed.</returns>
+			<param name="errorLogType"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType"></see> output parameter that controls how replication logs the error. This parameter is used only if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>. </param>
+			<param name="errorCode">Error code that corresponds to the underlying replication error that occurred. </param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic handler.</param>
+			<param name="updatedDataSet">Dataset representing the UPDATE statement that caused the error. </param>
+			<param name="historyLogMessage">Log message provided by custom business logic handler. The log message gets written to the distribution database.</param>
+			<param name="errorMessage">Error message text that corresponds to the underlying replication error that occurred.</param>
+			<param name="customErrorMessage">Output parameter used to return a custom error message. This parameter is used only if the return value is <see cref="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataError.AcceptCustomErrorBehavior"></see>.</param>
+			<param name="updateSource"><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier"></see> that indicates whether the source of the update that generated the error is the Publisher or the Subscriber.</param>
+		</member>
+		<member name="M:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.UpdateHandler(Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier,System.Data.DataSet,System.Data.DataSet@,System.Int32@,System.String@)">
+			<summary>Optional method that implements the custom business logic invoked when UPDATE statements are being uploaded or downloaded. </summary>
+			<returns>The <see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ActionOnDataChange"></see> action that will be taken by the process after the custom business logic has executed.</returns>
+			<param name="historyLogMessage">Log message provided by custom business logic. The log message gets written to the distribution database.</param>
+			<param name="historyLogLevel">Log level of the custom message returned by the custom business logic.</param>
+			<param name="updatedDataSet">Dataset representing the data being updated.</param>
+			<param name="customDataSet">Dataset implemented by the custom business logic.</param>
+			<param name="updateSource">Specifies whether the update was initiated at the Publisher or at the Subscriber.</param>
+		</member>
+		<member name="P:Microsoft.SqlServer.Replication.BusinessLogicSupport.BusinessLogicModule.HandledChangeStates">
+			<summary>Required property that returns information on the types of changes handled by the business logic module. </summary>
+			<returns><see cref="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates"></see> that enumerates the types of changes handled by the business logic module.</returns>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates">
+			<summary>Enumerates all data change states that custom business logic can handle during synchronization.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.CommitsToDestination">
+			<summary>When changes are committed to the destination database.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherDeleteErrors">
+			<summary>When an error occurs while propagating a DELETE statement from the Publisher to the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherDeletes">
+			<summary>When a DELETE statement at the Publisher is applied at the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherInsertErrors">
+			<summary>When an error occurs while propagating an INSERT statement from the Publisher to the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherInserts">
+			<summary>When an INSERT statement at the Publisher is applied at the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherUpdateErrors">
+			<summary>When an error occurs while propagating an UPDATE statement from the Publisher to the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherUpdates">
+			<summary>When an UPDATE statement at the Publisher is applied at the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.PublisherUpdateSubscriberDeleteConflicts">
+			<summary>When an UPDATE statement at the Publisher conflicts with a DELETE statement at the Subscriber.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberDeleteErrors">
+			<summary>When an error occurs while propagating a DELETE statement from the Subscriber to the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberDeletes">
+			<summary>When a DELETE statement at the Subscriber is applied at the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberInsertErrors">
+			<summary>When an error occurs while propagating an INSERT statement from the Subscriber to the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberInserts">
+			<summary>When an INSERT statement at the Subscriber is applied at the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberUpdateErrors">
+			<summary>When an error occurs while propagating an UPDATE statement from the Subscriber to the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberUpdatePublisherDeleteConflicts">
+			<summary>When an UPDATE statement at the Subscriber conflicts with a DELETE statement at the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.SubscriberUpdates">
+			<summary>When an UPDATE statement at the Subscriber is applied at the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ChangeStates.UpdateConflicts">
+			<summary>When an UPDATE statement at the Publisher conflicts with an UPDATE statement at the Subscriber.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType">
+			<summary>Enumerates the supported conflict logging options available to a conflict handler.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType.ConflictLogNone">
+			<summary>The conflict is not logged.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType.ConflictLogPublisher">
+			<summary>The Publisher's dataset is logged as the conflict loser.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ConflictLogType.ConflictLogSubscriber">
+			<summary>The Subscriber's dataset is logged as the conflict loser.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType">
+			<summary>Enumerates the supported error logging options available.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType.ErrorLogCustom">
+			<summary>The custom error information is logged.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.ErrorLogType.ErrorLogNone">
+			<summary>The error is not logged.</summary>
+		</member>
+		<member name="T:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier">
+			<summary>Enumerates all sources of a data change.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier.SourceIsPublisher">
+			<summary>Data change occurred at the Publisher.</summary>
+		</member>
+		<member name="F:Microsoft.SqlServer.Replication.BusinessLogicSupport.SourceIdentifier.SourceIsSubscriber">
+			<summary>Data change occurred at the Subscriber.</summary>
+		</member>
+	</members>
+</doc>

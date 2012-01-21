@@ -1,0 +1,7 @@
+USE [master]
+GO
+CREATE DATABASE ['TestDB'] ON 
+( FILENAME = N'E:\SQLServerInstall\albania.mdf' ),
+( FILENAME = N'E:\SQLServerInstall\albania.ldf' )
+ FOR ATTACH ;
+GO

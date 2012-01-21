@@ -1,0 +1,34 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sqlparameter="http://schemas.microsoft.com/sqlserver/2004/SOAP/types/SqlParameter" xmlns:sqltypes="http://schemas.microsoft.com/sqlserver/2004/sqltypes" targetNamespace="http://schemas.microsoft.com/sqlserver/2004/SOAP/types/SqlParameter" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">&#xd;&#xa;(c) Copyright 2004, Microsoft Corporation&#xd;&#xa;&#xd;&#xa;The following schema for Microsoft SQL Server is presented in XML format and is for informational purposes only. Microsoft Corporation ("Microsoft") may have trademarks, copyrights, or other intellectual property rights covering subject matter in the schema.&#xd;&#xa;&#xd;&#xa;Microsoft does not make any representation or warranty regarding the schema or any product or item developed based on the schema. The schema is provided to you on an AS IS basis.  Microsoft disclaims all express, implied and statutory warranties, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, and freedom from infringement. Without limiting the generality of the foregoing, Microsoft does not make any warranty of any kind that any item developed based on the schema, or any portion of the schema, will not infringe any copyright, patent, trade secret, or other intellectual property right of any person or entity in any country. It is your responsibility to seek licenses for such intellectual property rights where appropriate.&#xd;&#xa;&#xd;&#xa;MICROSOFT SHALL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SCHEMA, INCLUDING WITHOUT LIMITATION, ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL (INCLUDING ANY LOST PROFITS), PUNITIVE OR SPECIAL DAMAGES, WHETHER OR NOT MICROSOFT HAS BEEN ADVISED OF SUCH DAMAGES.&#xd;&#xa;</xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://schemas.microsoft.com/sqlserver/2004/sqltypes" />
+  <xsd:simpleType name="ParameterDirection">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Input" />
+      <xsd:enumeration value="InputOutput" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="ArrayOfSqlParameter">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="SqlParameter" type="sqlparameter:SqlParameter" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SqlParameter">
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="1" name="Value" nillable="true" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required" form="unqualified" />
+    <xsd:attribute default="NVarChar" name="sqlDbType" type="sqltypes:sqlDbTypeEnum" use="optional" form="unqualified" />
+    <xsd:attribute default="Input" name="direction" type="sqlparameter:ParameterDirection" use="optional" form="unqualified" />
+    <xsd:attribute default="1" name="maxLength" type="xsd:long" use="optional" form="unqualified" />
+    <xsd:attribute default="18" name="precision" type="xsd:unsignedByte" use="optional" form="unqualified" />
+    <xsd:attribute default="0" name="scale" type="xsd:unsignedByte" use="optional" form="unqualified" />
+    <xsd:attribute default="" name="clrTypeName" type="xsd:string" use="optional" form="unqualified" />
+    <xsd:attribute default="Default" name="sqlCompareOptions" type="sqltypes:sqlCompareOptionsList" use="optional" form="unqualified" />
+    <xsd:attribute default="-1" name="localeId" type="xsd:int" use="optional" form="unqualified" />
+    <xsd:attribute default="0" name="sqlCollationVersion" type="xsd:int" use="optional" form="unqualified" />
+    <xsd:attribute default="0" name="sqlSortId" type="xsd:int" use="optional" form="unqualified" />
+    <xsd:attribute default="" name="xmlSchemaCollection" type="xsd:string" use="optional" form="unqualified" />
+  </xsd:complexType>
+</xsd:schema>

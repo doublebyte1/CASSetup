@@ -1,0 +1,382 @@
+[Code]
+//File IS_CodeUtils
+//Holds several Inno Setup utility functions, that are used in the [code]
+//section of many scripts.
+//Use #include directives to incorporate these in the main script
+
+const
+	CRLF= #13#10;
+  UserChoicesSection = 'UserChoices'; //Section (in the INI file created by the
+  //setup) that holds the choices made by the user for setup
+  strNewFolder = 'NewFolder';
+  DataDirKey = 'DataDir'; //Key of ini file holding the data directory last selected by the user
+  FExtBat = '.bat'; //Extension for .bat files
+  FExtDat = '.dat'; //Extension for .dat files (usually files with commands to pass to command-line uses)
+  FExtOut = '.out'; //Extension for .out files (usually files with results from commands)
+
+// Global vars
+var
+  LoadInfFilename, SaveInfFilename: String; //Name of file where user choices are stored. This is better than storing in Registry
+  UserChoices: TArrayOfString;
+  HasDataDirPage, DataDirPageCreated: boolean;
+  FinishedInstall: boolean;
+  PathTmp: String;
+  PathData: String;
+  PathConfig: String;
+  MsgRequirementsMissing: String;
+  
+
+//Forward declarations
+function GetReadyPageDataDirText(): string; forward;
+
+function ReverseString(strIn: String): String;
+(*Purpose
+Reverses the input string
+*)
+var
+  strTmp: String;
+  lngN, j1: longInt;
+  
+begin
+  lngN:= Length(strIn);
+  SetLength(strTmp, lngN);
+  for j1:= 1 to lngN do
+    begin
+      strTmp[j1]:= strIn[lngN-j1+1];
+    end;    
+result:= strTmp;
+end;
+
+
+function BoolToStr(Val : Boolean): String;
+(*Purpose
+Convert a boolean to a string
+*)
+begin
+if val = True then
+  result := 'True'// or 'Yes' or '1'
+else
+  result := 'False';// or 'No' or '0'
+end;
+
+
+function FileDat(strFileName: String): String;
+(*Purpose
+Creates a file with an extension of the dat type used here, and the same base name as the one provided to it
+*)
+begin
+  result:=ChangeFileExt(strFileName, FExtDat);
+end;
+
+function FileBat(strFileName: String): String;
+(*Purpose
+Creates a file with an extension of the type used for batch files here, and the same base name as the one provided to it
+*)
+begin
+  result:=ChangeFileExt(strFileName, FExtBat);
+end;
+
+function FileOut(strFileName: String): String;
+(*Purpose
+Creates a file with an extension of the type used for output files here, and the same base name as the one provided to it
+*)
+begin
+  result:=ChangeFileExt(strFileName, FExtOut);
+end;
+
+function GetMsgBoxCRLF(): String;
+(*
+ 
+    Vista and W7 perform a UI-aware formatting of the text in a MsgBox breaking up lines at unpredictable positions
+    so we can not insert hard carriage return/linefeeds in the text to break lines where we want. In earlier versions
+    of Windows this is OK. Therefore, on Vista or W7 we return a space and let it handle formatting and use a hard CrLf
+    in all other cases.
+ 
+*)
+var
+    WindowsVersion: Integer;
+begin
+  WindowsVersion := (GetWindowsVersion shr 24);
+    if (WindowsVersion >= 6) then begin
+      Result := ' ';
+    end else begin
+      Result := CRLF;
+    end;
+end;
+
+procedure SetPathTmp(strPath: string);
+(*Purpose
+Sets the value of the Global Variable defining the path for the temporary directory to use when installing
+*)
+begin
+  PathTmp:= strPath;
+  Log('Path for Temporary files is ' + strPath);
+end;
+
+function GetPathTmp(Param: String): String;
+(*Purpose
+Gets the definition of the Temporary directory
+*)
+
+begin
+  result := PathTmp; //Simply reads the global variable
+ end;
+
+procedure SetPathData(strPath: string);
+(*Purpose
+Sets the value of the Global Variable defining the path for the Application Data Directory
+*)
+begin
+  Log('Before changing, Path for Data files is  ' + PathData);
+  PathData:= strPath;
+  Log('Path for Data files is now set to ' + PathData);
+end;
+
+procedure SetPathDataDefault();
+(*Purpose
+Sets the default value of the Global Variable defining the path for the Application Data Directory
+*)
+begin
+  SetPathData(ExpandConstant('{#MyAppDataDir}'));
+  Log('Path for Data files is ' + PathData);
+end;
+function GetPathData(Param: string): String;
+(*Purpose
+Gest the value of the Global Variable defining the path for the Application Data Directory
+*)
+begin
+  result:= PathData;
+  Log('The PathData variable is set to ' + PathData);
+end;
+
+procedure SetPathConf(strPath: string);
+(*Purpose
+Sets the value of the Global Variable defining the path for the Application Configuration Directory
+*)
+begin
+  PathConfig:= strPath;
+  Log('Path for Configuration files is ' + strPath);
+end;
+
+function GetPathConf(Param: string): String;
+(*Purpose
+Gest the value of the Global Variable defining the path for the Application Configuration Directory
+*)
+begin
+  result:= PathConfig;
+end;
+
+procedure SetGlobalsCommon();
+(*Purpose
+Sets the values of the global variables that are common to most installations, and
+that relate to the code defined in the PCB_ISUtils.isi include file
+*)
+
+begin
+  SetPathTmp(ExpandConstant('{tmp}')); 
+  //SetPathDataDefault; //This cannot be set here, because it will annull the changes made by the entry forms
+  SetPathConf(ExpandConstant('{app}\{#MyAppConfDir}'));
+end;
+
+function DataPathCreate(strPath: String): boolean;
+(*Purpose
+Checks if the Data Directory exists, and creates it if it does not
+Returns TRUE if the directory already exists, or if it is created successfully
+*)
+var
+  bolSuccess: boolean;
+begin
+  if DirExists(strPath) then
+    begin
+      bolSuccess:= True;
+    end
+  else
+    begin
+      bolSuccess:= ForceDirectories(strPath);
+    end;
+result:= bolSuccess;
+end;
+
+procedure SaveInfString(Section, Key, Value: String);
+begin
+  SetIniString(Section, Key, Value, SaveInfFilename);
+end;
+
+function ShouldLoadInf(): Boolean;
+begin
+  Result := (LoadInfFilename <> '');
+end;
+
+function ShouldSaveInf(): Boolean;
+begin
+  Result := (SaveInfFilename <> '');
+end;
+
+function LoadInfString(Section, Key, Default: String): String;
+begin
+  Result := GetIniString(Section, Key, Default, LoadInfFilename);
+end;
+
+procedure UpdateInfFilenames();
+begin
+  LoadInfFilename := ExpandFileName(ExpandConstant('{param:loadinf}'));
+  SaveInfFilename := ExpandFileName(ExpandConstant('{param:saveinf}'));
+end;
+
+procedure RegisterPreviousData(PreviousDataKey: Integer);
+// Store the values chosen by the user, so that they can be presented as default next time
+
+begin
+  { Store the settings so we can restore them next time }
+  if HasDataDirPage then
+    begin
+      SaveInfString(UserChoicesSection, DataDirKey, GetPathData(''));
+    end;
+end;
+
+
+function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo,
+MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo,
+MemoTasksInfo: String): String;
+(*Purpose:
+Provide the text to be presented in the last (summary of choices) Wizard page
+*)
+var
+  strMsg: String;
+  strTmp: String;
+   
+begin
+//Build the message here
+  strTmp:= MemoUserInfoInfo;
+  if strTmp <>'' then
+    begin
+      strMsg:= strTmp;
+    end;
+    
+  strTmp:= MemoDirInfo;
+  if strTmp <> '' then
+    begin
+      if strMsg <> '' then
+        begin
+           strMsg:= strMsg + NewLine + NewLine + strTmp;
+        end
+      else
+        begin
+          strMsg:= strTmp;
+        end;
+    end;
+  if HasDataDirPage then
+    begin
+      strTmp:= GetReadyPageDataDirText;
+      if strTmp <> '' then
+        begin
+          if strMsg <> '' then
+            begin
+              strMsg:= strMsg + NewLine + NewLine + strTmp;
+            end
+          else
+            begin
+              strMsg:= strTmp;
+            end;
+        end;
+    end;
+  result:= strMsg;
+end;
+
+
+function ExtractFileNameBase(FileName: String): String;
+(*Purpose
+Extracts the Base filename (the filename, without path and without extension) of FileName
+*)
+
+var
+  strTmp: String;
+  lngLen: Longint;
+  
+begin
+  strTmp:= ExtractFileName(FileName);
+  lngLen:= Length(strTmp) - Length(ExtractFileExt(strTmp));
+  strTmp:= Copy(strTmp,1, lngLen);
+  result:= strTmp;
+end;
+
+
+procedure SetFinishedInstall(bolFinished: boolean);
+(*Purpose
+Sets the value of the Global Variable defining whether the installation has finished
+*)
+begin
+  FinishedInstall:= bolFinished;
+end;
+
+
+
+function FileBackup(strFile, strTimeStamp, strBakDir: string): boolean;
+(*Purpose
+Creates a backup of a file whose name is given.
+If strBakDir is given it will copy the file to this directory, 
+adding the time-stamp and the extension .bak to its name. It will leave the original file intact
+If strBakDir is not given, it will rename the file, adding the time-stamp and the extension .bak
+to its name.
+If time-stamp is not given, it will use the time-stamp of the current time
+*)
+
+var
+  bolSuccess, bolRename: boolean;
+  strFileBak: String;
+  strDateTime: String;
+  
+begin
+  bolSuccess:= False;
+  
+  //Check if the file to backup actually exists. If it does not, no need to continue
+  if not FileExists(strFile) then
+    begin
+      result:= False;
+      exit;
+    end;
+  
+  //Set the time-stamp to use
+  if strTimeStamp = '' then
+    begin
+      strDateTime:= GetDateTimeString('yyyymmddhhmmss',':',':');
+    end
+  else
+    begin
+      strDateTime:= strTimeStamp;
+    end;
+    
+  //Set the name of the backup file    
+  strFileBak:= strFile + '.' + strDateTime + '.bak';
+  
+  //Check if a backup Directory was given, and use it or create it if yes
+  if strBakDir = '' then
+    begin
+      bolRename:= True;
+    end
+  else
+    begin
+      if not DirExists(strBakDir) then
+        begin
+          bolSuccess:= ForceDirectories(strBakDir);
+          if not bolSuccess then
+            begin
+              result:= False;
+              Exit;
+            end;
+        end;
+      bolRename:= False;
+    end;
+    
+  //Do the actual backup. Either rename the file or copy it to the backup directory    
+  if bolRename then
+    begin
+      bolSuccess:= RenameFile(strFile, strFileBak);
+    end
+  else
+    begin
+      strFileBak:= AddBackSlash(strBakDir) + ExtractFileName(strFileBak);
+      bolSuccess:= FileCopy(strFile, strFileBak, True);
+    end;
+  result:= bolSuccess; 
+end;

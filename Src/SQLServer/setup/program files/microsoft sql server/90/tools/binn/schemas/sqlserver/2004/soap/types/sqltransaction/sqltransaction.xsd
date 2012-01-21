@@ -1,0 +1,21 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/sqlserver/2004/SOAP/types/SqlTransaction">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">&#xd;&#xa;(c) Copyright 2004, Microsoft Corporation&#xd;&#xa;&#xd;&#xa;The following schema for Microsoft SQL Server is presented in XML format and is for informational purposes only. Microsoft Corporation ("Microsoft") may have trademarks, copyrights, or other intellectual property rights covering subject matter in the schema.&#xd;&#xa;&#xd;&#xa;Microsoft does not make any representation or warranty regarding the schema or any product or item developed based on the schema. The schema is provided to you on an AS IS basis.  Microsoft disclaims all express, implied and statutory warranties, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, and freedom from infringement. Without limiting the generality of the foregoing, Microsoft does not make any warranty of any kind that any item developed based on the schema, or any portion of the schema, will not infringe any copyright, patent, trade secret, or other intellectual property right of any person or entity in any country. It is your responsibility to seek licenses for such intellectual property rights where appropriate.&#xd;&#xa;&#xd;&#xa;MICROSOFT SHALL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SCHEMA, INCLUDING WITHOUT LIMITATION, ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL (INCLUDING ANY LOST PROFITS), PUNITIVE OR SPECIAL DAMAGES, WHETHER OR NOT MICROSOFT HAS BEEN ADVISED OF SUCH DAMAGES.&#xd;&#xa;</xsd:documentation>
+  </xsd:annotation>
+  <xsd:complexType name="SqlTransaction">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element name="Descriptor" type="xsd:base64Binary" />
+      <xsd:element name="Type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Begin"/>
+            <xsd:enumeration value="Commit"/>
+            <xsd:enumeration value="Rollback"/>
+            <xsd:enumeration value="EnlistDTC"/>
+            <xsd:enumeration value="Defect"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

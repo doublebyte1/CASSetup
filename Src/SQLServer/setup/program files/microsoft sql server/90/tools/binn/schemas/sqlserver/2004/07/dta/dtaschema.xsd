@@ -1,0 +1,1194 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema targetNamespace="http://schemas.microsoft.com/sqlserver/2004/07/dta" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/dta" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" blockDefault="#all">
+
+<xsd:annotation>
+	<xsd:documentation>
+		The following schema for Microsoft SQL Server 2005 describes 
+		input and output from the "database tuning advisor" tool in XML format.  
+
+		Microsoft does not make any representation or warranty regarding the 
+		schema or any product or item developed based on the schema. The schema 
+		is provided to you on an AS IS basis.  Microsoft disclaims all express, 
+		implied and statutory warranties, including but not limited to the implied 
+		warranties of merchantability, fitness for a particular purpose, and freedom 
+		from infringement. Without limiting the generality of the foregoing, 
+		Microsoft does not make any warranty of any kind that any item developed 
+		based on the schema, or any portion of the schema, will not infringe any 
+		copyright, patent, trade secret, or other intellectual property right of any 
+		person or entity in any country. It is your responsibility to seek licenses 
+		for such intellectual property rights where appropriate.
+
+		MICROSOFT SHALL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR 
+		IN CONNECTION WITH THE USE OF THE SCHEMA, INCLUDING WITHOUT LIMITATION, ANY 
+		DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL (INCLUDING ANY LOST PROFITS), 
+		PUNITIVE OR SPECIAL DAMAGES, WHETHER OR NOT MICROSOFT HAS BEEN ADVISED OF 
+		SUCH DAMAGES. 
+		(c) Microsoft Corporation. All rights reserved.
+  
+        </xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:annotation>
+		<xsd:appinfo>DTA XML Schema</xsd:appinfo>
+		<xsd:documentation>
+			XML Schema for DTA input/output 
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  This is the Root of the schema 
+   **  hierarchy
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:element name="DTAXML">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="DTAInput" type="DTAInputType" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="DTAOutput" type="DTAOutputType" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Root of Input schema hierarchy
+   **  Input to DTA can be input arguments
+   **  or an input user specified
+   **  configuration.
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="DTAInputType">
+		<xsd:sequence>
+			<!--Server occurs once in the input-->
+			<xsd:element name="Server" minOccurs="1" maxOccurs="1">
+				<!--Server is a complexType.1 Name and multiple Databases under it-->
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+						<!--Database can occur multiple times.Should occur at lease once-->
+						<xsd:element name="Database" minOccurs="1" maxOccurs="unbounded">
+							<!--Database is a complexType.1 Name and 0 or more Schemas under -->
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+									<!--Schema can occur multiple times 0 or more schemas can occur. -->								
+									<!--If no schema hierarchy is specified all objects under db is considered-->
+									<xsd:element name="Schema" minOccurs="0" maxOccurs="unbounded">
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+												<xsd:choice minOccurs="1" maxOccurs="unbounded">
+													<xsd:element name="Table" minOccurs="0" maxOccurs="1">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+															</xsd:sequence>
+															<xsd:attribute name="NumberOfRows" type="xsd:integer" use="optional" />
+														</xsd:complexType>
+													</xsd:element>													
+													<xsd:element name="View" minOccurs="0" maxOccurs="1">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>	
+												<!--End of choice (Table/View)-->																									
+												</xsd:choice>
+											<!--End of Scheme sequence-->
+											</xsd:sequence>
+										<!--End of Schema complexType-->											
+										</xsd:complexType>
+									<!--End of Schema element-->										
+									</xsd:element>	
+								<!--End of Database sequence-->										
+								</xsd:sequence>	
+							<!--End of Database complexType-->										
+							</xsd:complexType>		
+						<!--End of Database element-->														
+						</xsd:element>																			
+					<!--End of Server sequence-->
+					</xsd:sequence>
+				<!--End of Server complexType-->					
+				</xsd:complexType>
+			<!--End of Server element-->				
+			</xsd:element>
+			<xsd:element name="Workload" type="WorkloadType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="TuningOptions" type="TuningOptionsType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Configuration" type="ConfigurationType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Root of Output schema hierarchy
+   **  Output of DTA includes Header (maps to
+   **  what is currently generated in the 
+   **  script file ),an o/p configuration	
+   **  and Reports
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="DTAOutputType">
+		<xsd:sequence>
+			<xsd:element name="TuningSummary" type="TuningSummaryType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Configuration" type="ConfigurationType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="AnalysisReport" type="AnalysisReportType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Use ServerDetailsType if specifying an object - Server.Database.Schema.Table
+   **  Use ServerType if specifying a Configuration
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ServerType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Database" type="DatabaseType" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  The Server/Database/Schema/Table hierarchy needs to be overloaded.
+   **  This is because an index recommendation for instance cannot be associated
+   **  with Database tag under DTAInput, whereas inside a USC this makes sense
+   **  Use ServerDetailsType if specifying Server.Database.Schema.Table
+   **  Use ServerType if specifying a USC
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ServerDetailsType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Database" type="DatabaseDetailsType" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Database type - list of database 
+   **  names
+   **  Schema is Owner in Yukon
+   **  Not to be confused with Schema in XML
+   **  Partition functions and schemes operate
+   **  at the database level
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="DatabaseType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element name="Recommendation" type="RecommendationPType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="Schema" type="SchemaType" minOccurs="1" maxOccurs="1" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Schema type - refers to owner in Yukon
+   **  This preserves Server.DB.Owner.Object
+   **  hierarchy
+   **  
+   **  This is equivalent to the notion of owner in SQL Server 2000   
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="SchemaType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element name="Recommendation" type="RecommendationViewType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="Table" type="TableType" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="View" type="ViewType" minOccurs="1" maxOccurs="1" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Details of db.schema.table.This merely lists
+   **  out the 3 part name of a table and attributes relevant for analysis
+   **  reports
+   **   
+   **
+   **********************************************************************************
+    -->
+	<xsd:complexType name ="DatabaseDetailsType">
+		<xsd:sequence>
+			<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Schema" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+						<xsd:element name="Table" minOccurs="1" maxOccurs="1">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>										
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>					
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  WorkloadFileType can be a workload file
+   **  or a list of tables 
+   **  
+   **   
+   **
+   **********************************************************************************
+    -->
+	<xsd:complexType name="WorkloadType">
+		<xsd:choice>
+			<xsd:element name="File" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Database" type="DatabaseDetailsType" minOccurs="1" maxOccurs="1"/>
+			<xsd:sequence>
+				<xsd:element name="EventString" minOccurs="1" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:extension base="xsd:string">
+								<xsd:attribute name ="Weight" use="optional" >
+									<xsd:simpleType >
+										<xsd:restriction base="xsd:float">
+											<xsd:minExclusive value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+							</xsd:extension>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>			
+		</xsd:choice>
+	</xsd:complexType>
+	
+	
+
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Format for Optional arguments 
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="TuningOptionsType">
+		<xsd:sequence>
+			<!--Report set maps to a choice of reports user would want to generate!-->
+			<xsd:element name="ReportSet" minOccurs ="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence  minOccurs="0" maxOccurs="1">
+						<xsd:element name="Report" minOccurs="1" maxOccurs="unbounded">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="ALL" />
+									<xsd:enumeration value="NONE" />		
+									<xsd:enumeration value="STMT_COST" />
+									<xsd:enumeration value="EVT_FREQ" />
+									<xsd:enumeration value="STMT_DET" />
+									<xsd:enumeration value="CUR_STMT_IDX" />
+									<xsd:enumeration value="REC_STMT_IDX" />
+									<xsd:enumeration value="STMT_COSTRANGE" />
+									<!--Enumeration Removed-->
+									<!--:enumeration value="REC_QRY_COSTRANGE" />-->
+									<xsd:enumeration value="CUR_IDX_USAGE" />
+									<xsd:enumeration value="REC_IDX_USAGE" />
+									<xsd:enumeration value="CUR_IDX_DET" />
+									<xsd:enumeration value="REC_IDX_DET" />
+									<xsd:enumeration value="VIW_TAB" />
+									<xsd:enumeration value="WKLD_ANL" />
+									<xsd:enumeration value="DB_ACCESS" />
+									<xsd:enumeration value="TAB_ACCESS" />
+									<xsd:enumeration value="COL_ACCESS" />
+								</xsd:restriction>				
+							</xsd:simpleType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>	
+			<!--This is used to specify the table that DTA will use to output events that could not be tuned !-->
+			<xsd:element name="TuningLogTable" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence minOccurs ="0" maxOccurs="1">
+						<xsd:element name="Database" type="DatabaseDetailsType" minOccurs="1" maxOccurs="1"/>			
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--Number of events to be tuned!-->
+			<xsd:element name="NumberOfEvents" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1"/>
+			<!--Specifies the tuning time in minutes, and is a required option unless NumberofEvents is specified!-->
+			<xsd:element name="TuningTimeInMin" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1"/>
+                        <!-- If either of "NumberOfEvents" and "TuningTimeInMin" are absent, the other defaults to infinite.  -->
+                        <!-- If both of "NumberOfEvents" and "TuningTimeInMin" are present, the earlier of the two events     -->
+                        <!-- determines when tuning will terminate.                                                           -->
+
+			<!--Specifies the maximum space in megabytes that can be consumed recommendation!-->
+			<xsd:element name="StorageBoundInMB" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1"/>
+			<!--Specifies the maximum number of key columns in indexes proposed by DTA!-->
+			<xsd:element name="MaxKeyColumnsInIndex" type="MaxKeyColumnsInIndexType" minOccurs="0" maxOccurs="1"/>
+			<!--Specifies the maximum number of columns (key and non key) in indexes proposed by DTA!-->
+			<xsd:element name="MaxColumnsInIndex" type="MaxColumnsInIndexType" minOccurs="0" maxOccurs="1"/>
+			<!--Specifies the minimum improvement for DTA to propose a configuration!-->
+			<xsd:element name="MinPercentageImprovement" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+			<!--Specifies the test server on which the tuning will be done!-->
+			<xsd:element name="TestServer" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:choice>
+				<xsd:element name="EvaluateConfiguration" minOccurs="1" maxOccurs="1"/>
+				<!--Choose the feature set and partitioning options OR
+				Choose to use drop only mode !-->
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:sequence>
+							<!--
+									FeatureSet represents the class of physical design structures that will be considered
+									by the tuning engine								
+									IDX - Indexes
+									IV - Index Views
+									IDX_IV - Indexes and Index Views
+									NCL_IDX - Non Clustered Indexes
+								!-->
+							<xsd:element name="FeatureSet" minOccurs="1" maxOccurs="1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="IDX" />
+										<xsd:enumeration value="IV" />
+										<xsd:enumeration value="IDX_IV" />
+										<xsd:enumeration value="NCL_IDX" />
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!--
+								Partitioning represents the way the physical design structures considered will be partitioned
+								by the tuning engine								
+								NONE - No partitioning
+								FULL - Full partitioning
+								ALIGNED - Aligned partitioning
+							!-->
+							<xsd:element name="Partitioning" minOccurs="1" maxOccurs="1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="NONE" />
+										<xsd:enumeration value="FULL" />
+										<xsd:enumeration value="ALIGNED" />
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+						</xsd:sequence>
+						<!--
+							Suggest which physical design structures can be dropped.No new physical design structures are
+							recommended in this mode, the physical design structures not used by the workload
+							are suggested to be dropped.
+						!-->
+						<xsd:element name="DropOnlyMode" minOccurs="1" maxOccurs="1" />
+					</xsd:choice>
+					<!--
+						KeepExisting refers to which existing physical design structures in 
+						the database must be part of DTA recommendation
+						NONE - Drop all
+						ALL - Keep All
+						CL_IDX - Keep Clustered Indexes
+						ALIGNED - Keep Aligned
+						IDX -Keep Indexes
+					!-->
+					<xsd:element name="KeepExisting" minOccurs="1" maxOccurs="1">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="NONE" />
+								<xsd:enumeration value="ALL" />
+								<xsd:enumeration value="CL_IDX" />
+								<xsd:enumeration value="ALIGNED" />
+								<xsd:enumeration value="IDX" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:choice>
+
+			<xsd:element name="OnlineIndexOperation" minOccurs="0" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="ON" />
+						<xsd:enumeration value="OFF" />
+						<xsd:enumeration value="MIXED" />			
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--Specifies the database to connect!-->
+			<xsd:element name="DatabaseToConnect" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+			<!--Ignore all constants in workload-->
+			<xsd:element name="IgnoreConstantsInWorkload" minOccurs="0" maxOccurs="1"/>
+			<!--Do not drop shell database-->
+			<xsd:element name="RetainShellDB" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **   Maximum number of key columns  
+   **   1-16 range
+   **   This only applies to Yukon Server
+   **	
+   **
+   **********************************************************************************
+   -->
+	<xsd:simpleType name="MaxKeyColumnsInIndexType">
+		<xsd:restriction base="xsd:unsignedInt">
+			<xsd:minExclusive value="0" />
+			<xsd:maxInclusive value="16" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+   	<!-- 
+   **********************************************************************************
+   **  
+   **   Maximum number of columns  
+   **   The maxInclusive value applies only for  
+   **   Yukon servers.For Pre-Yukon server(Shiloh/Sphinx)
+   **	the upper bound will be implicitly 16
+   **
+   **********************************************************************************
+   -->
+	<xsd:simpleType name="MaxColumnsInIndexType">
+		<xsd:restriction base="xsd:unsignedInt">
+			<xsd:minExclusive value="0" />
+			<xsd:maxInclusive value="1024" />
+		</xsd:restriction>
+	</xsd:simpleType>	
+
+
+	<!--
+   **********************************************************************************
+   **  
+   **  Summary of the work done by
+   **  tuning engine
+   **  
+   **********************************************************************************
+   -->
+	<xsd:complexType name="TuningSummaryType">
+		<xsd:sequence>
+			<xsd:element name="ReportEntry" type="ReportEntryType" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+   **********************************************************************************
+   **  
+   **  ReportEntryType is a Name/Value Pair
+   **  
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ReportEntryType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- 
+   **********************************************************************************
+   **  
+   **  ConfigurationType
+   **  "ConfigurationType"  refers
+   **  to an absolute or relative (delta)
+   **  configuration. In the relative sense
+   **  the configuration is a delta wrt to
+   **  current configuration whereas 
+   **  absolute refers to a stand alone
+   **  absolute configuration 
+   **  
+   **
+  **********************************************************************************
+   -->
+	<xsd:complexType name="ConfigurationType">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="Server" type="ServerType" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="SpecificationMode" type="SpecificationModeType" default="Relative" />
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Table type - list of table 
+   **  names
+   **   Schema in Yukon,refers to Table Owner Name
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="TableType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Recommendation" type="RecommendationType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+   **********************************************************************************
+   **  View
+   ** If there is a Recommendation node and
+   ** no ViewDefinition node it  means the 
+   ** Recommendation is on an existing view
+   ** 
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ViewType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ViewDefinition" minOccurs = "0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base = "xsd:string">
+							<xsd:attribute name="QUOTED_IDENTIFIER" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="ARITHABORT" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="CONCAT_NULL_YIELDS_NULL" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="ANSI_NULLS" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="ANSI_PADDING" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="ANSI_WARNINGS" type ="xsd:boolean" use="optional"/>
+							<xsd:attribute name="NUMERIC_ROUNDABORT" type ="xsd:boolean" use="optional"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Recommendation" type="RecommendationType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+   **********************************************************************************
+   **  Recommendation Type
+   **  Could be Create,Drop
+   **********************************************************************************
+   -->
+	<xsd:complexType name="RecommendationType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="Create" type="CreateType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Drop" type="DropType" minOccurs="1" maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<!--
+   **********************************************************************************
+   **  Recommendation View  Type
+   **  Only Create View Allowed
+   **********************************************************************************
+   -->
+	<xsd:complexType name="RecommendationViewType">
+		<xsd:sequence>
+			<xsd:element name="Create" type="CreateViewType"  minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<!-- 
+   **********************************************************************************
+   **  CreateType
+   ** <Create>
+   **   <Index> | <View> |  <Statistics>
+   **   <PartitionFunction> |
+   **   <PartitionScheme>	
+   ** </Create>
+   **********************************************************************************
+   -->
+	<xsd:complexType name="CreateType">
+		<xsd:choice>
+			<xsd:element name="Index" type="IndexType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Statistics" type="StatisticsType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Heap" type="HeapType" minOccurs="1" maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	
+		<!-- 
+   **********************************************************************************
+   **  CreateViewype
+   **********************************************************************************
+   -->
+	<xsd:complexType name="CreateViewType">
+		<xsd:sequence>
+			<xsd:element name="View" type="ViewType" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- 
+   **********************************************************************************
+   **  DropType
+   **********************************************************************************
+   -->
+	<xsd:complexType name="DropType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="Index" type="IndexType" minOccurs="1" maxOccurs="1"/>
+			</xsd:choice>	
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+   **********************************************************************************
+   **  Recommendation Type - FOR PARTITIONS
+   **  Could be Create,Drop
+   **********************************************************************************
+   -->
+	<xsd:complexType name="RecommendationPType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="Create" type="CreatePType" minOccurs="1" maxOccurs="1" />
+		</xsd:choice>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  CreatePType
+   ** 
+   **********************************************************************************
+   -->
+	<xsd:complexType name="CreatePType">
+		<xsd:choice>
+			<xsd:element name="PartitionFunction" type="PartitionFunctionType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="PartitionScheme" type="PartitionSchemeType" minOccurs="1" maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  Index
+   ** PartitionColumns - columns on which the
+   ** table will be partitoned
+   **********************************************************************************
+   -->
+	<xsd:complexType name="IndexType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="Column" type="ColumnType" minOccurs="0" maxOccurs="1024" />
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="PartitionScheme" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="PartitionColumn" type="ColumnType" minOccurs="1" maxOccurs="1024" />
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="FileGroup" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:choice>
+			<xsd:element name="NumberOfReferences" type="xsd:double" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="PercentUsage" type="xsd:double" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="Clustered" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="Unique" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="Online" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="IndexSizeInMB" type="xsd:double" />
+		<xsd:attribute name="NumberOfRows" type="xsd:integer" />
+		<xsd:attribute name="QUOTED_IDENTIFIER" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ARITHABORT" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="CONCAT_NULL_YIELDS_NULL" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_NULLS" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_PADDING" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_WARNINGS" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="NUMERIC_ROUNDABORT" type ="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+	<!--	
+   **********************************************************************************
+   **  Statistics
+   **********************************************************************************
+   -->
+	<xsd:complexType name="StatisticsType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:choice minOccurs ="0">
+				<xsd:element name="FullScan" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="SamplePercentage" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="SampleRows"  type="xsd:long" minOccurs="1" maxOccurs="1"/>	
+			</xsd:choice>
+			<xsd:element name="Column" type="ColumnType" minOccurs="1" maxOccurs="16" />
+		</xsd:sequence>
+		<xsd:attribute name="QUOTED_IDENTIFIER" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ARITHABORT" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="CONCAT_NULL_YIELDS_NULL" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_NULLS" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_PADDING" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="ANSI_WARNINGS" type ="xsd:boolean" use="optional"/>
+		<xsd:attribute name="NUMERIC_ROUNDABORT" type ="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+	
+	<!-- 
+   **********************************************************************************
+   **  Heap
+   ** PartitionColumns - columns on which the table will be partitoned
+   **********************************************************************************
+   -->
+	<xsd:complexType name="HeapType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="PartitionScheme" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="PartitionColumn" type="ColumnType" minOccurs="1" maxOccurs="1024" />
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="FileGroup" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<!--	
+   **********************************************************************************
+   **
+   **  PartitionFunctionType
+   **
+   **	
+   **********************************************************************************
+   -->
+	<xsd:complexType name="PartitionFunctionType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="ArgumentToFunction" type="xsd:string" minOccurs="1" maxOccurs="1024" />
+			<xsd:element name="PartitionType" type="PartitionType" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--	
+   **********************************************************************************
+   **
+   **  PartitionType can be Range or Hash
+   **
+   **	
+   **********************************************************************************
+   -->
+	<xsd:complexType name="PartitionType">
+		<xsd:choice>
+			<xsd:element name="Range" type="RangeType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Hash" type="HashType" minOccurs="1"  maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<!--	
+   **********************************************************************************
+   **
+   **  Range Type - Can have LEFT/RIGHT
+   **  Boundary values . Unbounded as
+   **  one can have as many partitions
+   **  (as of now upper boundnot considered)
+   **  values refer to range boundaries
+   **  
+   **	
+   **********************************************************************************
+   -->
+	<xsd:complexType name="RangeType">
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="Value" minOccurs="1" maxOccurs="1" >
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension  base="xsd:string">
+							<xsd:attribute name="IsNull" default="false" use="optional"/>
+						</xsd:extension>
+					</xsd:simpleContent>			
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Boundary" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Left" />
+					<xsd:enumeration value="Right" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!--	
+   **********************************************************************************
+   **
+   **  Hash type
+   **  Value here refers to Number of Partitions
+   **
+   **	
+   **********************************************************************************
+   -->
+	<xsd:complexType name="HashType">
+		<xsd:sequence>
+			<xsd:element name="NumberOfPartitions" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--	
+   **********************************************************************************
+   **  PartitionSchemeType
+   **********************************************************************************
+   -->
+	<xsd:complexType name="PartitionSchemeType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="PartitionFunction" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="FileGroup" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  Column
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ColumnType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="Type" type="ColType" use="optional" />
+		<xsd:attribute name="SortOrder" type="SortOrderType" default="Ascending" use="optional"/>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  AnalysisReport
+   **  Note about Tuning Summary report:
+   **  This is generated from the schema of the 
+   **  <HEADERTYPE> </HEADERTYPE> subtree. 	
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="AnalysisReportType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="StatementCostReport" type="StatementCostReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="EventWeightReport" type="EventWeightReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="StatementDetailReport" type="StatementDetailReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="StatementIndexReport" type="StatementIndexReportType" minOccurs="1"  maxOccurs="1"/>
+			<xsd:element name="StatementCostRangeReport" type="StatementCostRangeReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="IndexUsageReport" type="IndexUsageReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="IndexDetailReport" type="IndexDetailReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ViewTableReport" type="ViewTableReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="WorkloadAnalysisReport" type="WorkloadAnalysisReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="DatabaseAccessReport" type="DatabaseAccessReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="TableAccessReport" type="TableAcessReportType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ColumnAccessReport" type="ColumnAcessReportType" minOccurs="1" maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<!-- 
+   **********************************************************************************
+   **  
+   ** Hierarchy for Analysis reports. Number of differences are more than the other
+   ** 2 nodes - hence extension / restrict is not used
+   ** This is a very open schema hierarchy
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name ="ReportsDatabaseHierarchyType">
+		<xsd:sequence>
+			<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NumberOfReferences"  type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="PercentUsage" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<!--Schema is optional.Database usage report doesnt need rest of the hierarchy-->
+			<xsd:element name="Schema" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+						<!--Choice of Table or View.maxOccurs=1 minOccurs=1 since at least 1 reqd-->
+						<!--View tag is part of the ViewTable report-->
+						<xsd:choice>
+							<!--Table Usage Report/ Index Detail/Index Usage/Column Usage/Statement Index Report-->
+							<!--follow the hierarchy below table-->
+							<xsd:element name="Table" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+										<xsd:element name="NumberOfReferences"  type="xsd:double" minOccurs="0" maxOccurs="1"/>
+										<xsd:element name="PercentUsage" type="xsd:double" minOccurs="0" maxOccurs="1"/>			
+										<!--Can be Index/Column or No element.Index if Index Usage /Detail report-->
+										<!--Column if column access report. For Table usage report choice doesnt occur-->
+										<xsd:choice minOccurs="0">
+											<xsd:sequence>
+												<!--Index sequence should contain Index tag.So minOccurs=1-->
+												<xsd:element name="Index" minOccurs="1" maxOccurs="unbounded">
+												<xsd:complexType>
+													<xsd:sequence>
+														<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+														<xsd:element name="NumberOfReferences"  type="xsd:double" minOccurs="0" maxOccurs="1"/>
+														<xsd:element name="PercentUsage" type="xsd:double" minOccurs="0" maxOccurs="1"/>			
+													</xsd:sequence>
+													<xsd:attribute name="Clustered" type="xsd:boolean" use="optional" default="false" />
+													<xsd:attribute name="Unique" type="xsd:boolean" use="optional" default="false" />
+													<xsd:attribute name="Online" type="xsd:boolean" use="optional" default="false" />
+													<xsd:attribute name="Heap" type="xsd:boolean" use="optional" default="false" />											
+													<xsd:attribute name="IndexSizeInMB" type="xsd:double" />
+													<xsd:attribute name="NumberOfRows" type="xsd:integer" />								
+												</xsd:complexType>
+											</xsd:element>
+											</xsd:sequence>	
+											<xsd:sequence>	
+												<!--Column sequence should contain Column tag.So minOccurs=1-->														
+												<xsd:element name="Column" minOccurs="1" maxOccurs="unbounded">
+												<xsd:complexType>
+													<xsd:sequence>
+														<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+														<xsd:element name="NumberOfReferences"  type="xsd:double" minOccurs="0" maxOccurs="1"/>
+														<xsd:element name="PercentUsage" type="xsd:double" minOccurs="0" maxOccurs="1"/>			
+													</xsd:sequence>
+												</xsd:complexType>
+											</xsd:element>
+											</xsd:sequence>	
+										</xsd:choice>									
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>										
+							<!--For View Table Report-->
+							<xsd:element name="View" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Name" minOccurs="1" maxOccurs="1"/>
+										<!--At least one Table under View Table Report-->
+										<xsd:element name="Table" minOccurs="1" maxOccurs="unbounded">			
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element  name="Name" minOccurs="1" maxOccurs="1" />										
+												</xsd:sequence>
+										</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						<!--End choice of table or view-->
+						</xsd:choice>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>					
+	</xsd:complexType>
+
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Statement Cost Report contains StatementType
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="StatementCostReportType">
+		<xsd:sequence>
+			<xsd:element name="Statement"  type="StatementType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="StatementType">
+		<xsd:sequence>
+			<xsd:element name="StatementID" type="xsd:integer" />
+			<xsd:element name="StatementString" type="xsd:string" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="PercentImprovement" type="xsd:double" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="CurrentCost" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="RecommendedCost" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="EventString" type="xsd:string" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Event Frequency Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+   	<xsd:complexType name="EventWeightReportType">
+		<xsd:sequence>
+			<xsd:element name="EventDetails" type="EventDetailsType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="EventDetailsType">
+		<xsd:sequence>
+			<xsd:element name="EventString" type="xsd:string" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Weight" type="xsd:double" minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Statement Detail Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="StatementDetailReportType">
+		<xsd:sequence>
+			<xsd:element name="Statement"  type="StatementType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Statement Index Relations Report - 2 reports
+   **  
+   **********************************************************************************
+   -->
+	<xsd:complexType name="StatementIndexReportType">
+		<xsd:sequence>
+			<xsd:element name="StatementIndexDetail"  type="StatementIndexDetailType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="Current" type="xsd:boolean" use="optional" />
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="StatementIndexDetailType">
+		<xsd:sequence>
+			<xsd:element name="StatementString" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<!--Multiple dbs-->
+			<xsd:element name="Database" type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Statement Cost Range Report 
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="StatementCostRangeReportType">
+		<xsd:sequence>
+			<xsd:element name="CostRange"  type="CostRangeType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CostRangeType">
+		<xsd:sequence>
+			<xsd:element name="NumStatementsCurrent" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="NumStatementsRecommended" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="Percent" type="xsd:string" use="optional" />
+	</xsd:complexType>		
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Index Usage Report
+   **    
+   **********************************************************************************
+   -->
+	<xsd:complexType name="IndexUsageReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="Current" type="xsd:boolean" use="optional" />
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Index Detail Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="IndexDetailReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="Current" type="xsd:boolean" use="optional" />
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  View Table Relations Record
+   **  
+   **
+   **********************************************************************************
+   -->
+	<xsd:complexType name="ViewTableReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>			
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Workload Analysis Report
+   **  
+   ** 
+   **********************************************************************************
+   -->
+	<xsd:complexType name="WorkloadAnalysisReportType">
+		<xsd:sequence>
+			<xsd:element name="Statements"  type="StatementsType" minOccurs="0" maxOccurs="4" />	
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="StatementsType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string"/>
+			<xsd:element name="NumberOfStatements" type="xsd:integer"/>
+			<xsd:element name="CostDecreased" type="xsd:integer"/>
+			<xsd:element name="CostIncreased" type="xsd:integer" />
+			<xsd:element name="CostSame" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Database Access Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+   	<xsd:complexType name="DatabaseAccessReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Table Access Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+    <xsd:complexType name="TableAcessReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- 
+   **********************************************************************************
+   **  
+   **  Column Access Report 
+   **  
+   **
+   **********************************************************************************
+   -->
+      <xsd:complexType name="ColumnAcessReportType">
+		<xsd:sequence>
+			<xsd:element name="Database"  type="ReportsDatabaseHierarchyType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+**********************************************************************************
+**  
+**  Simple Types
+**
+**
+**
+**********************************************************************************
+-->
+	<xsd:simpleType name="SortOrderType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Ascending" />
+			<xsd:enumeration value="Descending" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="SpecificationModeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="Relative" />
+			<xsd:pattern value="Absolute" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ColType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="KeyColumn" />
+			<xsd:enumeration value="IncludedColumn" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>

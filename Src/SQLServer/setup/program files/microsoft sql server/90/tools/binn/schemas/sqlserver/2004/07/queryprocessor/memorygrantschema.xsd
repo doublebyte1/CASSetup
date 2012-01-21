@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://schemas.microsoft.com/sqlserver/2004/07/queryprocessor" xmlns:memgr="http://schemas.microsoft.com/sqlserver/2004/07/queryprocessor" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" blockDefault="#all">
+	<xsd:annotation>
+		<xsd:documentation>
+        The following schema for Microsoft SQL Server 2005 describes 
+	query memory grant information in XML format.  
+
+	Microsoft does not make any representation or warranty regarding the 
+	schema or any product or item developed based on the schema. The schema 
+	is provided to you on an AS IS basis.  Microsoft disclaims all express, 
+	implied and statutory warranties, including but not limited to the implied 
+	warranties of merchantability, fitness for a particular purpose, and freedom 
+	from infringement. Without limiting the generality of the foregoing, 
+	Microsoft does not make any warranty of any kind that any item developed 
+	based on the schema, or any portion of the schema, will not infringe any 
+	copyright, patent, trade secret, or other intellectual property right of any 
+	person or entity in any country. It is your responsibility to seek licenses 
+	for such intellectual property rights where appropriate.
+
+	MICROSOFT SHALL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR 
+	IN CONNECTION WITH THE USE OF THE SCHEMA, INCLUDING WITHOUT LIMITATION, ANY 
+	DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL (INCLUDING ANY LOST PROFITS), 
+	PUNITIVE OR SPECIAL DAMAGES, WHETHER OR NOT MICROSOFT HAS BEEN ADVISED OF 
+	SUCH DAMAGES. 
+
+
+	(c) Microsoft Corporation. All rights reserved.
+  
+        </xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:element name="MemoryGrants">
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>This is the root element. It contains individual "Grant" elements for each per-query memory grant.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="Grant" type="memgr:GrantType" minOccurs="0" maxOccurs="unbounded">
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="Version" type="xsd:string" use="optional"/>
+			<xsd:attribute name="Build" type="xsd:string" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="GrantType">
+		<xsd:annotation>
+			<xsd:documentation>
+			Information about one memory grant.
+			SPID: Not NULL. The SPID (system process ID) of the connection that issued the batch (that contains the query) for which this element is generated.
+			BatchID: Not NULL. The batch ID.
+			SQLHandle: SQL Handle, at most 40 characters following the initial '0x'.
+			MemoryRequested: Memory requested by this query in number of 8 KB buffers. 
+			MemoryGranted: Memory granted to this query in number of 8 KB buffers. For a queued up query, this value is equal to 0.
+			MemoryUsed: Memory used by this query in number of 8 KB buffers. This value could be lower than that in MemoryGranted in case the query is not currently using its entire memory grant. For a queued up query, this value is equal to 0.
+			DOP: Degree of parallelism.
+			TimeoutInMS: Timeout value, in milliseconds. If this value is 0, then the query is NOT in memory queue; if it is greater than 0, then the query is IN memory queue.
+			MemoryRequestTime: The time the memory was requested. Current time - MemoryRequestTime = Wait so far.
+			MemoryGrantTime: The time the memory was granted.
+		</xsd:documentation>
+	</xsd:annotation>
+			
+		<xsd:sequence>
+			<xsd:element name="SPID" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="BatchId" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="SQLHandle" type="memgr:SQLHandleType"/>
+			<xsd:element name="MemoryRequested" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="MemoryGranted" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="MemoryUsed" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="DOP" type="xsd:nonNegativeInteger"/> 
+			<xsd:element name="TimeOutInMS" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="MemoryRequestTime" type="memgr:MemoryRequestTimeType"/>
+			<xsd:element name="MemoryGrantTime" type="memgr:MemoryGrantTimeType"/>
+		</xsd:sequence> 
+        </xsd:complexType>
+
+        <xsd:simpleType name="SQLHandleType">
+		<xsd:annotation>
+			<xsd:documentation>SQL Handle, at most 20 characters folloiwing the initial '0x'.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base='xsd:string'>
+			<xsd:maxLength value='42'/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+        <xsd:simpleType name="MemoryRequestTimeType">
+		<xsd:annotation>
+			<xsd:documentation>The time the memory was requested. Format = yyyy-mm-dd hh:mm:ss.sss. For a queued up query, this time also equals the time the query entered the memory queue.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base='xsd:string'>
+			<xsd:maxLength value='23'/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+        <xsd:simpleType name="MemoryGrantTimeType">
+		<xsd:annotation>
+			<xsd:documentation>The time the memory was granted. Format = yyyy-mm-dd hh:mm:ss.sss. For a queued up query, an all-0 value is output.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base='xsd:string'>
+			<xsd:maxLength value='23'/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

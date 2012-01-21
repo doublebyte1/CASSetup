@@ -1,0 +1,157 @@
+[Code]
+//This file includes the code to create a wizard page requesting the directory
+//where to store the application data files
+//To define the Prompts to present in the page, set the values for the Global
+//variable UserPromptsDataDir (Array, 0 to 2)
+//UserPromptsDataDir[0]: Caption (first line)
+//UserPromptsDataDir[1]: Description (second line, right below the caption)
+//UserPromptsDataDir[2]: Sub-Caption (On the second part of the page)
+
+var
+  UserPromptsDataDir: TArrayOfString;
+  DataDir: String; //String of the directory where data files will be stored
+  DataDirPage: TInputDirWizardPage; //Just the wizard page object to collect the user's choice of data directory
+  wpDataDir: integer; //ID of the Data Directory Page
+  MemoDataDirInfo: string;
+  
+
+
+procedure SetDataDirPageID(intPageID: integer);
+(*Purpose
+Set the value of the global variable holding the ID of the Data Directory Page
+*)
+begin
+  wpDataDir:= intPageID;
+end;
+
+procedure SetGlobalsDataDir();
+(*Purpose
+Sets the values of the Global Variables related to the Data Directory Selection Wizard Page
+*)
+begin
+  //Set this later
+end;
+
+function GetDataDirPagePrompts(lngInd: integer): string;
+(*Purpose:
+Returns the Prompts to put in the Wizard page for the Data Directory
+*)
+var
+  prompt: string;
+
+begin
+  case lngInd of
+    1: //Caption
+      begin
+        prompt:= UserPromptsDataDir[0];
+      end;
+    2: //Description
+      begin
+        prompt:= UserPromptsDataDir[1];
+      end;
+    3: //SubCaption
+      begin
+        prompt:= UserPromptsDataDir[2];
+
+      end;
+  end;
+result:=prompt;
+end;
+
+procedure DataDirPage_Activate(Sender: TWizardPage);
+var
+    Page: TInputDirWizardPage;
+begin
+    Page := TInputDirWizardPage(Sender);
+end;
+
+function DataDirPage_ShouldSkipPage(Sender: TWizardPage): Boolean;
+var
+    Page: TInputDirWizardPage;
+begin
+    Page := TInputDirWizardPage(Sender);
+    Result := False;
+end;
+
+function DataDirPage_BackButtonClick(Sender: TWizardPage): Boolean;
+var
+    Page: TInputDirWizardPage;
+begin
+    Page := TInputDirWizardPage(Sender);
+    Result := True;
+end;
+
+function DataDirPage_NextButtonClick(Sender: TWizardPage): Boolean;
+var
+    Page: TInputDirWizardPage;
+begin
+    Page := TInputDirWizardPage(Sender);
+    //Set the global value of the Data Directory
+    DataDir:= Page.Values[0];
+    Result := True;
+end;
+
+
+procedure DataDirPage_CancelButtonClick(Sender: TWizardPage; var Cancel,
+                                               Confirm: Boolean);
+var
+    Page: TInputDirWizardPage;
+begin
+    Page := TInputDirWizardPage(Sender);
+end;
+
+function CreatePage_DataDir(PreviousPageId: Integer): Integer;
+var
+    Page: TInputDirWizardPage;
+    Caption, SubCaption, Description: string;
+    strDataDir: string;
+    
+begin
+  Caption:=GetDataDirPagePrompts(1);
+  Description:=GetDataDirPagePrompts(2);
+  SubCaption:=GetDataDirPagePrompts(3);
+  Page := CreateInputDirPage(PreviousPageId, Caption, Description, SubCaption,
+   False, strNewFolder);
+
+  Page.Add('');
+  
+// Set initial value (optional). It is either the one set in the define section
+//or the one previously chosen, if it exists
+SetPathDataDefault;
+strDataDir:= GetPathData('');
+Page.Values[0] := strDataDir;
+
+  if ShouldLoadInf() then begin
+  //This replaces the GetPreviousData procedure, that reads from the Registry
+    Page.Values[0] := LoadInfString(UserChoicesSection, DataDirKey, strDataDir);
+    // ...
+  end;
+  
+//Define the events for this page
+  Page.OnActivate := @DataDirPage_Activate;
+  Page.OnShouldSkipPage := @DataDirPage_ShouldSkipPage;
+  Page.OnBackButtonClick := @DataDirPage_BackButtonClick;
+  Page.OnNextButtonClick := @DataDirPage_NextButtonClick;
+  Page.OnCancelButtonClick := @DataDirPage_CancelButtonClick;
+  
+  //Let the rest of the code know that a Data Directory Page was created
+  HasDataDirPage:= True;
+  
+  //The output is always the ID of the new page
+  result := Page.ID;
+  wpDataDir:= Page.ID;
+end;
+
+function GetReadyPageDataDirText(): string;
+(*Purpose
+Create the text to present in the page of ready to install
+*)
+var
+  strTmp: string;
+
+begin
+  strTmp:= 'Data Folder:'
+  strTmp:= strTmp + CRLF + '   ';
+  strTmp:= strTmp + GetPathData('');
+  result:= strTmp;
+end;

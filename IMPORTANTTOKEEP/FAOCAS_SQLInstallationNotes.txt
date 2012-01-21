@@ -1,0 +1,25 @@
+Notes about Installation of SQL Server Express Edition for the FAO CAS Application
+
+The installation is done using a configuration file
+This configuration file must have the following parameters included:
+INSTANCENAME
+SAPWD
+SECURITYMODE=SQL
+DISABLENETWORKPROTOCOLS=1
+;--------------------------------------------------------------------
+; If you enable ERRORREPORTING, SQL Server, SQL Server Agent and Analysis Server will be configured to automatically send a report to Microsoft if a fatal error occurs.
+; Microsoft uses error reports to improve SQL Server functionality, and treats all information as confidential.
+; To enable error reporting specify ERRORREPORTING=1
+; By default ERRORREPORTING=0
+
+ERRORREPORTING=0
+
+;--------------------------------------------------------------------
+; If you enable SQMREPORTING, SQL Server Products will be configured to automatically 
+; send periodic reports to Microsoft on feature usage. These reports are used to better understand
+; how our customers use our products: which SQL services are installed, which features are being used, 
+; database deployment, use, and maintenance  patterns, etc. This will help us determine how to improve reliability and how to better target resources in ; future offerings.
+; To enable error reporting specify SQMREPORTING=1; 
+; By default SQMREPORTING=0
+
+SQMREPORTING=0
