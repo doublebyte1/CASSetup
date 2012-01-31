@@ -4,18 +4,18 @@
 #define MyAppName "FAO Fisheries Catch Assessment Surveys Data Manager"
 #define MyAppName1 "FAO Fisheries Catch Assessment Surveys Data Manager"
 #define MyAppName2 "FAOFish CAS Config"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.0"
 #define MyAppPublisher "FAO"
 #define MyAppURL "http://www.faomedfisis.org/"
-#define MyAppExeName1 "app_new.exe"
-#define MyAppExeName2 "conf_app.exe"
-#define MyAppExeName3 "assistant.exe"
+#define MyAppExeName1 "CASManager.exe"
+#define MyAppExeName2 "CASConfig.exe"
+#define MyAppExeName3 "QtAssistant.exe"
 #define MyAppProgGroup "FAOFishData"
 #define MyAppDirName "FAO_FI\CAS"
 
 ;BASIC CONFIGURATION FOR THE INSTALLER AND THE SCRIPT
 ;#define MyAppSetupSrcBaseDir "E:\CASSetup"
-#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
+#define MyAppSetupSrcBaseDir "P:\"
 
 ;DIRS HOLDING FILES TO INCLUDE
 #define IncludeFilesDir MyAppSetupSrcBaseDir + "\IncludeFiles"
@@ -35,7 +35,7 @@
 
 ;DEFINITIONS  FOR THE COMPILED SETUP
 #define MyAppSetupOutputDir MyAppSetupSrcBaseDir + "\Output"
-#define MyAppSetupFile "FAOCAS_Setup.exe"
+#define MyAppSetupFile "FAOCAS_Setup"
 #define MyAppSetupIcon MyAppSetupSrcDir + "\FAOCASIcon.ico"
 
 ;DESTINATION DIRECTORIES
@@ -44,16 +44,16 @@
 #define MyAppSQLServerInstallDir "SQLServer"
 #define MyAppReportMakerDir "Report"
 #define MyAppReportsTemplatesDir "Reports"
-#define MyAppSQLDriverDir "sqldrivers"
+#define MyAppSQLDriverDir "SqlDrivers"
 #define MyAppHelpDir "Help"
 
 ;OTHER APPLICATION DEFINITIONS
 #define MyAppLicenseFile MyAppSetupSrcDir + "\FAOCASLicense.txt"
 #define MyAppReadMeFile MyAppSetupSrcDir + "\FAOCASReadme.txt"
-#include IncludeFilesDir + "\PCBBuildNumberWithINIFile.iss"
+#include IncludeFilesDir + "\PCBBuildNumberWithINIFile.isi"
 
 ;APPLICATION CONFIGURATION VARIABLES
-#define MyAppSQLInstance "FAO_CAS"
+#define MyAppSQLInstance "FAOCAS"
 #define MyAppDBName "FAOCASDATA"
 #define MyAppDBFileName "FAOCASDATA"
 #define MyAppSQLInstaller "setup.exe"
@@ -140,6 +140,8 @@ Source: "{#MyAppSetupSrcQtDLLDir}\QtCLucene4.dll"; DestDir: "{app}"; Flags: igno
 ;Files for the Report Maker and Report Specifications
 Source: "{#MyAppSetupSrcReportMakerDir}\*"; DestDir: "{app}\{#MyAppReportMakerDir}\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyAppSetupSrcReportSpecsDir}\*"; DestDir: "{app}\{#MyAppReportsTemplatesDir}\"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+;Files for the Help system
 Source: "{#MyAppSetupSrcHelpDir}\*"; DestDir: "{app}\{#MyAppHelpDir}\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;SQL Driver files
@@ -147,10 +149,11 @@ Source: "{#MyAppSetupSrcSQlDriversDir}\*"; DestDir: "{app}\sqldrivers\"; Flags: 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ; Files for SQL Server setup (to be written to temporary directory)
-Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.ldf; DestDir: {tmp}; Flags: ignoreversion
-Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.mdf; DestDir: {tmp}; Flags: ignoreversion
-Source: {#MyAppSetupSrcConfigDir}\{#MyAppSQLInstallConfigFile}; DestDir: {tmp}; Flags: ignoreversion
-Source: {#MyAppSetupSrcSQLServerDir}\*; DestDir: {tmp}\{#MyAppSQLServerInstallDir}; Flags: ignoreversion recursesubdirs
+
+Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.ldf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
+Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.mdf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
+Source: {#MyAppSetupSrcConfigDir}\{#MyAppSQLInstallConfigFile}; DestDir: {tmp}; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion
+Source: {#MyAppSetupSrcSQLServerDir}\*; DestDir: {tmp}\{#MyAppSQLServerInstallDir}; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: {group}\{#MyAppName1}; Filename: {app}\{#MyAppExeName1}
@@ -163,23 +166,13 @@ Name: {commondesktop}\{#MyAppName2}; Filename: {app}\{#MyAppExeName2}; Tasks: de
 
 
 [Run]
-;Filename: sqlexpr.exe; Parameters: "/x:""."""; WorkingDir: {src}\sqlserver_setup; Description: Sql Server Drivers; StatusMsg: Extracting sql server drivers; Flags: ShellExec
-;Filename: setup.exe; Parameters: /wait /qb /settings {code:GetMyAppConfigDir}\CAS_SQLServerConf.ini; WorkingDir: {src}\sqlserver_setup; Description: install sql server drivers; StatusMsg: Install sql server drivers (compulsory); Flags: ShellExec PostInstall WaitUntilIdle
-; NOTES: IS MISSING THE FOLLOWING:
-;CREATE THE ODBC DATA SOURCE (SEE CODE FOR THIS)
-;CONFIRM THAT THE SETUP REALLY UPDATES THE INSTANCE NAME OF SQL SERVER SETUP
-;VERIFY IF AN INSTANCE OF THE NAME DESIRED ALREADY EXISTS
-;IF IT DOES, CONFIRM THE USER AND PASSWORD ARE THE SAME. IF NOT, DELETE INSTANCE AND RE-INSTALL
-;BEFORE RE-INSTALLING, BACKUP THE DATA FILES.
-;ASK THE USER IF (S)HE WANTS TO KEEP THE EXISTING DATA. IF SO, RESTORE THE DATA FILES AND RE-ATTACH THEM TO THE NEW INSTANCE CREATED
-[INI]
-;filename: {code:GetMyAppConfigDir}\CAS_SQLServerConf.ini; section: Options; key: INSTANCENAME; string: {#MyAppSQLInstanceName}
 
+[INI]
 
 [Code]
-#include "PCB_ISUtils.isi"
-#include "IS_SQLServerInstallFunctions.isi"
-#include "PCBDataDirPage.isi"
+#include IncludeFilesDir + "\IS_Utils.isi"
+#include IncludeFilesDir + "\IS_SQLServerInstallFunctions.isi"
+#include IncludeFilesDir + "\IS_DataDirPage.isi"
 
 
 //FORWARD DECLARATIONS
@@ -195,7 +188,7 @@ var
 strTmp: string;
 
 begin
-  Log('Starting to create the User Prompts');
+  Log('Creating the User Prompts');
   SetArrayLength(UserPromptsDataDir, 3);
   UserPromptsDataDir[0]:= 'Select the location for the Data files';
   UserPromptsDataDir[1]:= 'Where should the data files be stored?';
@@ -244,6 +237,8 @@ begin
   result := success and (install = 1) and (serviceCount >= service);
 end;
 
+
+
 function CheckRequirements(): Boolean;
 begin
   //Detect if all the preliminary requirements to run and install (Like dotnet etc) are installed
@@ -255,7 +250,7 @@ begin
 //    result := false;
 //  end else begin
 //    MsgBox('Found Microsoft .NET Framework 4.0.', mbInformation, MB_OK);
-    result := true;
+  result := true;
 //  end;
 
 end;
@@ -278,15 +273,27 @@ Create custom pages to show during install }
 //Set the custom Prompts to use
   InitializeUserPrompts;
   CreatePage_DataDir(wpSelectDir); //The ID is created in the function itself
-  MsgBox('The ID of the DataDir Page is ' + intToStr(wpDataDir), mbInformation, MB_OK);
+//  MsgBox('The ID of the DataDir Page is ' + intToStr(wpDataDir), mbInformation, MB_OK);
 end;
 
 
 
 function InitializeSetup(): Boolean;
+(*Purpose
+This function is run BEFORE the start of the setup, even before any dialog is shown
+to the user.
+This function will perform the following tasks:
+a) Set any information on instructions passed through the command-line parameters
+b) Set global variables that must be in place for the use of functions used during
+  the collection of user information via the wizards
+c) Check any prerequisites that need to be known for the wizards
+*)
 begin
+Log('Starting function InitializeSetup');
   UpdateInfFilenames(); //Read the names of the .Inf configuration files to use, if any
-
+  SetGlobalsSQLServerStart; //Set the global variables related to SQL Server installation
+  SetGlobalsCheckDBInstallation; //Set the global variables informing the status of the different components of the Database system
+  CheckDBInstallationRequired(True); //Set the global variables on the need to install the different components of the Database system
   // ...
   Result := True; //Allow Setup to continue
 end;
@@ -304,12 +311,12 @@ begin
   case CurStep of
     ssInstall:
       begin
-        MsgBox('Starting the Pre-Install Process', mbInformation, MB_OK);
+//        MsgBox('Starting the Pre-Install Process', mbInformation, MB_OK);
         DoPreInstall;
       end;
     ssPostInstall:
       begin
-        MsgBox('Starting the Post-Install Process', mbInformation, MB_OK);
+//        MsgBox('Starting the Post-Install Process', mbInformation, MB_OK);
         SetFinishedInstall(True);
         DoPostInstall;
       end;
@@ -327,18 +334,19 @@ var
   bolRequirements: boolean;
  
 begin
-  //Check the requirements for the installation
-  bolRequirements:= CheckRequirements;
-  if not bolRequirements then
-    begin
-      MsgBox(MsgRequirementsMissing, mbInformation, MB_OK);
-      Exit;
-    end;
 //Set the Global Variables, using the information from the Inno Setup Variables,
 //and also the information entered by the user in the wizards
   SetGlobalsCommon; //Set the initial values of the Global variables for the installation
   SetGlobalsDataDir;
-  SetGlobalsSQLServer;
+  SetGlobalsSQLServerStart;
+
+  //Check the requirements for the installation
+  bolRequirements:= CheckRequirements;
+  if not bolRequirements then
+    begin
+//      MsgBox(MsgRequirementsMissing, mbInformation, MB_OK);
+      Exit;
+    end;
   
 end;
 
@@ -354,8 +362,7 @@ begin
   Log('Starting the DoPostInstall routine');
   //SetGlobalsSQLServer;
   //Install the SQL Server 
-  MsgBox('The value of the InstallSQLServer variable is ' + BoolToStr(InstallSQLServer), mbInformation, MB_OK);
-MsgBox('The value of the AttachDBFile variable is ' + BoolToStr(AttachDBFile), mbInformation, MB_OK);  
+
   if InstallSQLServer then
     begin
       SQLServerInstallComplete('');
@@ -364,9 +371,9 @@ MsgBox('The value of the AttachDBFile variable is ' + BoolToStr(AttachDBFile), m
     begin
       //Attach the databases
       strSQLDBName:= GetSQLDBName('');
-      MsgBox('The name of the DB to create is ' + strSQLDBName, mbInformation, MB_OK);
+//      MsgBox('The name of the DB to create is ' + strSQLDBName, mbInformation, MB_OK);
       strFileDB:= GetSQLDBFileName('');
-      MsgBox('The name of the DB file to attach is ' + strSQLDBName, mbInformation, MB_OK);
+//      MsgBox('The name of the DB file to attach is ' + strSQLDBName, mbInformation, MB_OK);
       SQLServerAttachDBComplete(strFileDB, strSQLDBName);
     end;
   
@@ -442,9 +449,9 @@ begin//OK
                   Log('Leaving page for Selection of Data directory');
                   PageDir:= TInputDirWizardPage(PageFromID(wpDataDir));
                   SetPathData(PageDir.Values[0]);
-                  MsgBox('Just selected the data directory ' + PageDir.Values[0], mbInformation, MB_OK);
-                  MsgBox('The info in the global variables is ' + GetPathData(''), mbInformation, MB_OK);
-                  Log('Path Data selected is '+ PageDir.Values[0]);
+//                  MsgBox('Just selected the data directory ' + PageDir.Values[0], mbInformation, MB_OK);
+//                  MsgBox('The info in the global variables is ' + GetPathData(''), mbInformation, MB_OK);
+                  Log('Data for application is '+ PageDir.Values[0]);
                   bolMoveNext:= True;
                 end; //OK
             end;//OK       
@@ -453,6 +460,3 @@ begin//OK
 result:= bolMoveNext;
 end;//OK
 
-
-
-#expr SaveToFile("debug.iss")

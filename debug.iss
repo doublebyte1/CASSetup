@@ -38,8 +38,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppID={{4F9DE949-A8BA-4D84-8C30-F98557DB5788}
 AppName=FAO Fisheries Catch Assessment Surveys Data Manager
-AppVersion=1.1
-AppVerName=FAO Fisheries Catch Assessment Surveys Data Manager 1.1
+AppVersion=1.0
+AppVerName=FAO Fisheries Catch Assessment Surveys Data Manager 1.0
 AppPublisher=FAO
 AppPublisherURL=http://www.faomedfisis.org/
 AppSupportURL=http://www.faomedfisis.org/
@@ -48,10 +48,10 @@ DefaultDirName={pf}\FAO_FI\CAS
 DisableDirPage=no
 DefaultGroupName=FAOFishData
 AllowNoIcons=true
-LicenseFile=C:\projects\setups\CASSetup\src\FAOCASLicense.txt
-OutputDir=C:\projects\setups\CASSetup\Output
+LicenseFile=P:\\src\FAOCASLicense.txt
+OutputDir=P:\\Output
 OutputBaseFilename=FAOCAS_Setup.exe
-SetupIconFile=C:\projects\setups\CASSetup\src\FAOCASIcon.ico
+SetupIconFile=P:\\src\FAOCASIcon.ico
 Compression=lzma/Max
 SolidCompression=true
 SetupLogging=true
@@ -79,68 +79,61 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 ;Application files
-Source: C:\projects\setups\CASSetup\src\app_new.exe; DestDir: {app}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\conf_app.exe; DestDir: {app}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\assistant.exe; DestDir: {app}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\FAOCASLicense.txt; DestDir: {code:GetPathConf}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\FAOCASReadme.txt; DestDir: {code:GetPathConf}; Flags: ignoreversion isreadme
+Source: P:\\src\CASManager.exe; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\CASConfig.exe; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\QtAssistant.exe; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\FAOCASLicense.txt; DestDir: {code:GetPathConf}; Flags: ignoreversion
+Source: P:\\src\FAOCASReadme.txt; DestDir: {code:GetPathConf}; Flags: ignoreversion isreadme
 
 ;Custom Objects for Application
-Source: C:\projects\setups\CASSetup\src\OtherDLLs\CatchInputCtrl.dll; DestDir: {app}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\OtherDLLs\customtimectrl.dll; DestDir: {app}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\OtherDLLs\Report.dll; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\OtherDLLs\CatchInputCtrl.dll; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\OtherDLLs\customtimectrl.dll; DestDir: {app}; Flags: ignoreversion
+Source: P:\\src\OtherDLLs\Report.dll; DestDir: {app}; Flags: ignoreversion
 
 ;Qt DLLs
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtSql4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtTest4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtXmlPatterns4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtHelp4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\setups\CASSetup\src\QtDLLs\QtCLucene4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtSql4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtTest4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtXmlPatterns4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtHelp4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\\src\QtDLLs\QtCLucene4.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Files for the Report Maker and Report Specifications
-Source: "C:\projects\setups\CASSetup\src\ReportBuilder\*"; DestDir: "{app}\Report\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\projects\setups\CASSetup\src\ReportSpecs\*"; DestDir: "{app}\Reports\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\projects\setups\CASSetup\src\HelpFiles\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\\src\ReportBuilder\*"; DestDir: "{app}\Report\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\\src\ReportSpecs\*"; DestDir: "{app}\Reports\"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+;Files for the Help system
+Source: "P:\\src\HelpFiles\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;SQL Driver files
-Source: "C:\projects\setups\CASSetup\src\SQLdrivers\*"; DestDir: "{app}\sqldrivers\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\\src\SQLdrivers\*"; DestDir: "{app}\sqldrivers\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ; Files for SQL Server setup (to be written to temporary directory)
-Source: C:\projects\setups\CASSetup\src\Data\FAOCASDATA.ldf; DestDir: {tmp}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\Data\FAOCASDATA.mdf; DestDir: {tmp}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\Config\FAOCAS_SQLInstallConfig.ini; DestDir: {tmp}; Flags: ignoreversion
-Source: C:\projects\setups\CASSetup\src\SQLServer\*; DestDir: {tmp}\SQLServer; Flags: ignoreversion recursesubdirs
+
+Source: P:\\src\Data\FAOCASDATA.ldf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
+Source: P:\\src\Data\FAOCASDATA.mdf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
+Source: P:\\src\Config\FAOCAS_SQLInstallConfig.ini; DestDir: {tmp}; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion
+Source: P:\\src\SQLServer\*; DestDir: {tmp}\SQLServer; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: {group}\FAO Fisheries Catch Assessment Surveys Data Manager; Filename: {app}\app_new.exe
-Name: {group}\FAOFish CAS Config; Filename: {app}\conf_app.exe
+Name: {group}\FAO Fisheries Catch Assessment Surveys Data Manager; Filename: {app}\CASManager.exe
+Name: {group}\FAOFish CAS Config; Filename: {app}\CASConfig.exe
 Name: {group}\{cm:ProgramOnTheWeb,FAO Fisheries Catch Assessment Surveys Data Manager}; Filename: http://www.faomedfisis.org/
 Name: {group}\{cm:UninstallProgram,FAO Fisheries Catch Assessment Surveys Data Manager}; Filename: {uninstallexe}
-Name: {commondesktop}\FAO Fisheries Catch Assessment Surveys Data Manager; Filename: {app}\app_new.exe; Tasks: desktopicon
-Name: {commondesktop}\FAOFish CAS Config; Filename: {app}\conf_app.exe; Tasks: desktopicon
+Name: {commondesktop}\FAO Fisheries Catch Assessment Surveys Data Manager; Filename: {app}\CASManager.exe; Tasks: desktopicon
+Name: {commondesktop}\FAOFish CAS Config; Filename: {app}\CASConfig.exe; Tasks: desktopicon
 
 
 
 [Run]
-;Filename: sqlexpr.exe; Parameters: "/x:""."""; WorkingDir: {src}\sqlserver_setup; Description: Sql Server Drivers; StatusMsg: Extracting sql server drivers; Flags: ShellExec
-;Filename: setup.exe; Parameters: /wait /qb /settings {code:GetMyAppConfigDir}\CAS_SQLServerConf.ini; WorkingDir: {src}\sqlserver_setup; Description: install sql server drivers; StatusMsg: Install sql server drivers (compulsory); Flags: ShellExec PostInstall WaitUntilIdle
-; NOTES: IS MISSING THE FOLLOWING:
-;CREATE THE ODBC DATA SOURCE (SEE CODE FOR THIS)
-;CONFIRM THAT THE SETUP REALLY UPDATES THE INSTANCE NAME OF SQL SERVER SETUP
-;VERIFY IF AN INSTANCE OF THE NAME DESIRED ALREADY EXISTS
-;IF IT DOES, CONFIRM THE USER AND PASSWORD ARE THE SAME. IF NOT, DELETE INSTANCE AND RE-INSTALL
-;BEFORE RE-INSTALLING, BACKUP THE DATA FILES.
-;ASK THE USER IF (S)HE WANTS TO KEEP THE EXISTING DATA. IF SO, RESTORE THE DATA FILES AND RE-ATTACH THEM TO THE NEW INSTANCE CREATED
-[INI]
-;filename: {code:GetMyAppConfigDir}\CAS_SQLServerConf.ini; section: Options; key: INSTANCENAME; string: {#MyAppSQLInstanceName}
 
+[INI]
 
 [Code]
 [Code]
@@ -165,7 +158,10 @@ var
   MsgRequirementsMissing: String;
   
 
-function GetReadyPageDataDirText(): string; forward;
+function GetReadyPageDataDirText(NewLine: String): string; forward;
+function GetReadyPageDBInstallationText(NewLine: String): String; forward;
+function GetDBInstallationRequired(Param: string): Boolean; forward;
+
 
 function ReverseString(strIn: String): String;
 (*Purpose
@@ -265,9 +261,7 @@ procedure SetPathData(strPath: string);
 Sets the value of the Global Variable defining the path for the Application Data Directory
 *)
 begin
-  Log('Before changing, Path for Data files is  ' + PathData);
   PathData:= strPath;
-  Log('Path for Data files is now set to ' + PathData);
 end;
 
 procedure SetPathDataDefault();
@@ -276,7 +270,6 @@ Sets the default value of the Global Variable defining the path for the Applicat
 *)
 begin
   SetPathData(ExpandConstant('C:\FAO_Fish_Data'));
-  Log('Path for Data files is ' + PathData);
 end;
 function GetPathData(Param: string): String;
 (*Purpose
@@ -284,7 +277,6 @@ Gest the value of the Global Variable defining the path for the Application Data
 *)
 begin
   result:= PathData;
-  Log('The PathData variable is set to ' + PathData);
 end;
 
 procedure SetPathConf(strPath: string);
@@ -370,6 +362,54 @@ begin
     end;
 end;
 
+function stringRepeat(strIn: String; intN: integer): String;
+(*Purpose
+Repeat string strIn intNtimes, into a new string
+*)
+var
+  strTmp: String;
+  j1: integer;
+  
+  begin
+    strTmp:='';
+    if intN > 0 then
+    begin
+      for j1:= 1 to intN do
+        begin
+          strTmp:= strTmp + strIn
+        end;  
+    end;
+  result:= strTmp;
+  end;
+  
+function AppendMemo2Msg(strMsg, strNewMemo, NewLine: String; intNNewLines: integer): String;
+(*Purpose
+Appends a new memo (set of lines) to a message, like the one to be presented on the "Ready" page,
+separating it by a fixed number of NewLine characters
+*)
+var
+  strTmp, strSep: String;
+  
+begin
+  strSep:=stringRepeat(NewLine, 2);
+    
+  if strNewMemo <> '' then
+    begin
+      if strMsg <> '' then
+        begin
+          strTmp:= strMsg + strSep + strNewMemo;
+        end
+      else
+        begin
+          strTmp:= strNewMemo;
+        end;
+    end
+  else
+    begin
+      strTmp:= strMsg;
+    end;
+result:= strTmp;
+end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo,
 MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo,
@@ -382,39 +422,26 @@ var
   strTmp: String;
    
 begin
+  strMsg:='';
   strTmp:= MemoUserInfoInfo;
-  if strTmp <>'' then
-    begin
-      strMsg:= strTmp;
-    end;
-    
+  strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+      
   strTmp:= MemoDirInfo;
-  if strTmp <> '' then
-    begin
-      if strMsg <> '' then
-        begin
-           strMsg:= strMsg + NewLine + NewLine + strTmp;
-        end
-      else
-        begin
-          strMsg:= strTmp;
-        end;
-    end;
+  strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+
   if HasDataDirPage then
     begin
-      strTmp:= GetReadyPageDataDirText;
-      if strTmp <> '' then
-        begin
-          if strMsg <> '' then
-            begin
-              strMsg:= strMsg + NewLine + NewLine + strTmp;
-            end
-          else
-            begin
-              strMsg:= strTmp;
-            end;
-        end;
+      strTmp:= GetReadyPageDataDirText(NewLine);
+      strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
     end;
+
+  if GetDBInstallationRequired('') then
+    begin
+      strTmp:= GetReadyPageDBInstallationText(NewLine);
+      strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+    end;
+    
+  strMsg:=  AppendMemo2Msg(strMsg, MemoTasksInfo, NewLine, 2);   
   result:= strMsg;
 end;
 
@@ -537,8 +564,18 @@ SQLSecurModeKey = 'SECURITYMODE';
 SQLSecurMode = 'SQL';
 SQLDBExists = 'DBExists';
 
+strSQLServer_gc = 'SQL Server 2005 Express Edition';
+
 var //Global variables
+  DBInstallationRequired_g: Boolean; //Boolean: Is it necessary to install at least some parts of the Database systems needed for the application?
+  DBInstallationRequiredChecked_g: Boolean; //Boolean: Has it been checked if it is necessary to install the different parts of the Database systems needed for the application?
+  DBInstallationChecked_g: Boolean; //Boolean: Has it been checked if the different parts of the Database systems needed for the application are already installed?
+  SQLServerInstalled_g: boolean; //Boolean: Is SQL Server already installed?
+  SQLServerInstanceInstalled_g: boolean; //Boolean: Is the SQL Server Instance of the Application already installed?
+  DBExists_g: boolean; //Boolean: Does the database name of the application already exist in the Server Instance intended?
+
   InstallSQLServer: boolean; //Boolean: Is it necessary to install SQL Server?
+  InstallSQLServerInstance: boolean; //Boolean: Is it necessary to install the SQL Server Instance of the Application?
   AttachDBFile: boolean; //Boolean: Is it necessary to attach the database?
   
   SQLDBName: String; //Name of the database to install
@@ -549,6 +586,111 @@ var //Global variables
   SQLInstaller: String; //Full path for the SQL Server Installer
   SQLInstallBat: String; //Full path for the batch file that will run the SQL Server Installer
   SQLInstallDat: String; //Full path for the file with the SQL Server Installation configurations
+
+
+procedure SetDBInstallationRequired(bolRequired: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it  
+is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  DBInstallationRequired_g:= bolRequired;
+end;
+
+function GetDBInstallationRequired(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether it 
+is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  result:= DBInstallationRequired_g;
+end;
+
+procedure SetDBInstallationRequiredChecked(bolChecked: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it has been checked 
+if it is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  DBInstallationRequiredChecked_g:= bolChecked;
+end;
+
+function GetDBInstallationRequiredChecked(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether it has been checked 
+if it is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  result:= DBInstallationRequiredChecked_g;
+end;
+
+
+procedure SetDBInstallationChecked(bolChecked: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it hasb been checked 
+if the different parts of the Database systems needed for the application are already installed
+*)
+begin
+  DBInstallationChecked_g:= bolChecked;
+end;
+
+function GetDBInstallationChecked(Param: string): Boolean;
+(*Purpose
+Sets the value of the global variable defining whether it hasb been checked 
+if the different parts of the Database systems needed for the application are already installed
+*)
+begin
+  result:= DBInstallationChecked_g;
+end;
+
+procedure SetSQLServerInstalled(bolInstalled: boolean);
+(*Purpose
+Sets the value of the global variable defining whether SQL Server is already installed
+*)
+begin
+  SQLServerInstalled_g:= bolInstalled;
+end;
+
+function GetSQLServerInstalled(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether SQL Server is already installed
+*)
+begin
+  result:= SQLServerInstalled_g;
+end;
+
+procedure SetSQLServerInstanceInstalled(bolInstalled: boolean);
+(*Purpose
+Sets the value of the global variable defining whether the SQL Server Instance for the application is already installed
+*)
+begin
+  SQLServerInstanceInstalled_g:= bolInstalled;
+end;
+
+function GetSQLServerInstanceInstalled(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether the SQL Server Instance for the application is already installed
+*)
+begin
+  result:= SQLServerInstanceInstalled_g;
+end;
+
+
+procedure SetDBExists(bolExists: boolean);
+(*Purpose
+Sets the value of the global variable defining whether the database name of the application already exist in the Server Instance intended?
+*)
+begin
+  DBExists_g:= bolExists;
+end;
+
+function GetDBExists(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether the database name of the application already exist in the Server Instance intended?
+*)
+begin
+  result:= DBExists_g;
+end;
 
 procedure SetSQLInstance(strInstance: string);
 (*Purpose
@@ -716,17 +858,13 @@ Sets the full path to the SQL Server installer program into the global variable
   
 begin
   SQLInstallerDir:= AddBackslash(GetPathTmp(''));
-  Log('SQLInstallerDir is ' + SQLInstallerDir);
   
   SQLInstallerDir:= AddBackslash(SQLInstallerDir) + 
                     ExpandConstant('SQLServer');
-    Log('SQLInstallerDir is ' + SQLInstallerDir);
   SQLInstaller:=  AddBackslash(SQLInstallerDir) +  strFileName;
-    Log('SQLInstaller is ' + SQLInstaller);
-  MsgBox('The SQL Installer is ' + SQLInstaller, mbInformation, MB_OK);
 end;
 
-function IsSQLServerFullInstanceName(strInstance: String): boolean;
+function IsSQLServerInstanceNameFull(strInstance: String): boolean;
 (*Purpose
 Checks if a string provided corresponds to a full instance name, or to a local instance only
 *)
@@ -747,7 +885,7 @@ var
   lngInd, lngStart, lngCount: LongInt;
     
 begin
-  if IsSQLServerFullInstanceName(strInstance) then
+  if IsSQLServerInstanceNameFull(strInstance) then
     begin
       lngInd:=Pos('\', ReverseString(strInstance));
       lngCount:= lngInd -1;
@@ -762,13 +900,13 @@ begin
 end;
 
 
-function SQLFullInstanceName(strInstance: String): String;
+function SQLInstanceNameFull(strInstance: String): String;
   
 var
   strFullName: String;
     
 begin
-  if IsSQLServerFullInstanceName(strInstance) then
+  if IsSQLServerInstanceNameFull(strInstance) then
     begin
       strFullName:= strInstance;
     end
@@ -779,10 +917,10 @@ begin
   result:= strFullName;    
 end;
 
-function GetMyAppSQLFullInstanceName(Param: String): String;
+function GetMyAppSQLInstanceNameFull(Param: String): String;
   
 begin
-  result:= SQLFullInstanceName(GetSQLInstance(''));
+  result:= SQLInstanceNameFull(GetSQLInstance(''));
 end;
 
 function GetSQLSAPWD(Param: String): String;
@@ -801,7 +939,7 @@ begin
   SQL_SAPWD:= strSQL_SAPwd;
 end;
 
-function GetInstallSQLServer(Param: String): boolean;
+function GetSQLServerInstallationRequired(Param: String): boolean;
 (*Purpose
 Returns the boolean indicating whether to install SQL Server
 *)
@@ -809,7 +947,7 @@ begin
   result:=  InstallSQLServer;
 end;
 
-procedure SetInstallSQLServer(bolInstall: boolean);
+procedure SetSQLServerInstallationRequired(bolInstall: boolean);
 (*Purpose
 Sets the boolean indicating whether to install SQL Server
 *)
@@ -817,15 +955,31 @@ begin
   InstallSQLServer:= bolInstall;
 end;
 
-function GetAttachDB(Param: String): boolean;
+function GetSQLServerInstanceInstallationRequired(Param: String): boolean;
 (*Purpose
-Returns the boolean indicating whether to install SQL Server
+Returns the boolean indicating whether to install the specific SQL Server Instance
+*)
+begin
+  result:=  InstallSQLServerInstance;
+end;
+
+procedure SetSQLServerInstanceInstallationRequired(bolInstall: boolean);
+(*Purpose
+Sets the boolean indicating whether to install the specific SQL Server Instance
+*)
+begin
+  InstallSQLServerInstance:= bolInstall;
+end;
+
+function GetAttachDBRequired(Param: String): boolean;
+(*Purpose
+Returns the boolean indicating whether to attach the Database file to our SQL Server Instance
 *)
 begin
   result:=  AttachDBFile;
 end;
 
-procedure SetAttachDB(bolAttach: boolean);
+procedure SetAttachDBRequired(bolAttach: boolean);
 (*Purpose
 Sets the boolean indicating whether to attach a database to SQL Server
 *)
@@ -901,7 +1055,7 @@ Log('The value of the strFileCmd parameter is ' + strFileCmd);
 Log('The value of the strFileDat parameter is ' + strFileDat);
 Log('The value of the strFileOut parameter is ' + strFileOut);
 
-  strSQLInstance:= SQLFullInstanceName(strInstance);
+  strSQLInstance:= SQLInstanceNameFull(strInstance);
   SetArrayLength(strCmds, 2);
   strCmds[0]:= '@echo off';
   strCmds[1]:= 'start  /B  sqlcmd /S ' + strSQLInstance + ' -U sa -P ' + strSAPWD + ' -i ' 
@@ -1020,22 +1174,20 @@ var
   bolExit: boolean;
   
 begin
-  strSQLInstance:= SQLFullInstanceName(strInstance);//This should already be the full instance name
+  strSQLInstance:= SQLInstanceNameFull(strInstance);//This should already be the full instance name
 
   bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, strFileOut);
-  MsgBox('The command file ' + strFileBat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
   if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
     begin
       SetArrayLength(strCmds, 2);
       strCmds[0]:= 'IF EXISTS (SELECT 1 FROM master.sys.databases WHERE name = N''' + strSQLDBName + ''')';
       strCmds[1]:= 'PRINT ''' + SQLDBExists + '''';
       bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
-      MsgBox('The commands file ' + strFileDat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
     end;
   result:= bolExit;
 end;
 
-function ISSQLServerDBAttached(strInstance, strSAPWD, strSQLDBName: string): boolean;
+function ISSQLServerDBExists(strInstance, strSAPWD, strSQLDBName: string): boolean;
 (*Purpose
 Queries an SQL Server Instance for the existence (or not) of the database
 with the name given attached
@@ -1053,7 +1205,7 @@ begin
   strFileDat:= FileDat(strFileBat);
   strFileOut:= FileOut(strFileBat);
   strPathTmp:= GetPathTmp('');
-  strSQLInstance:= SQLFullInstanceName(strInstance);
+  strSQLInstance:= SQLInstanceNameFull(strInstance);
   
   bolSuccess:= SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, strFileDat, strFileOut);
   if bolSuccess then
@@ -1159,7 +1311,6 @@ begin
     end;
     
 result:= bolSuccess;
-MsgBox('Check now if files have been copied.', mbInformation, MB_OK);
 end;
 
 
@@ -1178,7 +1329,7 @@ var
   strInstanceFull, strPathData, strPathTmp: String;
 
 begin
-  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strInstanceFull:= SQLInstanceNameFull(strInstance);
   strPathData:= GetPathData('');
   strPathTmp:= GetPathTmp('');
   strFileBat:= GetSQLAttachFileBat('');
@@ -1204,12 +1355,12 @@ var
 
 begin
   bolSuccess:= False;
-  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strInstanceFull:= SQLInstanceNameFull(strInstance);
   strPathTmp:= GetPathTmp('');
   strSAPWD:= GetSQLSAPWD('');
   strFileBat:= GetSQLDetachFileBat('');
   
-  bolAttached:=ISSQLServerDBAttached(strInstanceFull, strSAPWD, strSQLDBName);
+  bolAttached:=ISSQLServerDBExists(strInstanceFull, strSAPWD, strSQLDBName);
   if not bolAttached then
     begin //No need to continue
       result:= True;
@@ -1237,7 +1388,7 @@ var
   strPathTmp: String;
 
 begin 
-  strInstance:= GetMyAppSQLFullInstanceName('');
+  strInstance:= GetMyAppSQLInstanceNameFull('');
   strPathDest:= GetPathData('');
   strPathSrc:= GetPathTmp('');
   strPathTmp:= GetPathTmp('');
@@ -1283,13 +1434,12 @@ begin
   strConf:= GetSQLInstallDat('');
   strDirTmp:= GetPathTmp('');
   strCommand[0]:= 'Start /wait ' + SQLSetup + ' /qb /settings ' + strConf;
-MsgBox('The command to run is ' + strCommand[0], mbInformation, MB_OK);
   strBatFile:= GetSQLInstallBat('');
   bolExit:= SaveStringsToFile(strBatFile, strCommand, False);
   result:= bolExit;
 end;
 
-function SQLServerInstall(Param: String): boolean;
+function SQLServerInstall(strInstance, strSAPWD: String): boolean;
 (*Purpose
 Configures and Runs the installation of the adequate instance of SQL Server 2005 Express
 *)
@@ -1298,25 +1448,21 @@ var
   bolExit: boolean;
   ErrorCode: Integer;
   strBatFile, strINIFile, strDirTmp: String;
-  strInstance, strSAPWD: String;
-  
+  strSQLInstance: String;
+    
 begin
-Log('SQLServerInstall function is starting.');
   strBatFile:= GetSQLInstallBat('');
   strINIFile:= GetSQLInstallDat('');
   strDirTmp:= GetPathTmp('');
-  strInstance:= GetSQLInstance(''); //This is not the full name, only the local one
-  strSAPWD:= GetSQLSAPWD('');
-  
+  strSQLInstance:= SQLInstanceNameLocal(strInstance); //Make sure this is not the full name, only the local one
+    
   bolExit:= SQLServerInstallMakeBat('');
   Log('Just made the batch file for instalation. The output of the creation is ' + BoolToStr(bolExit));
   if bolExit then
     begin
-      bolExit:=SQLServerInstallUpdateINI(strINIFile, strInstance, strSAPWD);
-      MsgBox('Updated the INI file', mbInformation, MB_OK);
+      bolExit:=SQLServerInstallUpdateINI(strINIFile, strSQLInstance, strSAPWD);
       if bolExit then
         begin
-        MsgBox('Running the actual installation', mbInformation, MB_OK);
           bolExit:= ShellExec('', strBatFile, '', strDirTmp ,SW_SHOW, ewWaitUntilTerminated, ErrorCode);
         end;
     end;
@@ -1327,64 +1473,292 @@ end;
 function SQLServerInstallComplete(Param: String): boolean;
 (*Purpose
 Manages the installation of the adequate instance of SQL Server 2005 Express
-It will check if it is already installed, and install it if it is not
+It will check if it should be installed, and install it if it is required
 *)
 
 var
   bolSQLServer, bolSQLInstance, bolExit: boolean;
-  strInstance, strInstanceFull: String;
+  strInstanceLocal, strInstanceFull: String;
+  strSAPWD: String;
   
 begin
- MsgBox('SQLServerInstallCOmplete starting.', mbInformation, MB_OK);
-  strInstanceFull:= GetMyAppSQLFullInstanceName('');
-  strInstance:= GetSQLInstance('');
+  strInstanceFull:= GetMyAppSQLInstanceNameFull('');
+  strInstanceLocal:= SQLInstanceNameLocal(GetSQLInstance(''));
+  strSAPWD:= GetSQLSAPWD('');
   bolSQLServer:= False;
   bolSQLInstance:= False;
   bolExit:= False;
+
   
-  bolSQLServer:= IsSQLExpressInstalled('');
-  if bolSQLServer then
-    MsgBox('SQL Server IS Installed', mbInformation, MB_OK);  
+  bolSQLServer:= GetSQLServerInstallationRequired('');
+  
+  bolSQLInstance:= GetSQLServerInstanceInstallationRequired('');
+  if (bolSQLServer) or (bolSQLInstance) then
     begin
-      bolSQLInstance:= IsSQLServerInstanceInstalled(strInstance);
-      if bolSQLInstance then
-        begin
-          MsgBox('SQL Server Instance ' + strInstanceFull + ' is already installed',
-          mbInformation, MB_OK);    
-        end
-      else
-        begin
-         MsgBox('SQL Server Instance ' + strInstanceFull + ' is not installed',
-          mbInformation, MB_OK); 
-        end;
-      
-    end;
-  if (not bolSQLServer) or (not bolSQLInstance) then
-    begin
-      Log('SQL Server Installation starting');
-MsgBox('SQL Server Installation Will Start', mbInformation, MB_OK);     
-      bolExit:= SQLServerInstall('');
+      Log('Installing local Instance ' + strInstanceLocal + ' of SQL Server');
+      bolExit:= SQLServerInstall(strInstanceLocal, strSAPWD);
     end;      
 end;
 
 
-procedure SetGlobalsSQLServer();
+procedure SetGlobalsSQLServerStart();
 (*Purpose
-Sets the values of the global variables that are used when installing the SQL Server
-and the associated databases
+Sets the values of the global variables that are used when installing or 
+checking the instalation of the SQL Server and the associated databases
+This procedure must be run BEFORE any checks on SQL Server installation are done
 *)
 
 begin
   SetSQLInstaller(ExpandConstant('setup.exe'));
-  SetSQLInstance(ExpandConstant('FAO_CAS')); 
+  SetSQLInstance(ExpandConstant('FAOCAS')); 
   SetSQLDBName(ExpandConstant('FAOCASDATA'));
   SetSQLDBFile(ExpandConstant('FAOCASDATA'));
   SetSQLInstallBat(ExpandConstant('FAOCAS_SQLInstall.bat'));
   SetSQLInstallDat(ExpandConstant('FAOCAS_SQLInstallConfig.ini'));
   SetSQLSAPWD(ExpandConstant('Test123'));
-  SetInstallSQLServer(True);
-  SetAttachDB(True);
+  SetDBInstallationChecked(False);
   end;
+  
+procedure SetGlobalsCheckDBInstallation();
+(*Purpose
+Sets the global variables informing the installation of what parts (if any) of
+the database system are already properly installed or configured
+*)
+var
+  strInstance, strSAPWD, strDBName: String;
+  
+begin
+SetDBInstallationChecked(False);
+
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strSAPWD:= GetSQLSAPWD('');
+  strDBName:= GetSQLDBName('');
+  
+  if IsSQLExpressInstalled('') then
+    begin
+      SetSQLServerInstalled(True);
+      if ISSQLServerInstanceInstalled(strInstance) then
+        begin
+          SetSQLServerInstanceInstalled(True);
+          if ISSQLServerDBExists(strInstance, strSAPWD, strDBName) then
+            begin
+              SetDBExists(True);
+            end
+          else
+            begin
+              SetDBExists(False);
+            end;
+        end
+      else
+        begin
+          SetSQLServerInstanceInstalled(False);
+          SetDBExists(False);
+        end;
+    end
+  else
+    begin
+      SetSQLServerInstalled(False);
+      SetSQLServerInstanceInstalled(False);
+      SetDBExists(False);
+    end;
+SetDBInstallationChecked(True);
+end;
+
+function CheckDBInstallationRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if the different parts of the SQL Server installation required are
+already installed, and sets the appropriate global variables to indicate
+whether it should be installed
+*)
+var
+  strInstance, strDBName: String;
+  bolInstallRequired: Boolean;
+  
+begin
+  if bolForceCheck then
+    begin
+      SetDBInstallationRequiredChecked(False); //Ignore previous checks
+    end;
+  
+  if GetDBInstallationRequiredChecked('') then
+    begin //If it was already done, just return the value of the appropriate global variables
+      result:= GetDBInstallationRequired('');
+      exit; 
+   end;
+    
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strDBName:= GetSQLDBName('');
+  bolInstallRequired:= False;
+  if not GetDBInstallationChecked('') then
+    begin
+      SetGlobalsCheckDBInstallation; //Check what is installed, and set the appropriate global variables
+    end;
+    
+  if not GetSQLServerInstalled('') then
+    begin //Nothing is installed. Set the requirements to install all
+      bolInstallRequired:= True;
+      SetSQLServerInstallationRequired(true);
+      SetSQLServerInstanceInstallationRequired(True);
+      SetAttachDBRequired(True);
+      SetDBInstallationRequired(True);
+      Log('SQL Server 2005 Express Edition is not yet installed. It will be installed.');
+    end
+  else
+    begin
+      Log('SQL Server 2005 Express Edition is already installed');
+      if not GetSQLServerInstanceInstalled('') then
+        begin //Another instance of SQL Server is installed, but not the one required by the application. Set requirements to install what is missing
+          bolInstallRequired:= True;
+          SetSQLServerInstanceInstallationRequired(true);
+          SetAttachDBRequired(True);
+          SetDBInstallationRequired(True);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is not yet installed. It will be installed');    
+        end
+      else
+        begin
+          SetSQLServerInstanceInstallationRequired(false);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is already installed');
+          if not GetDBExists('') then //SQL Server and the right instance are installed, but the database does not exist
+            begin
+              bolInstallRequired:= True;
+              SetAttachDBRequired(True);
+              SetDBInstallationRequired(True);
+              Log('The DataBase ' + strDBName + ' does not exist on the server. It will be created by attaching the right files'); 
+            end
+          else
+            begin
+              bolInstallRequired:= False;
+              SetAttachDBRequired(False);
+              SetDBInstallationRequired(False);
+              Log('The DataBase ' + strDBName + ' already exists on the server.'); 
+              Log('All database components are already installed. No need to install any component.')
+            end;       
+        end;
+    end;
+  SetDBInstallationRequiredChecked(True); //Record that the requirements for installation of the DB components have been checked
+  result:= bolInstallRequired;
+end;
+
+function CheckSQLServerInstanceInstallationRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if it is required to install the application instance of SQLServer.
+If this was not yet checked, also sets the appropriate global variables to indicate
+whether the different components of the Database system should be installed
+*)
+var
+  strInstance, strDBName: String;
+  bolInstallRequired: Boolean;
+  
+begin
+  if bolForceCheck then
+    begin
+      SetDBInstallationRequiredChecked(False); //Ignore previous checks
+    end;
+  
+  if GetDBInstallationRequiredChecked('') then
+    begin //If it was already done, just return the value of the appropriate global variables
+      result:=GetSQLServerInstallationRequired('');
+      exit; 
+    end;
+    
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strDBName:= GetSQLDBName('');
+  bolInstallRequired:= False;
+  if not GetDBInstallationChecked('') then
+    begin
+      SetGlobalsCheckDBInstallation; //Check what is installed, and set the appropriate global variables
+    end;
+    
+  if not GetSQLServerInstalled('') then
+    begin //Nothing is installed. Set the requirements to install all
+      bolInstallRequired:= True;
+      SetSQLServerInstallationRequired(true);
+      SetSQLServerInstanceInstallationRequired(True);
+      SetAttachDBRequired(True);
+      SetDBInstallationRequired(True);
+      Log('SQL Server 2005 Express Edition is not yet installed. It will be installed.');
+    end
+  else
+    begin
+      Log('SQL Server 2005 Express Edition is already installed');
+      if not GetSQLServerInstanceInstalled('') then
+        begin //Another instance of SQL Server is installed, but not the one required by the application. Set requirements to install what is missing
+          bolInstallRequired:= True;
+          SetSQLServerInstanceInstallationRequired(true);
+          SetAttachDBRequired(True);
+          SetDBInstallationRequired(True);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is not yet installed. It will be installed');    
+        end
+      else
+        begin
+          SetSQLServerInstanceInstallationRequired(false);
+          bolInstallRequired:= False;
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is already installed');
+          if not GetDBExists('') then //SQL Server and the right instance are installed, but the database does not exist
+            begin
+              SetAttachDBRequired(True);
+              SetDBInstallationRequired(True);
+              Log('The DataBase ' + strDBName + ' does not exist on the server. It will be created by attaching the right files'); 
+            end
+          else
+            begin
+              SetAttachDBRequired(False);
+              SetDBInstallationRequired(False);
+              Log('The DataBase ' + strDBName + ' already exists on the server.'); 
+              Log('All database components are already installed. No need to install any component.')
+            end;       
+        end;
+    end;
+  SetDBInstallationRequiredChecked(True); //Record that the requirements for installation of the DB components have been checked
+  result:= bolInstallRequired;
+end;
+
+function CheckDBAttachRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if it is necessary to attach the Database provided with the application to the database server,
+and if this was not yet checked, sets the appropriate global variables to indicate
+whether it should be installed
+NOTE: It will be necessary to attach the DB if any of the components of the system is not installed, so this
+      defaults to the CheckDBInstallationRequired function. In this case, this function is just a wrapper to
+      CheckDBInstallationRequired
+*)
+begin
+  result:= CheckDBInstallationRequired(bolForceCheck);
+end;
+
+function GetReadyPageDBInstallationText(NewLine: String): String;
+(*Purpose
+Builds the string to show in the last page before installation, summarizing what parts of the Database system will be installed
+*)
+var
+  strTmp: String;
+  
+begin
+  if not GetDBInstallationRequired('') then
+    begin
+      exit;
+    end;
+  
+  strTmp:= 'Database components to install:'+ NewLine
+  if GetSQLServerInstallationRequired('') then
+    begin
+      strTmp:= NewLine + strTmp + strSQLServer_gc;
+    end;
+    
+  if GetSQLServerInstanceInstallationRequired('') then
+    begin
+      strTmp:= strTmp + NewLine;
+      strTmp:= strTmp + strSQLServer_gc + ' Instance ' + GetSQLInstance(''); 
+    end;
+  
+  if GetAttachDBRequired('') then
+    begin
+      strTmp:= strTmp + NewLine;
+      strTmp:= strTmp + 'Attach file ' + ExtractFileName(GetSQLDBFileName(''));
+      strTmp:= strTmp + ' as Database ' + GetSQLDBName(''); 
+    end;
+result:= strTmp;    
+end;
 [Code]
 
 var
@@ -1513,7 +1887,7 @@ Page.Values[0] := strDataDir;
   wpDataDir:= Page.ID;
 end;
 
-function GetReadyPageDataDirText(): string;
+function GetReadyPageDataDirText(NewLine: String): string;
 (*Purpose
 Create the text to present in the page of ready to install
 *)
@@ -1521,8 +1895,8 @@ var
   strTmp: string;
 
 begin
-  strTmp:= 'Data Folder:'
-  strTmp:= strTmp + CRLF + '   ';
+  strTmp:= 'Application Data Folder:'
+  strTmp:= strTmp + NewLine + '   ';
   strTmp:= strTmp + GetPathData('');
   result:= strTmp;
 end;
@@ -1540,7 +1914,7 @@ var
 strTmp: string;
 
 begin
-  Log('Starting to create the User Prompts');
+  Log('Creating the User Prompts');
   SetArrayLength(UserPromptsDataDir, 3);
   UserPromptsDataDir[0]:= 'Select the location for the Data files';
   UserPromptsDataDir[1]:= 'Where should the data files be stored?';
@@ -1586,9 +1960,11 @@ begin
   result := success and (install = 1) and (serviceCount >= service);
 end;
 
+
+
 function CheckRequirements(): Boolean;
 begin
-    result := true;
+  result := true;
 
 end;
 
@@ -1608,15 +1984,26 @@ begin
 Create custom pages to show during install }
   InitializeUserPrompts;
   CreatePage_DataDir(wpSelectDir); //The ID is created in the function itself
-  MsgBox('The ID of the DataDir Page is ' + intToStr(wpDataDir), mbInformation, MB_OK);
 end;
 
 
 
 function InitializeSetup(): Boolean;
+(*Purpose
+This function is run BEFORE the start of the setup, even before any dialog is shown
+to the user.
+This function will perform the following tasks:
+a) Set any information on instructions passed through the command-line parameters
+b) Set global variables that must be in place for the use of functions used during
+  the collection of user information via the wizards
+c) Check any prerequisites that need to be known for the wizards
+*)
 begin
+Log('Starting function InitializeSetup');
   UpdateInfFilenames(); //Read the names of the .Inf configuration files to use, if any
-
+  SetGlobalsSQLServerStart; //Set the global variables related to SQL Server installation
+  SetGlobalsCheckDBInstallation; //Set the global variables informing the status of the different components of the Database system
+  CheckDBInstallationRequired(True); //Set the global variables on the need to install the different components of the Database system
   Result := True; //Allow Setup to continue
 end;
 
@@ -1632,12 +2019,10 @@ begin
   case CurStep of
     ssInstall:
       begin
-        MsgBox('Starting the Pre-Install Process', mbInformation, MB_OK);
         DoPreInstall;
       end;
     ssPostInstall:
       begin
-        MsgBox('Starting the Post-Install Process', mbInformation, MB_OK);
         SetFinishedInstall(True);
         DoPostInstall;
       end;
@@ -1654,15 +2039,15 @@ var
   bolRequirements: boolean;
  
 begin
+  SetGlobalsCommon; //Set the initial values of the Global variables for the installation
+  SetGlobalsDataDir;
+  SetGlobalsSQLServerStart;
+
   bolRequirements:= CheckRequirements;
   if not bolRequirements then
     begin
-      MsgBox(MsgRequirementsMissing, mbInformation, MB_OK);
       Exit;
     end;
-  SetGlobalsCommon; //Set the initial values of the Global variables for the installation
-  SetGlobalsDataDir;
-  SetGlobalsSQLServer;
   
 end;
 
@@ -1752,9 +2137,7 @@ begin//OK
                   Log('Leaving page for Selection of Data directory');
                   PageDir:= TInputDirWizardPage(PageFromID(wpDataDir));
                   SetPathData(PageDir.Values[0]);
-                  MsgBox('Just selected the data directory ' + PageDir.Values[0], mbInformation, MB_OK);
-                  MsgBox('The info in the global variables is ' + GetPathData(''), mbInformation, MB_OK);
-                  Log('Path Data selected is '+ PageDir.Values[0]);
+                  Log('Data for application is '+ PageDir.Values[0]);
                   bolMoveNext:= True;
                 end; //OK
             end;//OK       

@@ -27,7 +27,10 @@ var
   
 
 //Forward declarations
-function GetReadyPageDataDirText(): string; forward;
+function GetReadyPageDataDirText(NewLine: String): string; forward;
+function GetReadyPageDBInstallationText(NewLine: String): String; forward;
+function GetDBInstallationRequired(Param: string): Boolean; forward;
+
 
 function ReverseString(strIn: String): String;
 (*Purpose
@@ -127,9 +130,9 @@ procedure SetPathData(strPath: string);
 Sets the value of the Global Variable defining the path for the Application Data Directory
 *)
 begin
-  Log('Before changing, Path for Data files is  ' + PathData);
+//  Log('Before changing, Path for Data files is  ' + PathData);
   PathData:= strPath;
-  Log('Path for Data files is now set to ' + PathData);
+//  Log('Path for Data files is now set to ' + PathData);
 end;
 
 procedure SetPathDataDefault();
@@ -138,7 +141,7 @@ Sets the default value of the Global Variable defining the path for the Applicat
 *)
 begin
   SetPathData(ExpandConstant('{#MyAppDataDir}'));
-  Log('Path for Data files is ' + PathData);
+//  Log('Path for Data files is ' + PathData);
 end;
 function GetPathData(Param: string): String;
 (*Purpose
@@ -146,7 +149,7 @@ Gest the value of the Global Variable defining the path for the Application Data
 *)
 begin
   result:= PathData;
-  Log('The PathData variable is set to ' + PathData);
+//  Log('The PathData variable is set to ' + PathData);
 end;
 
 procedure SetPathConf(strPath: string);
@@ -234,6 +237,54 @@ begin
     end;
 end;
 
+function stringRepeat(strIn: String; intN: integer): String;
+(*Purpose
+Repeat string strIn intNtimes, into a new string
+*)
+var
+  strTmp: String;
+  j1: integer;
+  
+  begin
+    strTmp:='';
+    if intN > 0 then
+    begin
+      for j1:= 1 to intN do
+        begin
+          strTmp:= strTmp + strIn
+        end;  
+    end;
+  result:= strTmp;
+  end;
+  
+function AppendMemo2Msg(strMsg, strNewMemo, NewLine: String; intNNewLines: integer): String;
+(*Purpose
+Appends a new memo (set of lines) to a message, like the one to be presented on the "Ready" page,
+separating it by a fixed number of NewLine characters
+*)
+var
+  strTmp, strSep: String;
+  
+begin
+  strSep:=stringRepeat(NewLine, 2);
+    
+  if strNewMemo <> '' then
+    begin
+      if strMsg <> '' then
+        begin
+          strTmp:= strMsg + strSep + strNewMemo;
+        end
+      else
+        begin
+          strTmp:= strNewMemo;
+        end;
+    end
+  else
+    begin
+      strTmp:= strMsg;
+    end;
+result:= strTmp;
+end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo,
 MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo,
@@ -247,39 +298,26 @@ var
    
 begin
 //Build the message here
+  strMsg:='';
   strTmp:= MemoUserInfoInfo;
-  if strTmp <>'' then
-    begin
-      strMsg:= strTmp;
-    end;
-    
+  strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+      
   strTmp:= MemoDirInfo;
-  if strTmp <> '' then
-    begin
-      if strMsg <> '' then
-        begin
-           strMsg:= strMsg + NewLine + NewLine + strTmp;
-        end
-      else
-        begin
-          strMsg:= strTmp;
-        end;
-    end;
+  strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+
   if HasDataDirPage then
     begin
-      strTmp:= GetReadyPageDataDirText;
-      if strTmp <> '' then
-        begin
-          if strMsg <> '' then
-            begin
-              strMsg:= strMsg + NewLine + NewLine + strTmp;
-            end
-          else
-            begin
-              strMsg:= strTmp;
-            end;
-        end;
+      strTmp:= GetReadyPageDataDirText(NewLine);
+      strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
     end;
+
+  if GetDBInstallationRequired('') then
+    begin
+      strTmp:= GetReadyPageDBInstallationText(NewLine);
+      strMsg:= AppendMemo2Msg(strMsg, strTmp, NewLine, 2);
+    end;
+    
+  strMsg:=  AppendMemo2Msg(strMsg, MemoTasksInfo, NewLine, 2);   
   result:= strMsg;
 end;
 

@@ -230,14 +230,10 @@ Sets the full path to the SQL Server installer program into the global variable
   
 begin
   SQLInstallerDir:= AddBackslash(GetPathTmp(''));
-  Log('SQLInstallerDir is ' + SQLInstallerDir);
   
   SQLInstallerDir:= AddBackslash(SQLInstallerDir) + 
                     ExpandConstant('{#MyAppSQLServerInstallDir}');
-    Log('SQLInstallerDir is ' + SQLInstallerDir);
   SQLInstaller:=  AddBackslash(SQLInstallerDir) +  strFileName;
-    Log('SQLInstaller is ' + SQLInstaller);
-  MsgBox('The SQL Installer is ' + SQLInstaller, mbInformation, MB_OK);
 end;
 
 function IsSQLServerFullInstanceName(strInstance: String): boolean;

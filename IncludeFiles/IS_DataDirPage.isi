@@ -142,7 +142,7 @@ Page.Values[0] := strDataDir;
   wpDataDir:= Page.ID;
 end;
 
-function GetReadyPageDataDirText(): string;
+function GetReadyPageDataDirText(NewLine: String): string;
 (*Purpose
 Create the text to present in the page of ready to install
 *)
@@ -150,8 +150,8 @@ var
   strTmp: string;
 
 begin
-  strTmp:= 'Data Folder:'
-  strTmp:= strTmp + CRLF + '   ';
+  strTmp:= 'Application Data Folder:'
+  strTmp:= strTmp + NewLine + '   ';
   strTmp:= strTmp + GetPathData('');
   result:= strTmp;
 end;

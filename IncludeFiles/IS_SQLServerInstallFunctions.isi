@@ -50,8 +50,19 @@ SQLSecurModeKey = 'SECURITYMODE';
 SQLSecurMode = 'SQL';
 SQLDBExists = 'DBExists';
 
+//Values for information messages:
+strSQLServer_gc = 'SQL Server 2005 Express Edition';
+
 var //Global variables
+  DBInstallationRequired_g: Boolean; //Boolean: Is it necessary to install at least some parts of the Database systems needed for the application?
+  DBInstallationRequiredChecked_g: Boolean; //Boolean: Has it been checked if it is necessary to install the different parts of the Database systems needed for the application?
+  DBInstallationChecked_g: Boolean; //Boolean: Has it been checked if the different parts of the Database systems needed for the application are already installed?
+  SQLServerInstalled_g: boolean; //Boolean: Is SQL Server already installed?
+  SQLServerInstanceInstalled_g: boolean; //Boolean: Is the SQL Server Instance of the Application already installed?
+  DBExists_g: boolean; //Boolean: Does the database name of the application already exist in the Server Instance intended?
+
   InstallSQLServer: boolean; //Boolean: Is it necessary to install SQL Server?
+  InstallSQLServerInstance: boolean; //Boolean: Is it necessary to install the SQL Server Instance of the Application?
   AttachDBFile: boolean; //Boolean: Is it necessary to attach the database?
   
   SQLDBName: String; //Name of the database to install
@@ -64,6 +75,111 @@ var //Global variables
   SQLInstallDat: String; //Full path for the file with the SQL Server Installation configurations
 
 //CODE DEFINITION
+
+procedure SetDBInstallationRequired(bolRequired: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it  
+is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  DBInstallationRequired_g:= bolRequired;
+end;
+
+function GetDBInstallationRequired(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether it 
+is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  result:= DBInstallationRequired_g;
+end;
+
+procedure SetDBInstallationRequiredChecked(bolChecked: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it has been checked 
+if it is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  DBInstallationRequiredChecked_g:= bolChecked;
+end;
+
+function GetDBInstallationRequiredChecked(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether it has been checked 
+if it is necessary to install all or parts of the Database systems needed for the application
+*)
+begin
+  result:= DBInstallationRequiredChecked_g;
+end;
+
+
+procedure SetDBInstallationChecked(bolChecked: boolean);
+(*Purpose
+Sets the value of the global variable defining whether it hasb been checked 
+if the different parts of the Database systems needed for the application are already installed
+*)
+begin
+  DBInstallationChecked_g:= bolChecked;
+end;
+
+function GetDBInstallationChecked(Param: string): Boolean;
+(*Purpose
+Sets the value of the global variable defining whether it hasb been checked 
+if the different parts of the Database systems needed for the application are already installed
+*)
+begin
+  result:= DBInstallationChecked_g;
+end;
+
+procedure SetSQLServerInstalled(bolInstalled: boolean);
+(*Purpose
+Sets the value of the global variable defining whether SQL Server is already installed
+*)
+begin
+  SQLServerInstalled_g:= bolInstalled;
+end;
+
+function GetSQLServerInstalled(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether SQL Server is already installed
+*)
+begin
+  result:= SQLServerInstalled_g;
+end;
+
+procedure SetSQLServerInstanceInstalled(bolInstalled: boolean);
+(*Purpose
+Sets the value of the global variable defining whether the SQL Server Instance for the application is already installed
+*)
+begin
+  SQLServerInstanceInstalled_g:= bolInstalled;
+end;
+
+function GetSQLServerInstanceInstalled(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether the SQL Server Instance for the application is already installed
+*)
+begin
+  result:= SQLServerInstanceInstalled_g;
+end;
+
+
+procedure SetDBExists(bolExists: boolean);
+(*Purpose
+Sets the value of the global variable defining whether the database name of the application already exist in the Server Instance intended?
+*)
+begin
+  DBExists_g:= bolExists;
+end;
+
+function GetDBExists(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether the database name of the application already exist in the Server Instance intended?
+*)
+begin
+  result:= DBExists_g;
+end;
+
 procedure SetSQLInstance(strInstance: string);
 (*Purpose
 Sets the value of the global variable defining the name of the SQL Instance to use in this application
@@ -230,17 +346,13 @@ Sets the full path to the SQL Server installer program into the global variable
   
 begin
   SQLInstallerDir:= AddBackslash(GetPathTmp(''));
-  Log('SQLInstallerDir is ' + SQLInstallerDir);
   
   SQLInstallerDir:= AddBackslash(SQLInstallerDir) + 
                     ExpandConstant('{#MyAppSQLServerInstallDir}');
-    Log('SQLInstallerDir is ' + SQLInstallerDir);
   SQLInstaller:=  AddBackslash(SQLInstallerDir) +  strFileName;
-    Log('SQLInstaller is ' + SQLInstaller);
-  MsgBox('The SQL Installer is ' + SQLInstaller, mbInformation, MB_OK);
 end;
 
-function IsSQLServerFullInstanceName(strInstance: String): boolean;
+function IsSQLServerInstanceNameFull(strInstance: String): boolean;
 (*Purpose
 Checks if a string provided corresponds to a full instance name, or to a local instance only
 *)
@@ -261,7 +373,7 @@ var
   lngInd, lngStart, lngCount: LongInt;
     
 begin
-  if IsSQLServerFullInstanceName(strInstance) then
+  if IsSQLServerInstanceNameFull(strInstance) then
     begin
       lngInd:=Pos('\', ReverseString(strInstance));
       lngCount:= lngInd -1;
@@ -276,7 +388,7 @@ begin
 end;
 
 
-function SQLFullInstanceName(strInstance: String): String;
+function SQLInstanceNameFull(strInstance: String): String;
 //Purpose
 //Returns the fully-qualified SQL Server 2005 instance name, needed for many commands
 //Note: Do not use for specifying the instance name for local installation. This requires only the Instance name, without the server name
@@ -285,7 +397,7 @@ var
   strFullName: String;
     
 begin
-  if IsSQLServerFullInstanceName(strInstance) then
+  if IsSQLServerInstanceNameFull(strInstance) then
     begin
       strFullName:= strInstance;
     end
@@ -296,13 +408,13 @@ begin
   result:= strFullName;    
 end;
 
-function GetMyAppSQLFullInstanceName(Param: String): String;
+function GetMyAppSQLInstanceNameFull(Param: String): String;
 //Purpose
 //Returns the fully-qualified SQL Server 2005 instance name, needed for many commands
 //Note: Do not use for specifying the instance name for local installation. This requires only the Instance name, without the server name
   
 begin
-  result:= SQLFullInstanceName(GetSQLInstance(''));
+  result:= SQLInstanceNameFull(GetSQLInstance(''));
 end;
 
 function GetSQLSAPWD(Param: String): String;
@@ -321,7 +433,7 @@ begin
   SQL_SAPWD:= strSQL_SAPwd;
 end;
 
-function GetInstallSQLServer(Param: String): boolean;
+function GetSQLServerInstallationRequired(Param: String): boolean;
 (*Purpose
 Returns the boolean indicating whether to install SQL Server
 *)
@@ -329,7 +441,7 @@ begin
   result:=  InstallSQLServer;
 end;
 
-procedure SetInstallSQLServer(bolInstall: boolean);
+procedure SetSQLServerInstallationRequired(bolInstall: boolean);
 (*Purpose
 Sets the boolean indicating whether to install SQL Server
 *)
@@ -337,15 +449,31 @@ begin
   InstallSQLServer:= bolInstall;
 end;
 
-function GetAttachDB(Param: String): boolean;
+function GetSQLServerInstanceInstallationRequired(Param: String): boolean;
 (*Purpose
-Returns the boolean indicating whether to install SQL Server
+Returns the boolean indicating whether to install the specific SQL Server Instance
+*)
+begin
+  result:=  InstallSQLServerInstance;
+end;
+
+procedure SetSQLServerInstanceInstallationRequired(bolInstall: boolean);
+(*Purpose
+Sets the boolean indicating whether to install the specific SQL Server Instance
+*)
+begin
+  InstallSQLServerInstance:= bolInstall;
+end;
+
+function GetAttachDBRequired(Param: String): boolean;
+(*Purpose
+Returns the boolean indicating whether to attach the Database file to our SQL Server Instance
 *)
 begin
   result:=  AttachDBFile;
 end;
 
-procedure SetAttachDB(bolAttach: boolean);
+procedure SetAttachDBRequired(bolAttach: boolean);
 (*Purpose
 Sets the boolean indicating whether to attach a database to SQL Server
 *)
@@ -423,7 +551,7 @@ Log('The value of the strFileCmd parameter is ' + strFileCmd);
 Log('The value of the strFileDat parameter is ' + strFileDat);
 Log('The value of the strFileOut parameter is ' + strFileOut);
 
-  strSQLInstance:= SQLFullInstanceName(strInstance);
+  strSQLInstance:= SQLInstanceNameFull(strInstance);
   SetArrayLength(strCmds, 2);
   strCmds[0]:= '@echo off';
   strCmds[1]:= 'start  /B  sqlcmd /S ' + strSQLInstance + ' -U sa -P ' + strSAPWD + ' -i ' 
@@ -553,23 +681,21 @@ begin
 //  strFileBat:= strFileCmd;
 //  strFileDat:= FileDat(strFileCmd);
 //  strFileOut:= FileOut(strFileCmd);
-  strSQLInstance:= SQLFullInstanceName(strInstance);//This should already be the full instance name
+  strSQLInstance:= SQLInstanceNameFull(strInstance);//This should already be the full instance name
 
 //Create the Batch file
   bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, strFileOut);
-  MsgBox('The command file ' + strFileBat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
   if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
     begin
       SetArrayLength(strCmds, 2);
       strCmds[0]:= 'IF EXISTS (SELECT 1 FROM master.sys.databases WHERE name = N''' + strSQLDBName + ''')';
       strCmds[1]:= 'PRINT ''' + SQLDBExists + '''';
       bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
-      MsgBox('The commands file ' + strFileDat + ' was written is ' + BoolToStr(bolExit) + '. Please check.', mbInformation, MB_OK);
     end;
   result:= bolExit;
 end;
 
-function ISSQLServerDBAttached(strInstance, strSAPWD, strSQLDBName: string): boolean;
+function ISSQLServerDBExists(strInstance, strSAPWD, strSQLDBName: string): boolean;
 (*Purpose
 Queries an SQL Server Instance for the existence (or not) of the database
 with the name given attached
@@ -588,7 +714,7 @@ begin
   strFileDat:= FileDat(strFileBat);
   strFileOut:= FileOut(strFileBat);
   strPathTmp:= GetPathTmp('');
-  strSQLInstance:= SQLFullInstanceName(strInstance);
+  strSQLInstance:= SQLInstanceNameFull(strInstance);
   
 //Create the Batch file and the accompanying input file
   bolSuccess:= SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, strFileDat, strFileOut);
@@ -699,7 +825,6 @@ begin
     end;
     
 result:= bolSuccess;
-MsgBox('Check now if files have been copied.', mbInformation, MB_OK);
 end;
 
 
@@ -718,7 +843,7 @@ var
   strInstanceFull, strPathData, strPathTmp: String;
 
 begin
-  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strInstanceFull:= SQLInstanceNameFull(strInstance);
   strPathData:= GetPathData('');
   strPathTmp:= GetPathTmp('');
   strFileBat:= GetSQLAttachFileBat('');
@@ -746,13 +871,13 @@ var
 
 begin
   bolSuccess:= False;
-  strInstanceFull:= SQLFullInstanceName(strInstance);
+  strInstanceFull:= SQLInstanceNameFull(strInstance);
   strPathTmp:= GetPathTmp('');
   strSAPWD:= GetSQLSAPWD('');
   strFileBat:= GetSQLDetachFileBat('');
   
   //Check if the database is attached, to start with
-  bolAttached:=ISSQLServerDBAttached(strInstanceFull, strSAPWD, strSQLDBName);
+  bolAttached:=ISSQLServerDBExists(strInstanceFull, strSAPWD, strSQLDBName);
   if not bolAttached then
     begin //No need to continue
       result:= True;
@@ -782,7 +907,7 @@ var
   strPathTmp: String;
 
 begin 
-  strInstance:= GetMyAppSQLFullInstanceName('');
+  strInstance:= GetMyAppSQLInstanceNameFull('');
   strPathDest:= GetPathData('');
   strPathSrc:= GetPathTmp('');
   strPathTmp:= GetPathTmp('');
@@ -832,13 +957,13 @@ begin
   strConf:= GetSQLInstallDat('');
   strDirTmp:= GetPathTmp('');
   strCommand[0]:= 'Start /wait ' + SQLSetup + ' /qb /settings ' + strConf;
-MsgBox('The command to run is ' + strCommand[0], mbInformation, MB_OK);
+//MsgBox('The command to run is ' + strCommand[0], mbInformation, MB_OK);
   strBatFile:= GetSQLInstallBat('');
   bolExit:= SaveStringsToFile(strBatFile, strCommand, False);
   result:= bolExit;
 end;
 
-function SQLServerInstall(Param: String): boolean;
+function SQLServerInstall(strInstance, strSAPWD: String): boolean;
 (*Purpose
 Configures and Runs the installation of the adequate instance of SQL Server 2005 Express
 *)
@@ -847,27 +972,25 @@ var
   bolExit: boolean;
   ErrorCode: Integer;
   strBatFile, strINIFile, strDirTmp: String;
-  strInstance, strSAPWD: String;
-  
+  strSQLInstance: String;
+    
 begin
-Log('SQLServerInstall function is starting.');
   strBatFile:= GetSQLInstallBat('');
   strINIFile:= GetSQLInstallDat('');
   strDirTmp:= GetPathTmp('');
-  strInstance:= GetSQLInstance(''); //This is not the full name, only the local one
-  strSAPWD:= GetSQLSAPWD('');
-  
+  strSQLInstance:= SQLInstanceNameLocal(strInstance); //Make sure this is not the full name, only the local one
+    
   //Create the batch file for running the installer
   bolExit:= SQLServerInstallMakeBat('');
   Log('Just made the batch file for instalation. The output of the creation is ' + BoolToStr(bolExit));
   if bolExit then
     begin
       //Update the configuration file for the installation
-      bolExit:=SQLServerInstallUpdateINI(strINIFile, strInstance, strSAPWD);
-      MsgBox('Updated the INI file', mbInformation, MB_OK);
+      bolExit:=SQLServerInstallUpdateINI(strINIFile, strSQLInstance, strSAPWD);
+//      MsgBox('Updated the INI file', mbInformation, MB_OK);
       if bolExit then
         begin
-        MsgBox('Running the actual installation', mbInformation, MB_OK);
+//        MsgBox('Running the actual installation', mbInformation, MB_OK);
           //Run the actual installation
           bolExit:= ShellExec('', strBatFile, '', strDirTmp ,SW_SHOW, ewWaitUntilTerminated, ErrorCode);
         end;
@@ -879,54 +1002,44 @@ end;
 function SQLServerInstallComplete(Param: String): boolean;
 (*Purpose
 Manages the installation of the adequate instance of SQL Server 2005 Express
-It will check if it is already installed, and install it if it is not
+It will check if it should be installed, and install it if it is required
 *)
 
 var
   bolSQLServer, bolSQLInstance, bolExit: boolean;
-  strInstance, strInstanceFull: String;
+  strInstanceLocal, strInstanceFull: String;
+  strSAPWD: String;
   
 begin
- MsgBox('SQLServerInstallCOmplete starting.', mbInformation, MB_OK);
-  strInstanceFull:= GetMyAppSQLFullInstanceName('');
-  strInstance:= GetSQLInstance('');
+// MsgBox('SQLServerInstallCOmplete starting.', mbInformation, MB_OK);
+  strInstanceFull:= GetMyAppSQLInstanceNameFull('');
+  strInstanceLocal:= SQLInstanceNameLocal(GetSQLInstance(''));
+  strSAPWD:= GetSQLSAPWD('');
   bolSQLServer:= False;
   bolSQLInstance:= False;
   bolExit:= False;
+
   
-  //Check if the SQL Server is installed
-  bolSQLServer:= IsSQLExpressInstalled('');
-  if bolSQLServer then
-    MsgBox('SQL Server IS Installed', mbInformation, MB_OK);  
-    begin
-      //Check if the right instance is already installed
-      bolSQLInstance:= IsSQLServerInstanceInstalled(strInstance);
-      if bolSQLInstance then
-        begin
-          MsgBox('SQL Server Instance ' + strInstanceFull + ' is already installed',
-          mbInformation, MB_OK);    
-        end
-      else
-        begin
-         MsgBox('SQL Server Instance ' + strInstanceFull + ' is not installed',
-          mbInformation, MB_OK); 
-        end;
-      
-    end;
-  if (not bolSQLServer) or (not bolSQLInstance) then
+  //Check if the SQL Server should be installed
+  bolSQLServer:= GetSQLServerInstallationRequired('');
+  
+  //Check if the right instance should be installed
+  bolSQLInstance:= GetSQLServerInstanceInstallationRequired('');
+  if (bolSQLServer) or (bolSQLInstance) then
     begin
       //Install the Instance we want
-      Log('SQL Server Installation starting');
-MsgBox('SQL Server Installation Will Start', mbInformation, MB_OK);     
-      bolExit:= SQLServerInstall('');
+      Log('Installing local Instance ' + strInstanceLocal + ' of SQL Server');
+//MsgBox('SQL Server Installation Will Start', mbInformation, MB_OK);     
+      bolExit:= SQLServerInstall(strInstanceLocal, strSAPWD);
     end;      
 end;
 
 
-procedure SetGlobalsSQLServer();
+procedure SetGlobalsSQLServerStart();
 (*Purpose
-Sets the values of the global variables that are used when installing the SQL Server
-and the associated databases
+Sets the values of the global variables that are used when installing or 
+checking the instalation of the SQL Server and the associated databases
+This procedure must be run BEFORE any checks on SQL Server installation are done
 *)
 
 begin
@@ -937,6 +1050,252 @@ begin
   SetSQLInstallBat(ExpandConstant('{#MyAppSQLInstallBat}'));
   SetSQLInstallDat(ExpandConstant('{#MyAppSQLInstallConfigFile}'));
   SetSQLSAPWD(ExpandConstant('{#MyAppSAPWD}'));
-  SetInstallSQLServer(True);
-  SetAttachDB(True);
+  SetDBInstallationChecked(False);
   end;
+  
+procedure SetGlobalsCheckDBInstallation();
+(*Purpose
+Sets the global variables informing the installation of what parts (if any) of
+the database system are already properly installed or configured
+*)
+var
+  strInstance, strSAPWD, strDBName: String;
+  
+begin
+SetDBInstallationChecked(False);
+
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strSAPWD:= GetSQLSAPWD('');
+  strDBName:= GetSQLDBName('');
+  
+  if IsSQLExpressInstalled('') then
+    begin
+      SetSQLServerInstalled(True);
+      if ISSQLServerInstanceInstalled(strInstance) then
+        begin
+          SetSQLServerInstanceInstalled(True);
+          if ISSQLServerDBExists(strInstance, strSAPWD, strDBName) then
+            begin
+              SetDBExists(True);
+            end
+          else
+            begin
+              SetDBExists(False);
+            end;
+        end
+      else
+        begin
+          SetSQLServerInstanceInstalled(False);
+          SetDBExists(False);
+        end;
+    end
+  else
+    begin
+      SetSQLServerInstalled(False);
+      SetSQLServerInstanceInstalled(False);
+      SetDBExists(False);
+    end;
+//Record that the checking was already done
+SetDBInstallationChecked(True);
+end;
+
+function CheckDBInstallationRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if the different parts of the SQL Server installation required are
+already installed, and sets the appropriate global variables to indicate
+whether it should be installed
+*)
+var
+  strInstance, strDBName: String;
+  bolInstallRequired: Boolean;
+  
+begin
+  //Check if should check anyway
+  if bolForceCheck then
+    begin
+      SetDBInstallationRequiredChecked(False); //Ignore previous checks
+    end;
+  
+  //Check if it was already checked
+  if GetDBInstallationRequiredChecked('') then
+    begin //If it was already done, just return the value of the appropriate global variables
+      result:= GetDBInstallationRequired('');
+      exit; 
+   end;
+    
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strDBName:= GetSQLDBName('');
+  bolInstallRequired:= False;
+  if not GetDBInstallationChecked('') then
+    begin
+      SetGlobalsCheckDBInstallation; //Check what is installed, and set the appropriate global variables
+    end;
+    
+  if not GetSQLServerInstalled('') then
+    begin //Nothing is installed. Set the requirements to install all
+      bolInstallRequired:= True;
+      SetSQLServerInstallationRequired(true);
+      SetSQLServerInstanceInstallationRequired(True);
+      SetAttachDBRequired(True);
+      SetDBInstallationRequired(True);
+      Log('SQL Server 2005 Express Edition is not yet installed. It will be installed.');
+    end
+  else
+    begin
+      Log('SQL Server 2005 Express Edition is already installed');
+      if not GetSQLServerInstanceInstalled('') then
+        begin //Another instance of SQL Server is installed, but not the one required by the application. Set requirements to install what is missing
+          bolInstallRequired:= True;
+          SetSQLServerInstanceInstallationRequired(true);
+          SetAttachDBRequired(True);
+          SetDBInstallationRequired(True);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is not yet installed. It will be installed');    
+        end
+      else
+        begin
+          SetSQLServerInstanceInstallationRequired(false);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is already installed');
+          if not GetDBExists('') then //SQL Server and the right instance are installed, but the database does not exist
+            begin
+              bolInstallRequired:= True;
+              SetAttachDBRequired(True);
+              SetDBInstallationRequired(True);
+              Log('The DataBase ' + strDBName + ' does not exist on the server. It will be created by attaching the right files'); 
+            end
+          else
+            begin
+              bolInstallRequired:= False;
+              SetAttachDBRequired(False);
+              SetDBInstallationRequired(False);
+              Log('The DataBase ' + strDBName + ' already exists on the server.'); 
+              Log('All database components are already installed. No need to install any component.')
+            end;       
+        end;
+    end;
+  SetDBInstallationRequiredChecked(True); //Record that the requirements for installation of the DB components have been checked
+  result:= bolInstallRequired;
+end;
+
+function CheckSQLServerInstanceInstallationRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if it is required to install the application instance of SQLServer.
+If this was not yet checked, also sets the appropriate global variables to indicate
+whether the different components of the Database system should be installed
+*)
+var
+  strInstance, strDBName: String;
+  bolInstallRequired: Boolean;
+  
+begin
+  //Check if should check anyway
+  if bolForceCheck then
+    begin
+      SetDBInstallationRequiredChecked(False); //Ignore previous checks
+    end;
+  
+  //Check if it was already checked
+  if GetDBInstallationRequiredChecked('') then
+    begin //If it was already done, just return the value of the appropriate global variables
+      result:=GetSQLServerInstallationRequired('');
+      exit; 
+    end;
+    
+  strInstance:= GetMyAppSQLInstanceNameFull('');
+  strDBName:= GetSQLDBName('');
+  bolInstallRequired:= False;
+  if not GetDBInstallationChecked('') then
+    begin
+      SetGlobalsCheckDBInstallation; //Check what is installed, and set the appropriate global variables
+    end;
+    
+  if not GetSQLServerInstalled('') then
+    begin //Nothing is installed. Set the requirements to install all
+      bolInstallRequired:= True;
+      SetSQLServerInstallationRequired(true);
+      SetSQLServerInstanceInstallationRequired(True);
+      SetAttachDBRequired(True);
+      SetDBInstallationRequired(True);
+      Log('SQL Server 2005 Express Edition is not yet installed. It will be installed.');
+    end
+  else
+    begin
+      Log('SQL Server 2005 Express Edition is already installed');
+      if not GetSQLServerInstanceInstalled('') then
+        begin //Another instance of SQL Server is installed, but not the one required by the application. Set requirements to install what is missing
+          bolInstallRequired:= True;
+          SetSQLServerInstanceInstallationRequired(true);
+          SetAttachDBRequired(True);
+          SetDBInstallationRequired(True);
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is not yet installed. It will be installed');    
+        end
+      else
+        begin
+          SetSQLServerInstanceInstallationRequired(false);
+          bolInstallRequired:= False;
+          Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is already installed');
+          if not GetDBExists('') then //SQL Server and the right instance are installed, but the database does not exist
+            begin
+              SetAttachDBRequired(True);
+              SetDBInstallationRequired(True);
+              Log('The DataBase ' + strDBName + ' does not exist on the server. It will be created by attaching the right files'); 
+            end
+          else
+            begin
+              SetAttachDBRequired(False);
+              SetDBInstallationRequired(False);
+              Log('The DataBase ' + strDBName + ' already exists on the server.'); 
+              Log('All database components are already installed. No need to install any component.')
+            end;       
+        end;
+    end;
+  SetDBInstallationRequiredChecked(True); //Record that the requirements for installation of the DB components have been checked
+  result:= bolInstallRequired;
+end;
+
+function CheckDBAttachRequired(bolForceCheck: Boolean): Boolean;
+(*Purpose
+Checks if it is necessary to attach the Database provided with the application to the database server,
+and if this was not yet checked, sets the appropriate global variables to indicate
+whether it should be installed
+NOTE: It will be necessary to attach the DB if any of the components of the system is not installed, so this
+      defaults to the CheckDBInstallationRequired function. In this case, this function is just a wrapper to
+      CheckDBInstallationRequired
+*)
+begin
+  result:= CheckDBInstallationRequired(bolForceCheck);
+end;
+
+function GetReadyPageDBInstallationText(NewLine: String): String;
+(*Purpose
+Builds the string to show in the last page before installation, summarizing what parts of the Database system will be installed
+*)
+var
+  strTmp: String;
+  
+begin
+//Log('Called function GetReadyPageDBInstallationText');
+  if not GetDBInstallationRequired('') then
+    begin
+      exit;
+    end;
+  
+  strTmp:= 'Database components to install:'+ NewLine
+  if GetSQLServerInstallationRequired('') then
+    begin
+      strTmp:= NewLine + strTmp + strSQLServer_gc;
+    end;
+    
+  if GetSQLServerInstanceInstallationRequired('') then
+    begin
+      strTmp:= strTmp + NewLine;
+      strTmp:= strTmp + strSQLServer_gc + ' Instance ' + GetSQLInstance(''); 
+    end;
+  
+  if GetAttachDBRequired('') then
+    begin
+      strTmp:= strTmp + NewLine;
+      strTmp:= strTmp + 'Attach file ' + ExtractFileName(GetSQLDBFileName(''));
+      strTmp:= strTmp + ' as Database ' + GetSQLDBName(''); 
+    end;
+result:= strTmp;    
+end;
