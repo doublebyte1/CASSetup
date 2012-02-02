@@ -7,15 +7,20 @@
 #define MyAppVersion "1.0"
 #define MyAppPublisher "FAO"
 #define MyAppURL "http://www.faomedfisis.org/"
-#define MyAppExeName1 "CASManager.exe"
-#define MyAppExeName2 "CASConfig.exe"
+;#define MyAppExeName1 "CASManager.exe"
+;#define MyAppExeName2 "CASConfig.exe"
+#define MyAppExeName1 "app_new.exe"
+#define MyAppExeName2 "conf_app.exe"
+#define MyAppExeNewName1 "CASManager.exe"
+#define MyAppExeNewName2 "CASConfig.exe"
 #define MyAppExeName3 "QtAssistant.exe"
 #define MyAppProgGroup "FAOFishData"
 #define MyAppDirName "FAO_FI\CAS"
 
 ;BASIC CONFIGURATION FOR THE INSTALLER AND THE SCRIPT
 ;#define MyAppSetupSrcBaseDir "E:\CASSetup"
-#define MyAppSetupSrcBaseDir "P:\"
+;#define MyAppSetupSrcBaseDir "P:\"
+#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
 
 ;DIRS HOLDING FILES TO INCLUDE
 #define IncludeFilesDir MyAppSetupSrcBaseDir + "\IncludeFiles"
@@ -113,8 +118,8 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 ;Application files
-Source: {#MyAppSetupSrcDir}\{#MyAppExeName1}; DestDir: {app}; Flags: ignoreversion
-Source: {#MyAppSetupSrcDir}\{#MyAppExeName2}; DestDir: {app}; Flags: ignoreversion
+Source: {#MyAppSetupSrcDir}\{#MyAppExeName1}; DestDir: {app}; Flags: ignoreversion; DestName: {#MyAppExeNewName1}; 
+Source: {#MyAppSetupSrcDir}\{#MyAppExeName2}; DestDir: {app}; Flags: ignoreversion; DestName: {#MyAppExeNewName2}; 
 Source: {#MyAppSetupSrcDir}\{#MyAppExeName3}; DestDir: {app}; Flags: ignoreversion
 Source: {#MyAppLicenseFile}; DestDir: {code:GetPathConf}; Flags: ignoreversion
 Source: {#MyAppReadMeFile}; DestDir: {code:GetPathConf}; Flags: ignoreversion isreadme
