@@ -161,12 +161,12 @@ Source: {#MyAppSetupSrcConfigDir}\{#MyAppSQLInstallConfigFile}; DestDir: {tmp}; 
 Source: {#MyAppSetupSrcSQLServerDir}\*; DestDir: {tmp}\{#MyAppSQLServerInstallDir}; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: {group}\{#MyAppName1}; Filename: {app}\{#MyAppExeName1}
-Name: {group}\{#MyAppName2}; Filename: {app}\{#MyAppExeName2}
+Name: {group}\{#MyAppName1}; Filename: {app}\{#MyAppExeNewName1}
+Name: {group}\{#MyAppName2}; Filename: {app}\{#MyAppExeNewName2}
 Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {#MyAppURL}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {commondesktop}\{#MyAppName1}; Filename: {app}\{#MyAppExeName1}; Tasks: desktopicon
-Name: {commondesktop}\{#MyAppName2}; Filename: {app}\{#MyAppExeName2}; Tasks: desktopicon
+Name: {commondesktop}\{#MyAppName1}; Filename: {app}\{#MyAppExeNewName1}; Tasks: desktopicon
+Name: {commondesktop}\{#MyAppName2}; Filename: {app}\{#MyAppExeNewName2}; Tasks: desktopicon
 
 
 
