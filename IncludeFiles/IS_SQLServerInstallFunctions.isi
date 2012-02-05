@@ -25,10 +25,13 @@
 //1.4.4-Attach the DB again
 
 
-
 const
 //Values for working with the Registry
 RegKey_SQLServer = 'Software\Microsoft\Microsoft SQL Server';
+regValuePath_gc = 'Path';
+regKeySqlTools64_gc = 'SOFTWARE\Wow6432Node\Microsoft\Microsoft SQL Server\90\Tools\ClientSetup';
+regKeySqlTools32_gc = 'SOFTWARE\Microsoft\Microsoft SQL Server\90\Tools\ClientSetup\';
+
 RegKeySQLServerInstance = 'MSSQL.';
 RegKeySubKeySetup = 'Setup';
 RegValEdition = 'Edition';
@@ -43,12 +46,12 @@ SQLDetachBat = 'SQLDBDetach.bat'; //Batch file to detach the databases from the 
 SQLTmpFile = 'SQLTmp.bat'; //Batch file to run temporary tasks related to SQL Server
 
 //Values for the configuration of the installation of SQL Server
-SQLInstanceKey = 'INSTANCENAME';
+sqlInstanceKey_gc = 'INSTANCENAME';
 SQLConfFileSection = 'Options';
 SQLSAPasswdKey = 'SAPWD';
 SQLSecurModeKey = 'SECURITYMODE';
 SQLSecurMode = 'SQL';
-SQLDBExists = 'DBExists';
+sqlDbExists_gc = 'DBExists';
 
 //Values for information messages:
 strSQLServer_gc = 'SQL Server 2005 Express Edition';
@@ -61,7 +64,7 @@ var //Global variables
   SQLServerInstanceInstalled_g: boolean; //Boolean: Is the SQL Server Instance of the Application already installed?
   DBExists_g: boolean; //Boolean: Does the database name of the application already exist in the Server Instance intended?
 
-  InstallSQLServer: boolean; //Boolean: Is it necessary to install SQL Server?
+  installSQLServer_g: boolean; //Boolean: Is it necessary to install SQL Server?
   InstallSQLServerInstance: boolean; //Boolean: Is it necessary to install the SQL Server Instance of the Application?
   AttachDBFile: boolean; //Boolean: Is it necessary to attach the database?
   
@@ -73,8 +76,82 @@ var //Global variables
   SQLInstaller: String; //Full path for the SQL Server Installer
   SQLInstallBat: String; //Full path for the batch file that will run the SQL Server Installer
   SQLInstallDat: String; //Full path for the file with the SQL Server Installation configurations
-
+  sqlToolsPath_g: String; //Full path to the SQL Server Tools commands
+  sqlToolsPathChecked_g: Boolean; //Set to TRUE after the path to the SQL Tools has been checked
+  
 //CODE DEFINITION
+procedure setSqlToolsPathChecked(bolChecked: boolean);
+(*Purpose
+Sets the value of the global variable defining whether the path to the SQL tools has been checked 
+*)
+begin
+  sqlToolsPathChecked_g:= bolChecked;
+end;
+
+function getSqlToolsPathChecked(Param: string): Boolean;
+(*Purpose
+Gets the value of the global variable defining whether the path to the SQL tools has been checked 
+*)
+begin
+  result:= sqlToolsPathChecked_g;
+end;
+
+procedure setSqlToolsPath(strPath: String);
+(*Purpose
+Sets the value of the global variable defining the path to the SQL tools
+*)
+begin
+  sqlToolsPath_g:= strPath;
+end;
+
+function getSqlToolsPath(Param: string): String;
+(*Purpose
+Gets the value of the global variable defining the path to the SQL tools 
+*)
+begin
+  result:= sqlToolsPath_g;
+end;
+
+function getSqlServer2005ToolsFolder(): String;
+(*Purpose
+Get the folder where the SQL Server Tools are installed by reading the appropriate Registry Key
+*)
+var
+  strRegKey: String;
+  strPath: String;
+
+begin
+  if getSqlToolsPathChecked('') then //Just get the value of the global variable
+    begin
+      result:= getSqlToolsPath('');
+      exit;
+    end;
+//Define which registry key to check to find the path for the SQL tools    
+  if isWin64 then
+    begin
+      strRegKey:= regKeySqlTools64_gc; 
+    end
+  else
+    begin
+      strRegKey:= regKeySqlTools32_gc;
+    end;
+
+//Query the registry for the path to the SQL tools    
+  if RegQueryStringValue(HKEY_LOCAL_MACHINE, strRegKey, regValuePath_gc, strPath) then
+    begin
+      // Successfully read the value
+      setSqlToolsPath(strPath);
+      setSqlToolsPathChecked(True);
+      result:= strPath;
+    end
+  else
+    begin
+      setSqlToolsPath('');
+      setSqlToolsPathChecked(False);
+      result:= '';
+    end;
+end;
+
 
 procedure SetDBInstallationRequired(bolRequired: boolean);
 (*Purpose
@@ -147,7 +224,7 @@ begin
   result:= SQLServerInstalled_g;
 end;
 
-procedure SetSQLServerInstanceInstalled(bolInstalled: boolean);
+procedure setSQLServerInstanceInstalled(bolInstalled: boolean);
 (*Purpose
 Sets the value of the global variable defining whether the SQL Server Instance for the application is already installed
 *)
@@ -377,7 +454,7 @@ begin
     begin
       lngInd:=Pos('\', ReverseString(strInstance));
       lngCount:= lngInd -1;
-      lngStart:= Length(strInstance)-(lngCount - 2);
+      lngStart:= Length(strInstance)-(lngCount - 1);
       strLocalName:= Copy(strInstance, lngStart, lngCount);
     end
   else
@@ -438,7 +515,7 @@ function GetSQLServerInstallationRequired(Param: String): boolean;
 Returns the boolean indicating whether to install SQL Server
 *)
 begin
-  result:=  InstallSQLServer;
+  result:=  installSQLServer_g;
 end;
 
 procedure SetSQLServerInstallationRequired(bolInstall: boolean);
@@ -446,7 +523,7 @@ procedure SetSQLServerInstallationRequired(bolInstall: boolean);
 Sets the boolean indicating whether to install SQL Server
 *)
 begin
-  InstallSQLServer:= bolInstall;
+  installSQLServer_g:= bolInstall;
 end;
 
 function GetSQLServerInstanceInstallationRequired(Param: String): boolean;
@@ -524,18 +601,20 @@ end;
 
 
 
-function IsSQLServerInstanceInstalled(strInstance: String): Boolean;
+function isSQLServerInstanceInstalled(strInstance: String): Boolean;
 //Purpose:
 //Returns TRUE if an SQL Server Instance with the name we want is already installed
 var
-  RegKey: String;
-    
+  RegKey, strInstanceLocal: String;
+      
 begin
-  RegKey:= AddBackslash(RegKey_SQLServer) + strInstance;
+  strInstanceLocal:= SQLInstanceNameLocal(strInstance);
+  RegKey:= AddBackslash(RegKey_SQLServer) + strInstanceLocal;
+  Log('RegKey checked for the Instance name is ' + strInstanceLocal);
   result:= RegKeyExists(RegRootKey_SQLServer, RegKey);
 end;
 
-function SQLCmdFile(strInstance, strSAPWD, strFileCmd, strFileDat, strFileOut: String): boolean;
+function SQLCmdFile(strSqlToolsPath, strInstance, strSAPWD, strFileCmd, strFileDat, strFileOut: String): boolean;
 (*Purpose
 Creates a batch file to run a set of sqlcmd commands that are provided by an input file
 and optionally writes the output to an output file
@@ -543,19 +622,21 @@ and optionally writes the output to an output file
 var
   strCmds: TArrayOfString;
   bolSuccess: boolean;
-  strSQLInstance: String;
+  strExeFull, strSQLInstance: String;
   
 begin
 Log('Starting SQLCmdFile function. The values for the parameters is:');
+Log('The value of the strSqlToolsPath parameter is ' + strSqlToolsPath);
 Log('The value of the strFileCmd parameter is ' + strFileCmd);
 Log('The value of the strFileDat parameter is ' + strFileDat);
 Log('The value of the strFileOut parameter is ' + strFileOut);
 
   strSQLInstance:= SQLInstanceNameFull(strInstance);
+  strExeFull:= '"' + AddBackslash(strSqlToolsPath) + 'SQLCMD.EXE' + '"';
   SetArrayLength(strCmds, 2);
   strCmds[0]:= '@echo off';
-  strCmds[1]:= 'start  /B  sqlcmd /S ' + strSQLInstance + ' -U sa -P ' + strSAPWD + ' -i ' 
-            + strFileDat;
+  strCmds[1]:= 'start  "Title" /B  /WAIT ' + strExeFull + ' /S ' + strSQLInstance + 
+      ' -U sa -P ' + strSAPWD + ' -i ' + strFileDat;
   if strFileOut <> '' then
     begin
       strCmds[1]:= strCmds[1] + ' -o ' + strFileOut;
@@ -582,14 +663,15 @@ var
 begin
   //Set Instance Name
   strSQLInstance:= SQLInstanceNameLocal(strInstance);
-  bolSuccess:= SetIniString(SQLConfFileSection, SQLInstanceKey, strSQLInstance, strSQLINIFile);
+  bolSuccess:= SetIniString(SQLConfFileSection, sqlInstanceKey_gc, strSQLInstance, strSQLINIFile);
   //Set access credentials
   bolSuccess:= bolSuccess And SetIniString(SQLConfFileSection, SQLSecurModeKey, SQLSecurMode, strSQLINIFile);
   bolSuccess:= bolSuccess And SetIniString(SQLConfFileSection, SQLSAPasswdKey, strSAPasswd, strSQLINIFile);
   result:= bolSuccess;
 end;
 
-function SQLServerAttachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strPathData, strFileDB, strFileCmd: string): boolean;
+function SQLServerAttachDB_CmdFiles(strSqlToolsPath, strInstance, strSAPWD, 
+strSQLDBName, strPathData, strFileDB, strFileCmd: string): boolean;
 (*Purpose
 Creates the two command files necessary to use the commands for attaching a set of
 database files to SQL Server. These are one .bat file with the basic sqlcmd command line,
@@ -611,7 +693,7 @@ begin
   strSQLInstance:= strInstance; //This must already be the full instance name
 
 //Create the Batch file
-  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, '');
+  bolExit:= SQLCmdFile(strSqlToolsPath, strSQLInstance, strSAPWD, strFileBat, strFileDat, '');
   if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
   Log('The batch file ' + strFileBat + ' was successfully written.');
     begin
@@ -628,7 +710,8 @@ begin
 result:= bolExit;          
 end;
 
-function SQLServerDetachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileCmd: string): boolean;
+function SQLServerDetachDB_CmdFiles(strSqlToolsPath, strInstance, strSAPWD, 
+strSQLDBName, strFileCmd: string): boolean;
 (*Purpose
 Creates the two command files necessary to use the commands for Detaching a 
 database from SQL Server. These are one .bat file with the basic sqlcmd command line,
@@ -648,7 +731,7 @@ begin
 
   //Create the Batch file
   Log('The name of the Dat file is ' + strFileDat);
-  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileCmd, strFileDat, '');
+  bolExit:= SQLCmdFile(strSqlToolsPath, strSQLInstance, strSAPWD, strFileCmd, strFileDat, '');
   if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
     begin
       SetArrayLength(strCmds, 5);
@@ -663,8 +746,8 @@ result:= bolExit;
 end;
 
 
-function SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, 
-strFileDat, strFileOut: string): boolean;
+function SQLServerDBExists_CmdFiles(strSqlToolsPath, strInstance, strSAPWD, 
+strSQLDBName, strFileBat, strFileDat, strFileOut: string): boolean;
 (*Purpose
 Creates the two command files necessary to use the commands for querying an SQL Instance for the 
 existance of a database from SQL Server. These are one .bat file with the basic sqlcmd command line,
@@ -684,18 +767,19 @@ begin
   strSQLInstance:= SQLInstanceNameFull(strInstance);//This should already be the full instance name
 
 //Create the Batch file
-  bolExit:= SQLCmdFile(strSQLInstance, strSAPWD, strFileBat, strFileDat, strFileOut);
+//msgbox('Working in function SQLServerDBExists_CmdFiles. The strSqlToolsPath is ' + strSqlToolsPath, mbInformation, MB_OK);
+  bolExit:= SQLCmdFile(strSqlToolsPath, strSQLInstance, strSAPWD, strFileBat, strFileDat, strFileOut);
   if bolExit then //The batch file was successfully written. Now write the commands file to sqlcmd
     begin
       SetArrayLength(strCmds, 2);
       strCmds[0]:= 'IF EXISTS (SELECT 1 FROM master.sys.databases WHERE name = N''' + strSQLDBName + ''')';
-      strCmds[1]:= 'PRINT ''' + SQLDBExists + '''';
+      strCmds[1]:= 'PRINT ''' + sqlDbExists_gc + '''';
       bolExit:= SaveStringsToFile(strFileDat, strCmds, False);
     end;
   result:= bolExit;
 end;
 
-function ISSQLServerDBExists(strInstance, strSAPWD, strSQLDBName: string): boolean;
+function ISSQLServerDBExists(strSqlToolsPath, strInstance, strSAPWD, strSQLDBName: string): boolean;
 (*Purpose
 Queries an SQL Server Instance for the existence (or not) of the database
 with the name given attached
@@ -708,16 +792,19 @@ var
   strSQLInstance: String;
   
 begin
+Log('Working in function isSqlServerDbExists. The value of strSqlToolsPath is ' + strSqlToolsPath);
   bolDBExists:= False;
   //Define the names of the files to use
-  strFileBat:= GetSQLTmpFileBat('');
-  strFileDat:= FileDat(strFileBat);
-  strFileOut:= FileOut(strFileBat);
-  strPathTmp:= GetPathTmp('');
+  strPathTmp:= AddBackslash(GetPathTmp(''));
+  strFileBat:= strPathTmp + ExtractFileName(GetSQLTmpFileBat(''));
+  strFileDat:= strPathTmp + ExtractFileName(FileDat(strFileBat));
+  strFileOut:= strPathTmp + ExtractFileName(FileOut(strFileBat));
   strSQLInstance:= SQLInstanceNameFull(strInstance);
   
 //Create the Batch file and the accompanying input file
-  bolSuccess:= SQLServerDBExists_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat, strFileDat, strFileOut);
+  bolSuccess:= SQLServerDBExists_CmdFiles(strSqlToolsPath, strSQLInstance, strSAPWD, 
+                strSQLDBName, strFileBat, strFileDat, strFileOut);
+//      msgbox('Check now the batch file' + strFileBat,  mbInformation, MB_OK);                
   if bolSuccess then
     begin
       //Run the batch file
@@ -725,10 +812,18 @@ begin
       Log('Batch file ' + strFileBat + ' was executed. Result code was' + BoolToStr(bolSuccess));
       if bolSuccess then
         begin
-          bolSuccess:= LoadStringFromFile(strFileOut, strCheckResult);
-          if bolSuccess then
+Log('Working in function isSqlServerDbExists. Checking if the file ' + strFileOut + ' exists');
+          if FileExists(strFileOut) then
             begin
-              bolDBExists:= (strCheckResult = SQLDBExists);
+Log('Working in function isSqlServerDbExists. The file ' + strFileOut + ' exists YES');
+              bolSuccess:= LoadStringFromFile(strFileOut, strCheckResult);
+Log('Working in function isSqlServerDbExists. The value of the strFileOut variable is ' + strFileOut);          
+Log('Working in function isSqlServerDbExists. The value of the string on the output file is ' + strCheckResult);          
+              if bolSuccess then
+                begin
+Log('Working in function isSqlServerDbExists. The value of the string on the output file is ' + strCheckResult);
+                  bolDBExists:= (strCheckResult = sqlDbExists_gc);
+                end;            
             end;
         end;
     end;
@@ -828,7 +923,8 @@ result:= bolSuccess;
 end;
 
 
-function SQLServerAttachDB(strInstance, strSAPWD, strSQLDBName, strFileDB: String): Boolean;
+function SQLServerAttachDB(strSqlToolsPath, strInstance, strSAPWD, strSQLDBName, 
+                            strFileDB: String): Boolean;
 (*Purpose
 Attach a database to the SQL Server Instance indicated, copying the database files
 to the Application Data Directory.
@@ -848,7 +944,7 @@ begin
   strPathTmp:= GetPathTmp('');
   strFileBat:= GetSQLAttachFileBat('');
 //Create the files with the commands for attaching
-  bolSuccess:= SQLServerAttachDB_CmdFiles(strInstance, 
+  bolSuccess:= SQLServerAttachDB_CmdFiles(strSqlToolsPath, strInstance, 
                 strPathData, strPathTmp, strFileDB, strSAPWD, strFileBat);
   if bolSuccess then
     begin
@@ -859,7 +955,7 @@ begin
 end;
 
 
-function SQLServerDetachDB(strInstance, strSAPWD, strSQLDBName: String): Boolean;
+function SQLServerDetachDB(strSqlToolsPath, strInstance, strSAPWD, strSQLDBName: String): Boolean;
 (*Purpose
 Detach a database from the SQL Server Instance indicated, if they exist
 *)
@@ -877,14 +973,15 @@ begin
   strFileBat:= GetSQLDetachFileBat('');
   
   //Check if the database is attached, to start with
-  bolAttached:=ISSQLServerDBExists(strInstanceFull, strSAPWD, strSQLDBName);
+  bolAttached:= ISSQLServerDBExists(strSqlToolsPath, strInstanceFull, strSAPWD, strSQLDBName);
   if not bolAttached then
     begin //No need to continue
       result:= True;
       exit;
     end;
 //Create the files with the commands for detaching
-  bolSuccess:= SQLServerDetachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strFileBat);
+  bolSuccess:= SQLServerDetachDB_CmdFiles(strSqlToolsPath, strInstance, strSAPWD, 
+                strSQLDBName, strFileBat);
   if bolSuccess then
     begin
       //Run the batch file
@@ -899,7 +996,7 @@ function SQLServerAttachDBComplete(strFileDB, strSQLDBName: String): Boolean;
 Attach a set of database files to the SQL Server Instance indicated, checking if it already exists
 *)
 var
-  strFileBat: String;
+  strSqlToolsPath, strFileBat: String;
   FileDB, FileLog: String;
   bolSuccess: boolean;
   ErrorCode: integer;
@@ -907,6 +1004,7 @@ var
   strPathTmp: String;
 
 begin 
+  strSqlToolsPath:= getSqlServer2005ToolsFolder;
   strInstance:= GetMyAppSQLInstanceNameFull('');
   strPathDest:= GetPathData('');
   strPathSrc:= GetPathTmp('');
@@ -920,14 +1018,16 @@ begin
   Log('The Tmp path used is ' + strPathTmp);
   Log('The SAPWD used is ' + strSAPWD);
   Log('The batch file used is ' + strFileBat);
+  
   //Copy the files from the Temporary Dir to the Data Dir, making a backup copy if they already exist
   SQLServerDataFilesCopy(strFileDB, strPathSrc, strPathDest);
   
   //Check if the database is already attached to the Instance given, and detach if it is
-  bolSuccess:= SQLServerDetachDB(strInstance, strSAPWD, strSQLDBName);
+  bolSuccess:= SQLServerDetachDB(strSqlToolsPath, strInstance, strSAPWD, strSQLDBName);
   
 //Create the files with the commands for attaching
-  bolSuccess:= SQLServerAttachDB_CmdFiles(strInstance, strSAPWD, strSQLDBName, strPathDest, strFileDB, strFileBat);
+  bolSuccess:= SQLServerAttachDB_CmdFiles(strSqlToolsPath, strInstance, strSAPWD, 
+              strSQLDBName, strPathDest, strFileDB, strFileBat);
   if bolSuccess then
     begin
       //Run the batch file (attach the database)
@@ -956,7 +1056,7 @@ begin
   SQLSetup:= GetSQLInstaller('');
   strConf:= GetSQLInstallDat('');
   strDirTmp:= GetPathTmp('');
-  strCommand[0]:= 'Start /wait ' + SQLSetup + ' /qb /settings ' + strConf;
+  strCommand[0]:= 'Start "Title" /wait ' + SQLSetup + ' /qb /settings ' + strConf;
 //MsgBox('The command to run is ' + strCommand[0], mbInformation, MB_OK);
   strBatFile:= GetSQLInstallBat('');
   bolExit:= SaveStringsToFile(strBatFile, strCommand, False);
@@ -993,6 +1093,22 @@ begin
 //        MsgBox('Running the actual installation', mbInformation, MB_OK);
           //Run the actual installation
           bolExit:= ShellExec('', strBatFile, '', strDirTmp ,SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+          if bolExit then
+            begin
+              setSqlServerInstalled(True);
+              setSQLServerInstallationRequired(False);
+              
+              setSqlServerInstanceInstalled(True);
+              setSQLServerInstanceInstallationRequired(False);
+              
+              setDBExists(False); //If the instance was just created, the DB cannot exist
+              setAttachDbRequired(True);
+              
+              setDbInstallationChecked(True);
+              setDbInstallationRequiredChecked(True);
+              //Set the indication of the path for the installed tools
+              getSqlServer2005ToolsFolder;
+            end;
         end;
     end;
  result:= bolExit;
@@ -1031,7 +1147,8 @@ begin
       Log('Installing local Instance ' + strInstanceLocal + ' of SQL Server');
 //MsgBox('SQL Server Installation Will Start', mbInformation, MB_OK);     
       bolExit:= SQLServerInstall(strInstanceLocal, strSAPWD);
-    end;      
+    end;
+  result:= bolExit;    
 end;
 
 
@@ -1051,6 +1168,7 @@ begin
   SetSQLInstallDat(ExpandConstant('{#MyAppSQLInstallConfigFile}'));
   SetSQLSAPWD(ExpandConstant('{#MyAppSAPWD}'));
   SetDBInstallationChecked(False);
+  setSqlToolsPathChecked(False);
   end;
   
 procedure SetGlobalsCheckDBInstallation();
@@ -1059,7 +1177,7 @@ Sets the global variables informing the installation of what parts (if any) of
 the database system are already properly installed or configured
 *)
 var
-  strInstance, strSAPWD, strDBName: String;
+  strSqlToolsPath, strInstance, strSAPWD, strDBName: String;
   
 begin
 SetDBInstallationChecked(False);
@@ -1073,8 +1191,10 @@ SetDBInstallationChecked(False);
       SetSQLServerInstalled(True);
       if ISSQLServerInstanceInstalled(strInstance) then
         begin
-          SetSQLServerInstanceInstalled(True);
-          if ISSQLServerDBExists(strInstance, strSAPWD, strDBName) then
+          setSQLServerInstanceInstalled(True);
+          //The instance is installed, so the existence of the database can be checked
+          strSqlToolsPath:= getSqlServer2005ToolsFolder;
+          if ISSQLServerDBExists(strSqlToolsPath, strInstance, strSAPWD, strDBName) then
             begin
               SetDBExists(True);
             end
@@ -1085,14 +1205,14 @@ SetDBInstallationChecked(False);
         end
       else
         begin
-          SetSQLServerInstanceInstalled(False);
+          setSQLServerInstanceInstalled(False);
           SetDBExists(False);
         end;
     end
   else
     begin
       SetSQLServerInstalled(False);
-      SetSQLServerInstanceInstalled(False);
+      setSQLServerInstanceInstalled(False);
       SetDBExists(False);
     end;
 //Record that the checking was already done
@@ -1128,6 +1248,7 @@ begin
   bolInstallRequired:= False;
   if not GetDBInstallationChecked('') then
     begin
+    Log('Checking the status of the DB Installation: Which components are installed.');
       SetGlobalsCheckDBInstallation; //Check what is installed, and set the appropriate global variables
     end;
     
@@ -1155,6 +1276,7 @@ begin
         begin
           SetSQLServerInstanceInstallationRequired(false);
           Log('Instance ' + strInstance + ' of SQL Server 2005 Express Edition is already installed');
+          getSqlServer2005ToolsFolder;
           if not GetDBExists('') then //SQL Server and the right instance are installed, but the database does not exist
             begin
               bolInstallRequired:= True;

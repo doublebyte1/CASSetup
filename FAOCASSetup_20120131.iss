@@ -18,9 +18,9 @@
 #define MyAppDirName "FAO_FI\CAS"
 
 ;BASIC CONFIGURATION FOR THE INSTALLER AND THE SCRIPT
-;#define MyAppSetupSrcBaseDir "E:\CASSetup"
+#define MyAppSetupSrcBaseDir "E:"
 ;#define MyAppSetupSrcBaseDir "P:\"
-#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
+;#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
 
 ;DIRS HOLDING FILES TO INCLUDE
 #define IncludeFilesDir MyAppSetupSrcBaseDir + "\IncludeFiles"
@@ -154,7 +154,6 @@ Source: "{#MyAppSetupSrcSQlDriversDir}\*"; DestDir: "{app}\sqldrivers\"; Flags: 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ; Files for SQL Server setup (to be written to temporary directory)
-
 Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.ldf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
 Source: {#MyAppSetupSrcDataDir}\{#MyAppDBFileName}.mdf; DestDir: {tmp}; Check: CheckDBAttachRequired(False); Flags: ignoreversion
 Source: {#MyAppSetupSrcConfigDir}\{#MyAppSQLInstallConfigFile}; DestDir: {tmp}; Check: CheckSQLServerInstanceInstallationRequired(False); Flags: ignoreversion
@@ -296,6 +295,7 @@ c) Check any prerequisites that need to be known for the wizards
 begin
 Log('Starting function InitializeSetup');
   UpdateInfFilenames(); //Read the names of the .Inf configuration files to use, if any
+  SetGlobalsInitial; //Set the initial values of the Global variables for the installation
   SetGlobalsSQLServerStart; //Set the global variables related to SQL Server installation
   SetGlobalsCheckDBInstallation; //Set the global variables informing the status of the different components of the Database system
   CheckDBInstallationRequired(True); //Set the global variables on the need to install the different components of the Database system
@@ -341,9 +341,9 @@ var
 begin
 //Set the Global Variables, using the information from the Inno Setup Variables,
 //and also the information entered by the user in the wizards
-  SetGlobalsCommon; //Set the initial values of the Global variables for the installation
   SetGlobalsDataDir;
   SetGlobalsSQLServerStart;
+  SetGlobalsCommon;
 
   //Check the requirements for the installation
   bolRequirements:= CheckRequirements;
@@ -366,13 +366,14 @@ var
 begin
   Log('Starting the DoPostInstall routine');
   //SetGlobalsSQLServer;
-  //Install the SQL Server 
-
-  if InstallSQLServer then
+  
+  //Install the SQL Server Instance, if required
+  if GetSQLServerInstallationRequired('') then
     begin
       SQLServerInstallComplete('');
     end;
-  if AttachDBFile then
+    
+  if getAttachDbRequired('') then
     begin
       //Attach the databases
       strSQLDBName:= GetSQLDBName('');
@@ -381,8 +382,6 @@ begin
 //      MsgBox('The name of the DB file to attach is ' + strSQLDBName, mbInformation, MB_OK);
       SQLServerAttachDBComplete(strFileDB, strSQLDBName);
     end;
-  
-   
 end;
 
 procedure DoSuccessInstall();

@@ -13,6 +13,16 @@ const
   FExtBat = '.bat'; //Extension for .bat files
   FExtDat = '.dat'; //Extension for .dat files (usually files with commands to pass to command-line uses)
   FExtOut = '.out'; //Extension for .out files (usually files with results from commands)
+  gvSetYes = 1; //Indicator that a global variable is set
+  gvSetNo = 0;  //Indicator that a global variable is Not set
+  gvSetUnknown = -1; //Indicator that the set status of a global variable is Not known
+  
+  
+//Type definitions
+type
+  TGvSet = (gvSetYes, gvSetNo, gvSetUnknown);
+  TWnOSType = (wnOSType32, wnOSType64, wnOSTypeUnknown);
+  
 
 // Global vars
 var
@@ -24,6 +34,7 @@ var
   PathData: String;
   PathConfig: String;
   MsgRequirementsMissing: String;
+  winOsType_g: TWnOSType;
   
 
 //Forward declarations
@@ -163,10 +174,20 @@ end;
 
 function GetPathConf(Param: string): String;
 (*Purpose
-Gest the value of the Global Variable defining the path for the Application Configuration Directory
+Gets the value of the Global Variable defining the path for the Application Configuration Directory
 *)
 begin
   result:= PathConfig;
+end;
+
+procedure SetGlobalsInitial();
+(*Purpose
+Sets the values of the global variables that can be defined at the initialize fase
+*)
+
+begin
+  SetPathTmp(ExpandConstant('{tmp}')); 
+  SetPathDataDefault;
 end;
 
 procedure SetGlobalsCommon();
@@ -176,10 +197,59 @@ that relate to the code defined in the PCB_ISUtils.isi include file
 *)
 
 begin
+  //.SetPathTmp(ExpandConstant('{tmp}')); 
+  //SetPathDataDefault; //This cannot be set here, because it will annull the changes made by the entry forms
+  SetPathConf(ExpandConstant('{app}\{#MyAppConfDir}'));
+end;
+
+procedure SetWinOSType(winOSTYpe: TWnOSType);
+(*Purpose
+Sets the global variable defining the type (32/ or 64-bit) of Windows OS
+*)
+begin
+  winOsType_g:= winOSType;
+end;
+
+function getWinOSType(strParam: String): TWnOSType;
+(*Purpose
+Gets the value of the global variable defining the type (32/ or 64-bit) of Windows OS
+*)
+begin
+  result:= winOsType_g;
+end;
+
+procedure checkWinType(strParam: String);
+(*Purpose
+Checks if the installer is running in a 32/bit or 64-bit Windows
+system, and sets the appropriate global variables, if they are not yet set
+*)
+begin
+  if ((getWinOSType('')) = wnOSTypeUnknown) then
+    begin
+      if IsWin64 then
+        begin
+          setWinOSType(wnOSType64);
+        end
+      else
+        begin
+          setWinOSType(wnOSType32);
+        end;
+    end;   
+end;
+
+
+procedure SetGlobalsSystem();
+(*Purpose
+Sets the values of the global variables that define properties of the system the
+installer is running in, that then become available to code
+*)
+
+begin
   SetPathTmp(ExpandConstant('{tmp}')); 
   //SetPathDataDefault; //This cannot be set here, because it will annull the changes made by the entry forms
   SetPathConf(ExpandConstant('{app}\{#MyAppConfDir}'));
 end;
+
 
 function DataPathCreate(strPath: String): boolean;
 (*Purpose
