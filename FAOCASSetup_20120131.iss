@@ -4,7 +4,7 @@
 #define MyAppName "FAO Fisheries Catch Assessment Surveys Data Manager"
 #define MyAppName1 "FAO Fisheries Catch Assessment Surveys Data Manager"
 #define MyAppName2 "FAOFish CAS Config"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.3"
 #define MyAppPublisher "FAO"
 #define MyAppURL "http://www.faomedfisis.org/"
 ;#define MyAppExeName1 "CASManager.exe"
