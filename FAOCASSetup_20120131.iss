@@ -18,9 +18,9 @@
 #define MyAppDirName "FAO_FI\CAS"
 
 ;BASIC CONFIGURATION FOR THE INSTALLER AND THE SCRIPT
-#define MyAppSetupSrcBaseDir "E:"
+;#define MyAppSetupSrcBaseDir "E:"
 ;#define MyAppSetupSrcBaseDir "P:\"
-;#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
+#define MyAppSetupSrcBaseDir "C:\projects\setups\CASSetup"
 
 ;DIRS HOLDING FILES TO INCLUDE
 #define IncludeFilesDir MyAppSetupSrcBaseDir + "\IncludeFiles"
